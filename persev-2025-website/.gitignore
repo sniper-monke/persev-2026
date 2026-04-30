@@ -1,0 +1,8 @@
+node_modules/*
+.env
+*.DS_Store
+.config/
+school_config.json
+database.db
+database.db-shm
+database.db-wal

@@ -1,0 +1,14 @@
+{
+  "name": "persev-2025-website",
+  "version": "2.0.0",
+  "description": "Simplified hardcoded backend for Perseverantia website",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "license": "MIT"
+}
