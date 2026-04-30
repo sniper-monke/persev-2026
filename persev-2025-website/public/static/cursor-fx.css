@@ -1,0 +1,16 @@
+﻿:root {
+	--cursor-gold: #f8b42d;
+	--cursor-aquamarine: #43e9ff;
+}
+
+@media (pointer: fine) and (hover: hover) {
+	#fluid {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100dvw;
+		height: 100dvh;
+		pointer-events: none;
+		z-index: 2147483645;
+	}
+}

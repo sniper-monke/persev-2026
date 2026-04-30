@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perseverantia 2025 Leaderboard</title>
+    <meta
+      name="description"
+      content="Perseverantia 2025 School Leaderboard."
+    />
+    <link rel="icon" type="image/png" href="assets/persev.avif" />
+    <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407c" />
+    <script defer src="/static/cursor-fx.js?v=20260407c"></script>
+    <link rel="stylesheet" href="/static/persev-navbar.css?v=20260420a" />
+    <script defer src="/static/persev-navbar.js?v=20260420a"></script>
+    <script defer src="/static/cloud-transitions.js?v=20260430k"></script>
+    <style>
+      @font-face {
+        font-family: Mestizo;
+        src: url(/static/MestizoFont.ttf);
+        font-display: swap;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background: #050914;
+        overflow: hidden;
+      }
+
+      body {
+        font-family: Mestizo, sans-serif;
+      }
+
+      .leaderboard-frame {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        border: 0;
+        display: block;
+        background: #050914;
+      }
+
+      @media (max-width: 768px) {
+        .leaderboard-frame {
+          top: 0;
+          height: 100vh;
+        }
+      }
+    </style>
+    <!-- Flash prevention: hide body and show placeholder immediately if coming from transition -->
+    <script>(function(){try{if(sessionStorage.getItem('persev_transition_state')){document.documentElement.style.background='#050914';document.write('<style>body{visibility:hidden;background:#050914}</style><div id="cloud-placeholder" style="position:fixed;inset:0;z-index:2147483647;background:linear-gradient(135deg,#1a3a6b 0%,#3a7abf 50%,#89b9e0 100%);opacity:0.9;transition:opacity 0.3s"><div style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(-10%) rotate(-2deg);filter:blur(20px)"></div><div style="position:absolute;right:0;top:0;bottom:0;width:60%;background:linear-gradient(270deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(10%) rotate(2deg);filter:blur(20px)"></div></div>');}}catch(e){}})();</script>
+  </head>
+  <body>
+    <iframe
+      class="leaderboard-frame"
+      src="leaderboard%20(2).html"
+      title="Perseverantia 2025 Leaderboard"
+      loading="eager"
+      referrerpolicy="no-referrer"
+    ></iframe>
+  </body>
+</html>
