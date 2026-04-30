@@ -1,0 +1,12 @@
+{
+  "name": "persev-rebuild-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Workspace-level convenience scripts",
+  "scripts": {
+    "start": "npm --prefix ./persev-2025-website run start",
+    "dev": "npm --prefix ./persev-2025-website run dev",
+    "start:legacy": "npm --prefix ./persev-2025-website run start",
+    "dev:legacy": "npm --prefix ./persev-2025-website run dev"
+  }
+}
