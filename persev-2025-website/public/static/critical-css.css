@@ -1,0 +1,156 @@
+/* Critical CSS - Above The Fold Content Only */
+/* Perseverantia Mobile - Inline this in <head> for fastest rendering */
+
+/* Essential resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: #050914;
+  color: #eff3ff;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Hero section - visible above fold */
+#vanta-clouds {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Navigation - essential for mobile */
+.toormix-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 12px);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toormix-nav__inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  pointer-events: auto;
+}
+
+.toormix-nav__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toormix-nav__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.toormix-menu-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid #b7bfdb;
+  background: #0b1a44;
+  color: #eff3ff;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+/* Text rendering optimization */
+body {
+  text-rendering: optimizeSpeed;
+}
+
+h1, h2, h3 {
+  font-size-adjust: auto;
+  line-height: 1.2;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+button, a[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mobile viewport */
+@viewport {
+  width: device-width;
+  zoom: 1;
+}
+
+/* Safe area insets */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Loading state */
+.loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Prevent FOUC */
+html:not(.fonts-loaded) {
+  visibility: hidden;
+}
+
+html.fonts-loaded {
+  visibility: visible;
+}
+
+/* Optimize repaints */
+body {
+  will-change: auto;
+  contain: layout style;
+}

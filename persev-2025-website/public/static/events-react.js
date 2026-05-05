@@ -605,7 +605,7 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       return new THREE.CanvasTexture(canvas);
     }
 
-    async function buildCard(event, index) {
+    async function buildCard(event, index, hostWidth) {
       try {
         let texture;
         try {
@@ -655,8 +655,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
           metalness: 0.09
         });
 
-        const cardWidth = 156;
-        const cardHeight = 220;
+        const cardWidth = Math.max(130, Math.min(156, (hostWidth || 1440) * 0.11));
+        const cardHeight = Math.max(185, Math.min(220, (hostWidth || 1440) * 0.16));
 
         const frontImage = new THREE.Mesh(
           new THREE.PlaneGeometry(cardWidth, cardHeight),
@@ -692,10 +692,11 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
           return;
         }
 
+        const hostWidth = host.clientWidth || 1440;
         for (let index = 0; index < events.length; index += 1) {
           if (disposed) return;
           try {
-            await buildCard(events[index], index);
+            await buildCard(events[index], index, hostWidth);
           } catch (cardBuildErr) {
             console.error(`Failed to build card ${index}:`, cardBuildErr);
             // Continue with next card

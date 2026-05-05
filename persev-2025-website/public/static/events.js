@@ -243,6 +243,13 @@ function initializeFilmCylinder(grid, events) {
   const stage = document.querySelector('.cylinder-stage');
   if (!grid || !viewport || !stage || !events.length) return;
 
+  // Move the entire carousel wrapper upward so the whole carousel shifts up by 100px
+  const filmStageWrap = document.querySelector('.film-stage-wrap');
+  if (filmStageWrap) {
+    filmStageWrap.style.transform = 'translateY(-100px)';
+    filmStageWrap.style.transition = 'transform 280ms ease';
+  }
+
   const seedCards = Array.from(grid.querySelectorAll('.event-card'));
   if (!seedCards.length) return;
 
@@ -347,7 +354,9 @@ function initializeFilmCylinder(grid, events) {
       const bobY = Math.sin((elapsed * 1.8) + (index * 0.72)) * (7 + positiveDepth * 7);
       const tiltX = Math.sin((elapsed * 1.25) + (index * 0.65)) * 2.2;
 
-      card.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(var(--carousel-radius)) translateY(${bobY.toFixed(2)}px) rotateX(${tiltX.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      // raise carousel vertically: shift centering from -50% to -60% and apply a fixed upward offset
+      const verticalOffset = 100; // pixels to lift whole carousel (positive = up)
+      card.style.transform = `translate(-50%, -60%) rotateY(${angle}deg) translateZ(var(--carousel-radius)) translateY(${(bobY - verticalOffset).toFixed(2)}px) rotateX(${tiltX.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
       card.style.opacity = opacity.toFixed(3);
       card.style.zIndex = String(100 + Math.round((depth + 1) * 100));
       card.classList.toggle('is-active-frame', index === state.activeIndex);

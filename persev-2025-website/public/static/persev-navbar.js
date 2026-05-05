@@ -30,18 +30,14 @@
     '        <a class="toormix-nav__link ' + (isActive(['/organizing-committee', '/organizing-committee.html']) ? 'is-active' : '') + '" href="/organizing-committee">Organizing Committee</a>',
     '      </div>',
     '    </div>',
-    '    <a class="persev-reg-btn" href="#" aria-label="Register now">',
-    '      <span class="persev-reg-btn__icon">' + regIconSvg + '</span>',
-    '      <span class="persev-reg-btn__text">Register now!</span>',
-    '    </a>',
     '  </div>',
-    '  <div class="toormix-nav__switch" aria-hidden="true">',
+    '  <div class="toormix-nav__switch">',
     '    <button class="toormix-nav__switch-logo toormix-menu-open-btn" type="button" aria-expanded="false" aria-controls="persevMenuOverlay" aria-label="Open menu">',
     '      <img src="/assets/landing.png" alt="Perseverantia" />',
     '    </button>',
     '  </div>',
     '</nav>',
-    '<div class="toormix-overlay" id="persevMenuOverlay" aria-hidden="true">',
+    '<div class="toormix-overlay" id="persevMenuOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Site navigation">',
     '  <div class="toormix-overlay__backdrop"></div>',
     '  <div class="toormix-overlay__rings">',
     '    <div class="toormix-ring toormix-ring--1"></div>',
@@ -52,11 +48,11 @@
     '  </div>',
     '  <nav aria-label="Expanded site menu">',
     '    <ul class="toormix-overlay__menu">',
-    '      <li><a class="toormix-overlay__item toormix-overlay__item--1" href="/leaderboard">LEADERBOARD</a></li>',
-    '      <li><a class="toormix-overlay__item toormix-overlay__item--2" href="/events">EVENTS</a></li>',
-    '      <li><a class="toormix-overlay__item toormix-overlay__item--3" href="/organizing-committee">ORGANIZING COMMITTEE</a></li>',
-    '      <li><a class="toormix-overlay__item toormix-overlay__item--4" href="/links">LINKS</a></li>',
-    '      <li><a class="toormix-overlay__item toormix-overlay__item--5" href="/">HOME</a></li>',
+    '      <li><a class="toormix-overlay__item toormix-overlay__item--1" href="/leaderboard">Leaderboard</a></li>',
+    '      <li><a class="toormix-overlay__item toormix-overlay__item--2" href="/events">Events</a></li>',
+    '      <li><a class="toormix-overlay__item toormix-overlay__item--3" href="/organizing-committee">Organizing committee</a></li>',
+    '      <li><a class="toormix-overlay__item toormix-overlay__item--4" href="/links">Links</a></li>',
+    '      <li><a class="toormix-overlay__item toormix-overlay__item--5" href="/">Home</a></li>',
     '    </ul>',
     '  </nav>',
     '  <button class="toormix-overlay__close" id="persevMenuClose" type="button" aria-label="Close menu"></button>',
@@ -246,10 +242,28 @@ const setSwitched = function (next) {
       return;
     }
 
-    openBtns.forEach(function (btn) {
-      btn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
-    });
+    if (!menuOpen) {
+      openBtns.forEach(function (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    }
   };
+
+const backdrop = menuOverlay.querySelector('.toormix-overlay__backdrop');
+    let lastFocus = null;
+
+    const setSiblingsInert = function (locked) {
+      Array.prototype.forEach.call(document.body.children, function (el) {
+        if (el === nav || el === menuOverlay) {
+          return;
+        }
+        if (locked) {
+          el.setAttribute('inert', '');
+        } else {
+          el.removeAttribute('inert');
+        }
+      });
+    };
 
 const setMenuOpen = function (next) {
     if (next === menuOpen) {
@@ -262,6 +276,18 @@ const setMenuOpen = function (next) {
     openBtns.forEach(function (btn) {
       btn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
     });
+    setSiblingsInert(menuOpen);
+    if (menuOpen) {
+      lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      window.setTimeout(function () {
+        closeBtn.focus();
+      }, 0);
+    } else if (lastFocus && typeof lastFocus.focus === 'function') {
+      window.setTimeout(function () {
+        lastFocus.focus();
+      }, 0);
+      lastFocus = null;
+    }
   };
 
   openBtns.forEach(function (btn) {
@@ -273,6 +299,12 @@ const setMenuOpen = function (next) {
   closeBtn.addEventListener('click', function () {
     setMenuOpen(false);
   });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      setMenuOpen(false);
+    });
+  }
 
   menuLinks.forEach(function (link) {
     link.addEventListener('click', function () {
@@ -308,6 +340,11 @@ const setMenuOpen = function (next) {
     }
 
     const syncFromScroll = function () {
+      /* ≤1190px: desktop text links are hidden; scroll-collapse only feels broken here */
+      if (window.matchMedia('(max-width: 1190px)').matches) {
+        setSwitched(false);
+        return;
+      }
       setSwitched(readScrollY(scrollTarget) > 24);
     };
 

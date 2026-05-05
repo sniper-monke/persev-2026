@@ -1,1090 +1,2172 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
   <head>
+
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Perseverantia</title>
+
     <script>
+
       // Check if user has already seen the landing page in this session
+
       if (!sessionStorage.getItem('landingPageSeen')) {
+
         // Redirect to landing page on first visit per session
+
         window.location.href = '/landing.html';
+
       }
+
     </script>
+
     <style>
+
       @font-face {
+
         font-family: 'Mestizo';
+
         src: url('/assets/MestizoFont.woff2') format('woff2'),
+
              url('/assets/MestizoFont.woff') format('woff'),
+
              url('/assets/MestizoFont.ttf') format('truetype');
+
         font-style: normal;
+
         font-weight: 400;
+
         font-display: swap;
+
       }
+
       * { margin: 0; padding: 0; box-sizing: border-box; }
+
       html, body, #root {
+
         width: 100%;
+
         height: 100%;
+
         overflow: hidden;
+
         background: transparent !important;
+
         font-family: 'Mestizo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
         color: #eff3ff;
+
         -webkit-font-smoothing: antialiased;
+
       }
+
       body .header,
+
       body .footer,
+
       body .remix-cta {
+
         display: none !important;
+
       }
+
       #root .gallery-ui > .header,
+
       #root .gallery-ui .header,
+
       #root .gallery-ui .logo,
+
       #root .gallery-ui .about-link,
+
       #root [class*="topbar"],
+
       #root [class*="top-bar"],
+
       #root [class*="navbar"] {
+
         display: none !important;
+
         visibility: hidden !important;
+
         opacity: 0 !important;
+
         pointer-events: none !important;
+
         height: 0 !important;
+
         min-height: 0 !important;
+
         margin: 0 !important;
+
         padding: 0 !important;
+
         overflow: hidden !important;
+
         transform: none !important;
+
         transition: none !important;
+
         animation: none !important;
+
       }
+
       #root .gallery-ui {
+
         padding-top: 0 !important;
+
       }
+
       #vanta-clouds {
+
         position: fixed;
+
         inset: 0;
+
         z-index: 0;
+
         pointer-events: none;
+
         background: #071126;
+
       }
+
       #vanta-clouds canvas {
+
         display: block !important;
+
       }
+
       :root {
+
         --bg-1: #050914;
+
         --bg-2: #0b1a44;
+
         --bg-3: #130d2d;
+
         --bg-4: #09122f;
+
         --ink: #eff3ff;
+
         --muted: #b7bfdb;
+
         --gold: #f8b42d;
+
         --gold-soft: #ffd875;
+
         
+
         --nav-bg: linear-gradient(140deg, rgba(8, 21, 58, 0.9), rgba(11, 19, 46, 0.82));
+
         --nav-border: rgba(248, 180, 45, 0.34);
+
         --nav-accent: #f8b42d;
+
         --nav-accent-soft: #ffd875;
+
         --nav-text: #f0f5ff;
+
         --nav-text-soft: rgba(240, 245, 255, 0.78);
+
         --nav-shadow: 0 18px 44px rgba(3, 8, 25, 0.46);
+
         --nav-glow: 0 0 28px rgba(248, 180, 45, 0.24);
+
       }
+
       .toormix-nav {
+
         position: fixed;
+
         left: 50%;
+
         bottom: 24px;
+
         transform: translateX(-50%);
+
         z-index: 100;
+
         width: calc(100% - 20px);
+
         display: flex;
+
         justify-content: center;
+
         pointer-events: none;
+
       }
+
       .toormix-nav__inner {
+
         position: relative;
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         gap: 4px;
+
         padding: 5px;
+
         border-radius: 14px;
+
         background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+
         border: 1px solid rgba(255, 255, 255, 0.12);
+
         box-shadow: var(--nav-shadow);
+
         pointer-events: auto;
+
         transition: transform 0.45s ease, opacity 0.3s ease;
+
       }
+
+
 
       .toormix-nav__inner::before {
+
         content: "";
+
         position: absolute;
+
         inset: 1px;
+
         border-radius: 13px;
+
         pointer-events: none;
+
         background: linear-gradient(120deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02) 34%, transparent 52%);
+
       }
+
       .toormix-nav__logo {
-        width: 68px;
-        height: 44px;
-        border-radius: 12px;
+
+        width: 92px;
+
+        height: 58px;
+
+        border-radius: 16px;
+
         background: linear-gradient(135deg, #f3a71a 0%, #f8b42d 45%, #ffd875 100%);
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         flex-shrink: 0;
+
         overflow: hidden;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 8px 24px rgba(149, 89, 7, 0.36);
-        transition: transform 0.45s ease, opacity 0.3s ease;
-        border: 1px solid rgba(255, 222, 151, 0.66);
+
+        box-shadow:
+
+          inset 0 1px 0 rgba(255, 255, 255, 0.56),
+
+          0 14px 38px rgba(149, 89, 7, 0.52),
+
+          0 0 28px rgba(248, 180, 45, 0.42);
+
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+
+        border: 2px solid rgba(255, 222, 151, 0.88);
+
         padding: 0;
+
         cursor: pointer;
-      }
-      .toormix-nav__logo:hover {
-        transform: translateY(-1px) scale(1.04);
-      }
-      .toormix-nav__logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-        padding: 4px;
-      }
-      .toormix-nav__menu {
+
         position: relative;
-        display: grid;
-        grid-template-columns: auto auto auto;
-        align-items: center;
-        column-gap: 8px;
-        padding: 4px 8px;
-        border-radius: 10px;
-        background: var(--nav-bg);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        border: 1px solid var(--nav-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), var(--nav-glow);
-        overflow: hidden;
-        transition: transform 0.45s ease, opacity 0.3s ease;
+
       }
+
+      .toormix-nav__logo:hover {
+
+        transform: translateY(-3px) scale(1.08);
+
+        box-shadow:
+
+          inset 0 1px 0 rgba(255, 255, 255, 0.6),
+
+          0 18px 48px rgba(149, 89, 7, 0.62),
+
+          0 0 36px rgba(248, 180, 45, 0.58);
+
+      }
+
+      .toormix-nav__logo img {
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: contain;
+
+        display: block;
+
+        padding: 4px;
+
+      }
+
+      .toormix-nav__menu {
+
+        position: relative;
+
+        display: grid;
+
+        grid-template-columns: auto auto auto;
+
+        align-items: center;
+
+        column-gap: 8px;
+
+        padding: 4px 8px;
+
+        border-radius: 10px;
+
+        background: var(--nav-bg);
+
+        backdrop-filter: none;
+
+        -webkit-backdrop-filter: none;
+
+        border: 1px solid var(--nav-border);
+
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), var(--nav-glow);
+
+        overflow: hidden;
+
+        transition: transform 0.45s ease, opacity 0.3s ease;
+
+      }
+
+
 
       .toormix-nav__cluster {
+
         display: inline-flex;
+
         align-items: center;
+
         gap: 4px;
+
       }
+
+
 
       .toormix-nav__cluster--left {
+
         justify-content: flex-end;
+
       }
+
+
 
       .toormix-nav__cluster--right {
+
         justify-content: flex-start;
+
       }
+
+
 
       .toormix-nav__menu::after {
+
         content: "";
+
         position: absolute;
+
         top: 1px;
+
         bottom: 1px;
+
         left: -38%;
+
         width: 28%;
+
         border-radius: 999px;
+
         pointer-events: none;
+
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+
         opacity: 0;
+
         transition: opacity 0.25s ease;
+
       }
+
+
 
       .toormix-nav__menu:hover::after {
+
         opacity: 1;
+
         animation: percevMenuSweep 0.9s ease forwards;
+
       }
+
       .toormix-nav__link {
+
         position: relative;
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         height: 36px;
+
         padding: 0 12px;
+
         color: var(--nav-text-soft);
+
         text-decoration: none;
+
         text-transform: uppercase;
+
         font-size: 11px;
+
         font-weight: 600;
+
         line-height: 1;
+
         letter-spacing: 0.11em;
+
         border-radius: 10px;
+
         transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
         white-space: nowrap;
+
       }
+
+
 
       .toormix-nav__link:focus-visible {
+
         outline: 2px solid rgba(248, 180, 45, 0.78);
+
         outline-offset: -2px;
+
         color: var(--nav-text);
+
         background: rgba(255, 255, 255, 0.12);
+
       }
+
+
 
       .toormix-nav__link::after {
+
         content: "";
+
         position: absolute;
+
         left: 10px;
+
         right: 10px;
+
         bottom: 6px;
+
         height: 1px;
+
         background: linear-gradient(90deg, transparent, rgba(248, 180, 45, 0.82), transparent);
+
         transform: scaleX(0.15);
+
         opacity: 0;
+
         transition: transform 0.22s ease, opacity 0.22s ease;
+
       }
+
       .toormix-nav__link:hover {
+
         color: var(--nav-text);
+
         background: rgba(255, 255, 255, 0.1);
+
         transform: translateY(-1px);
+
       }
+
+
 
       .toormix-nav__link:hover::after,
+
       .toormix-nav__link.is-active::after {
+
         transform: scaleX(1);
+
         opacity: 1;
+
       }
+
       .toormix-nav__link.is-active {
+
         background: linear-gradient(135deg, rgba(248, 180, 45, 0.34), rgba(248, 180, 45, 0.16));
+
         color: #fff;
+
         box-shadow: 0 0 16px rgba(248, 180, 45, 0.18);
+
       }
+
+
 
       .toormix-nav__switch {
+
         position: absolute;
+
         inset: 0;
+
         display: flex;
+
         align-items: center;
+
         justify-content: center;
+
         gap: 12px;
+
         pointer-events: none;
+
         opacity: 0;
+
         transform: translateY(10px);
+
         transition: transform 0.45s ease, opacity 0.3s ease;
+
       }
+
+
 
       .toormix-nav__switch-logo {
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         width: 74px;
+
         height: 46px;
+
         border-radius: 12px;
+
         background: linear-gradient(135deg, #f3a71a 0%, #f8b42d 45%, #ffd875 100%);
+
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 8px 24px rgba(149, 89, 7, 0.36);
+
         border: 1px solid rgba(255, 222, 151, 0.66);
+
         padding: 0;
+
         cursor: pointer;
+
         transition: transform 0.25s ease;
+
       }
+
       .toormix-nav__switch-logo:hover {
+
         transform: scale(1.04);
+
       }
+
+
 
       .toormix-nav__switch-logo img {
+
         width: 100%;
+
         height: 100%;
+
         object-fit: contain;
+
         padding: 4px;
+
       }
 
+
+
       .toormix-menu-btn {
+
         width: 54px;
+
         height: 54px;
+
         border-radius: 999px;
+
         border: 1px solid #b7bfdb;
+
         background: #0b1a44;
+
         color: #eff3ff;
+
         font-size: 12px;
+
         letter-spacing: 0.08em;
+
         text-transform: uppercase;
+
         cursor: pointer;
+
         transition: transform 0.25s ease, background-color 0.25s ease;
+
       }
+
+
 
       .toormix-menu-btn:hover {
+
         transform: scale(1.04);
+
         background: #130d2d;
+
       }
+
+
 
       .toormix-nav.is-switched .toormix-nav__inner {
+
         opacity: 0;
+
         transform: translateY(12px);
+
         pointer-events: none;
+
       }
+
+
 
       .toormix-nav.is-switched .toormix-nav__switch {
+
         opacity: 1;
+
         transform: translateY(0);
+
         pointer-events: auto;
+
       }
+
+
 
       .toormix-overlay {
+
         position: fixed;
+
         inset: 0;
+
         z-index: 120;
+
         pointer-events: none;
+
         opacity: 0;
+
         transition: opacity 0.3s ease;
+
       }
+
+
 
       .toormix-overlay.is-open {
+
         opacity: 1;
+
         pointer-events: auto;
+
       }
+
+
 
       .toormix-overlay__backdrop {
+
         position: absolute;
+
         inset: 0;
+
         background:
+
           radial-gradient(circle at 16% 24%, rgba(248, 180, 45, 0.13), transparent 34%),
+
           radial-gradient(circle at 82% 68%, rgba(91, 216, 255, 0.11), transparent 36%),
+
           rgba(5, 9, 20, 0.975);
+
       }
+
+
 
       .toormix-overlay__rings {
+
         position: absolute;
+
         inset: 0;
+
       }
+
+
 
       .toormix-ring {
+
         position: absolute;
+
         left: 50%;
+
         top: 16%;
+
         transform: translateX(-50%) scale(1.04);
+
         border-radius: 50%;
+
         opacity: 0;
+
         filter: drop-shadow(0 0 26px rgba(0, 0, 0, 0.72));
+
         transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
       }
+
+
 
       .toormix-overlay.is-open .toormix-ring {
+
         opacity: 1;
+
         transform: translateX(-50%) scale(1);
+
       }
+
+
 
       .toormix-ring--1 { width: 220vw; height: 220vw; background: #050914; }
+
       .toormix-ring--2 { width: 178vw; height: 178vw; background: #0f1f4a; }
+
       .toormix-ring--3 { width: 138vw; height: 138vw; background: #183067; }
+
       .toormix-ring--4 { width: 98vw; height: 98vw; background: #f3ba40; }
+
       .toormix-ring--5 { width: 64vw; height: 64vw; background: #100a26; }
 
+
+
       .toormix-overlay__menu {
+
         position: absolute;
+
         inset: 0;
+
         list-style: none;
+
         margin: 0;
+
         padding: min(16vh, 120px) 20px max(120px, 16vh);
+
         display: flex;
+
         flex-direction: column;
+
         align-items: center;
+
         justify-content: center;
+
         gap: clamp(12px, 2.1vh, 20px);
+
       }
+
+
 
       .toormix-overlay__menu > li {
+
         margin: 0;
+
         padding: 0;
+
         list-style: none;
+
       }
 
+
+
       .toormix-overlay__item {
+
         position: relative;
+
         left: auto;
+
         top: auto;
+
         transform: translateY(14px);
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         min-width: clamp(240px, 42vw, 420px);
+
         min-height: clamp(44px, 6.4vh, 60px);
+
         font-size: clamp(1.28rem, 2.1vw, 1.95rem);
+
         font-weight: 600;
+
         letter-spacing: 0.11em;
+
         line-height: 1.1;
+
         text-transform: uppercase;
+
         text-decoration: none;
+
         padding: 0.42em 1.1em 0.36em;
+
         border-radius: 999px;
+
         border: none;
+
         background: linear-gradient(135deg, rgba(9, 23, 62, 0.82), rgba(7, 14, 36, 0.66));
+
         backdrop-filter: none;
+
         -webkit-backdrop-filter: none;
+
         box-shadow: 0 10px 24px rgba(2, 7, 22, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
         color: #f8b42d;
+
         text-shadow: 0 0 12px rgba(248, 180, 45, 0.2);
+
         opacity: 0;
+
         transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+
       }
+
+
 
       .toormix-overlay.is-open .toormix-overlay__item {
+
         opacity: 1;
+
         transform: translateY(0);
+
       }
+
+
 
       .toormix-overlay.is-open .toormix-overlay__item--1 { transition-delay: 0.04s; }
+
       .toormix-overlay.is-open .toormix-overlay__item--2 { transition-delay: 0.08s; }
+
       .toormix-overlay.is-open .toormix-overlay__item--3 { transition-delay: 0.12s; }
+
       .toormix-overlay.is-open .toormix-overlay__item--4 { transition-delay: 0.16s; }
+
       .toormix-overlay.is-open .toormix-overlay__item--5 { transition-delay: 0.2s; }
 
+
+
       .toormix-overlay__item:hover {
+
         color: var(--nav-accent-soft);
+
         box-shadow: 0 0 18px rgba(248, 180, 45, 0.28), 0 12px 28px rgba(2, 7, 22, 0.46);
+
         transform: translateY(-2px) scale(1.015);
+
       }
+
+
 
       .toormix-overlay__item:focus-visible {
+
         outline: 2px solid rgba(248, 180, 45, 0.82);
+
         outline-offset: 2px;
+
         color: var(--nav-accent-soft);
+
       }
+
+
 
       .toormix-overlay__item--1,
+
       .toormix-overlay__item--2,
+
       .toormix-overlay__item--3,
+
       .toormix-overlay__item--4,
+
       .toormix-overlay__item--5 {
+
         top: auto;
+
         color: #f8b42d;
+
       }
+
+
 
       .toormix-overlay__close {
+
         position: absolute;
+
         left: 50%;
+
         bottom: 24px;
+
         width: 78px;
+
         height: 78px;
+
         border-radius: 999px;
+
         transform: translateX(-50%);
+
         border: 1px solid rgba(248, 180, 45, 0.5);
+
         background: linear-gradient(145deg, #112862, #0b1a44);
+
         box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
         cursor: pointer;
+
         transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+
       }
+
+
 
       .toormix-overlay__close:hover {
+
         transform: translateX(-50%) scale(1.04);
+
         border-color: rgba(248, 180, 45, 0.74);
+
         box-shadow: 0 0 24px rgba(248, 180, 45, 0.3), 0 16px 34px rgba(0, 0, 0, 0.54);
+
       }
+
+
 
       .toormix-overlay__close::before,
+
       .toormix-overlay__close::after {
+
         content: "";
+
         position: absolute;
+
         left: 50%;
+
         top: 50%;
+
         width: 28px;
+
         height: 2px;
+
         background: linear-gradient(90deg, #ffd875, #f8b42d);
+
         box-shadow: 0 0 10px rgba(248, 180, 45, 0.36);
+
       }
+
+
 
       .toormix-overlay__close:focus-visible {
+
         outline: 2px solid rgba(248, 180, 45, 0.86);
+
         outline-offset: 2px;
+
       }
+
+
 
       @keyframes percevMenuSweep {
+
         from {
+
           left: -38%;
+
         }
+
         to {
+
           left: 110%;
+
         }
+
       }
 
+
+
       @media (prefers-reduced-motion: reduce) {
+
         .toormix-nav__menu::after,
+
         .toormix-nav__link,
+
         .toormix-overlay__item,
+
         .toormix-overlay__close {
+
           animation: none !important;
+
           transition: none !important;
+
         }
+
       }
+
+
 
       .persev-reg-btn {
+
         position: relative;
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         width: 44px;
+
         height: 44px;
+
         border-radius: 999px;
+
         background: linear-gradient(135deg, #f3a71a 0%, #f8b42d 45%, #ffd875 100%);
+
         border: 1px solid rgba(255, 222, 151, 0.66);
+
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 8px 24px rgba(149, 89, 7, 0.36);
+
         cursor: pointer;
+
         text-decoration: none;
+
         overflow: hidden;
+
         flex-shrink: 0;
+
         transition: width 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+
       }
+
+
 
       .persev-reg-btn__icon {
+
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         width: 44px;
+
         height: 44px;
+
         flex-shrink: 0;
+
         position: relative;
+
         z-index: 2;
+
         transition: opacity 0.3s ease, transform 0.3s ease;
+
       }
+
+
 
       .persev-reg-btn__icon svg {
+
         width: 20px;
+
         height: 20px;
+
         fill: #1a0f00;
+
         filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+
       }
+
+
 
       .persev-reg-btn__text {
+
         position: absolute;
+
         left: 0;
+
         top: 50%;
+
         transform: translateY(-50%);
+
         width: 100%;
+
         text-align: center;
+
         white-space: nowrap;
+
         font-size: 12px;
+
         font-weight: 600;
+
         letter-spacing: 0.1em;
+
         text-transform: uppercase;
+
         color: #1a0f00;
+
         opacity: 0;
+
         pointer-events: none;
+
         transition: opacity 0.3s ease 0.05s;
+
       }
+
+
 
       .persev-reg-btn:hover {
+
         width: 220px;
+
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 12px 32px rgba(149, 89, 7, 0.48), 0 0 20px rgba(248, 180, 45, 0.35);
+
       }
+
+
 
       .persev-reg-btn:hover .persev-reg-btn__text {
+
         opacity: 1;
+
       }
+
+
 
       .persev-reg-btn:hover .persev-reg-btn__icon {
+
         opacity: 0;
+
         transform: scale(0.6);
+
       }
+
+
 
       .toormix-nav.is-switched .persev-reg-btn {
+
         opacity: 0;
+
         pointer-events: none;
+
         transform: scale(0.8);
+
       }
+
+
 
       @media (prefers-reduced-motion: reduce) {
+
         .persev-reg-btn,
+
         .persev-reg-btn__text {
+
           transition: none;
+
         }
+
       }
+
+
 
       .toormix-overlay__close::before { transform: translate(-50%, -50%) rotate(45deg); }
+
       .toormix-overlay__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
+
+
       @media (max-width: 1190px) {
+
         .toormix-nav__inner {
+
           padding: 0;
+
           background: none;
+
           border: none;
+
           box-shadow: none;
+
         }
+
+
 
         .toormix-nav__inner::before {
+
           display: none;
+
         }
+
+
 
         .toormix-nav__menu {
+
           padding: 0;
+
           background: none;
+
           border: none;
+
           box-shadow: none;
+
           overflow: visible;
+
         }
+
+
 
         .toormix-nav__menu::after {
+
           display: none;
+
         }
+
+
 
         .toormix-nav__cluster {
+
           display: none;
-        }
-        .toormix-nav__logo {
-          width: 76px;
-          height: 56px;
+
         }
 
-        .persev-reg-btn {
-          display: none;
+        .toormix-nav__logo {
+
+          width: 76px;
+
+          height: 56px;
+
         }
-      }
-      @media (max-width: 768px) {
+
+
+
         .toormix-nav {
+
           bottom: 16px;
+
         }
+
         .toormix-menu-btn {
+
           width: 48px;
+
           height: 48px;
+
           font-size: 11px;
+
         }
+
         .toormix-nav__switch-logo {
+
           width: 68px;
+
           height: 44px;
+
         }
+
         .toormix-ring--1 { width: 260vw; height: 260vw; }
+
         .toormix-ring--2 { width: 210vw; height: 210vw; }
+
         .toormix-ring--3 { width: 160vw; height: 160vw; }
+
         .toormix-ring--4 { width: 112vw; height: 112vw; }
+
         .toormix-ring--5 { width: 74vw; height: 74vw; }
+
       }
+
+
 
       /* React app overrides */
+
       #root::before {
+
         display: none;
+
       }
+
+
 
       #root {
+
         position: relative;
+
         z-index: 1;
+
         background: transparent !important;
+
       }
+
+
 
       #root > * {
+
         position: relative;
+
         z-index: 1;
+
       }
+
+
 
       #root .app,
+
       #root .app-bg,
+
       #root canvas {
+
         background: transparent !important;
+
       }
+
+
 
       #root .app {
+
         box-shadow: none !important;
+
       }
 
-      
+
 
       
+
+
+
+      
+
+
 
       #root .gallery-ui {
+
         justify-content: center;
+
         align-items: center;
+
       }
 
+
+
       #root .title-container {
+
         gap: 0 !important;
+
       }
+
+
 
       #root .nav-arrow {
+
         display: none;
+
       }
+
+
 
       #root .pagination {
+
         display: none !important;
+
       }
+
       
+
       #root .blob-title {
+
         min-width: auto;
+
       }
+
     </style>
+
     <script type="module" crossorigin src="/assets/index-GnKc23iY.js?v=20260416e"></script>
+
     <link rel="stylesheet" crossorigin href="/assets/index-Bf_Y3SLh.css?v=20260416e">
+
     <style>
+
       html, body, #root,
+
       .gallery-ui,
+
       .blob-title,
+
       .logo,
+
       .about-link,
+
       .pagination,
+
       .toormix-nav,
+
       .toormix-nav__menu,
+
       .toormix-nav__link,
+
       .toormix-overlay__item,
+
       .toormix-menu-btn {
+
         font-family: 'Mestizo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+
       }
+
+
 
       :root {
+
         --txt-px: 0;
+
         --txt-py: 0;
+
       }
+
+
 
       #root .title-container {
+
         transform: translate3d(calc(var(--txt-px) * 20px), calc(var(--txt-py) * 16px), 0) !important;
+
         transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+
         will-change: transform;
+
       }
+
+
 
       #root .blob-title {
+
         position: relative;
+
         display: inline-block;
+
         text-transform: uppercase;
+
         letter-spacing: 0.14em !important;
+
         font-weight: 400 !important;
+
         text-shadow:
+
           0 0 12px rgba(248, 180, 45, 0.24),
+
           0 0 32px rgba(13, 35, 102, 0.28),
+
           0 14px 30px rgba(2, 6, 18, 0.7);
+
         transform: translate3d(calc(var(--txt-px) * 34px), calc(var(--txt-py) * 24px), 0);
+
         transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), text-shadow 300ms ease;
+
         will-change: transform;
+
       }
+
+
 
       #root .blob-title::after {
+
         content: none;
+
       }
+
+
 
       .toormix-nav__link,
+
       .logo,
+
       .about-link,
+
       .toormix-overlay__item {
+
         text-shadow: 0 0 10px rgba(248, 180, 45, 0.2), 0 8px 20px rgba(3, 8, 28, 0.55);
+
       }
+
+
 
       .toormix-nav__link {
+
         transform: none !important;
+
         transition: background-color 0.15s ease, color 0.15s ease;
+
       }
+
+
 
       @media (max-width: 768px), (prefers-reduced-motion: reduce) {
+
         #root .title-container,
+
         #root .blob-title,
+
         .toormix-nav__link {
+
           transform: none !important;
+
           transition: none !important;
+
         }
+
       }
+
     </style>
-    <!-- Flash prevention: hide body and show placeholder immediately if coming from transition -->
-    <script>(function(){try{if(sessionStorage.getItem('persev_transition_state')){document.documentElement.style.background='#050914';document.write('<style>body{visibility:hidden;background:#050914}</style><div id="cloud-placeholder" style="position:fixed;inset:0;z-index:2147483647;background:linear-gradient(135deg,#1a3a6b 0%,#3a7abf 50%,#89b9e0 100%);opacity:0.9;transition:opacity 0.3s"><div style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(-10%) rotate(-2deg);filter:blur(20px)"></div><div style="position:absolute;right:0;top:0;bottom:0;width:60%;background:linear-gradient(270deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(10%) rotate(2deg);filter:blur(20px)"></div></div>');}}catch(e){}})();</script>
+
   </head>
+
   <body>
+
     <div id="vanta-clouds" aria-hidden="true"></div>
+
     <div id="root"></div>
 
+
+
     <nav class="toormix-nav" id="persevNav" aria-label="Primary">
+
       <div class="toormix-nav__inner">
+
         <div class="toormix-nav__menu">
+
           <div class="toormix-nav__cluster toormix-nav__cluster--left">
+
             <a class="toormix-nav__link" href="/">Home</a>
+
             <a class="toormix-nav__link " href="/events">Events</a>
+
             <a class="toormix-nav__link" href="/links">Links</a>
+
           </div>
+
           <button class="toormix-nav__logo toormix-menu-open-btn" id="persevMenuOpen" type="button" aria-expanded="false" aria-controls="persevMenuOverlay" aria-label="Open menu">
+
             <img src="/assets/landing.png" alt="Perseverantia" />
+
           </button>
+
           <div class="toormix-nav__cluster toormix-nav__cluster--right">
+
             <a class="toormix-nav__link" href="/leaderboard">Leaderboard</a>
+
             <a class="toormix-nav__link" href="/organizing-committee">Organizing Committee</a>
+
           </div>
+
         </div>
-        <a class="persev-reg-btn" href="#" aria-label="Register now">
-          <span class="persev-reg-btn__icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            </svg>
-          </span>
-          <span class="persev-reg-btn__text">Register now!</span>
-        </a>
+
+
       </div>
+
+
 
       <div class="toormix-nav__switch" aria-hidden="true">
+
         <button class="toormix-nav__switch-logo toormix-menu-open-btn" id="persevMenuOpen" type="button" aria-expanded="false" aria-controls="persevMenuOverlay" aria-label="Open menu">
+
           <img src="/assets/landing.png" alt="Perseverantia" />
+
         </button>
+
       </div>
+
     </nav>
 
+
+
     <div class="toormix-overlay" id="persevMenuOverlay" aria-hidden="true">
+
       <div class="toormix-overlay__backdrop"></div>
+
       <div class="toormix-overlay__rings">
+
         <div class="toormix-ring toormix-ring--1"></div>
+
         <div class="toormix-ring toormix-ring--2"></div>
+
         <div class="toormix-ring toormix-ring--3"></div>
+
         <div class="toormix-ring toormix-ring--4"></div>
+
         <div class="toormix-ring toormix-ring--5"></div>
+
       </div>
+
       <nav aria-label="Expanded site menu">
+
         <ul class="toormix-overlay__menu">
+
           <li><a class="toormix-overlay__item toormix-overlay__item--1" href="/leaderboard">LEADERBOARD</a></li>
+
           <li><a class="toormix-overlay__item toormix-overlay__item--2" href="/events">EVENTS</a></li>
+
           <li><a class="toormix-overlay__item toormix-overlay__item--3" href="/organizing-committee">ORGANIZING COMMITTEE</a></li>
+
           <li><a class="toormix-overlay__item toormix-overlay__item--4" href="/links">LINKS</a></li>
+
           <li><a class="toormix-overlay__item toormix-overlay__item--5" href="/">HOME</a></li>
+
         </ul>
+
       </nav>
+
       <button class="toormix-overlay__close" id="persevMenuClose" type="button" aria-label="Close menu"></button>
+
     </div>
 
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+
     
-    <script defer src="/static/cloud-transitions.js?v=20260430k"></script>
+
+    <!-- GSAP for page transitions -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script defer src="/static/gsap-transitions.js?v=20260430a"></script>
+
 
     <script>
+
       (function () {
+
         let vantaClouds = null;
+
         let visibilityFallbackTimer = null;
 
+
+
         const removeLegacyTopUi = function () {
+
           const selectors = [
+
             '#root .gallery-ui > header.header',
+
             '#root .gallery-ui > .header',
+
             '#root .gallery-ui .header',
+
             '#root .gallery-ui .logo',
+
             '#root .gallery-ui .about-link',
+
             '#root [class*="topbar"]',
+
             '#root [class*="top-bar"]',
+
             '#root [class*="navbar"]'
+
           ];
 
+
+
           selectors.forEach((selector) => {
+
             document.querySelectorAll(selector).forEach((node) => {
+
               if (node && node.parentNode) {
+
                 node.parentNode.removeChild(node);
+
               }
+
             });
+
           });
+
         };
+
+
 
         const destroyVanta = function () {
+
           if (vantaClouds && typeof vantaClouds.destroy === "function") {
+
             vantaClouds.destroy();
+
             vantaClouds = null;
+
           }
+
         };
+
+
 
         const initVanta = function () {
+
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+
             return;
+
           }
+
+
 
           const target = document.getElementById("vanta-clouds");
+
           if (!target || !window.VANTA || !window.VANTA.CLOUDS) {
+
             return;
+
           }
+
+
 
           destroyVanta();
+
           vantaClouds = window.VANTA.CLOUDS({
+
             el: target,
+
             mouseControls: true,
+
             touchControls: true,
+
             gyroControls: false,
+
             minHeight: 200,
+
             minWidth: 200,
+
             speed: 1.1,
+
             skyColor: 0x0b1a44,
+
             cloudColor: 0x365a8b,
+
             cloudShadowColor: 0x09122f,
+
             sunColor: 0xf8b42d,
+
             sunGlareColor: 0xffd875,
+
             sunlightColor: 0xffc44d
+
           });
+
         };
+
+
 
         const revealHomeShell = function () {
+
           const vantaContainer = document.getElementById("vanta-clouds");
+
           const rootNode = document.getElementById("root");
+
           const navNode = document.getElementById("persevNav");
 
+
+
           if (vantaContainer) {
+
             vantaContainer.style.opacity = "1";
+
             vantaContainer.style.visibility = "visible";
+
           }
+
+
 
           if (rootNode) {
+
             rootNode.style.opacity = "1";
+
             rootNode.style.visibility = "visible";
+
           }
+
+
 
           if (navNode) {
+
             navNode.style.opacity = "1";
+
             navNode.style.visibility = "visible";
+
           }
+
         };
+
+
 
         document.addEventListener("DOMContentLoaded", initVanta, { once: true });
+
         window.addEventListener("load", initVanta, { once: true });
+
         window.addEventListener("pagehide", destroyVanta);
+
         window.addEventListener("load", removeLegacyTopUi);
+
         window.addEventListener("pageshow", revealHomeShell);
 
+
+
         const root = document.getElementById('root');
+
         if (root && typeof MutationObserver !== 'undefined') {
+
           const topUiObserver = new MutationObserver(() => {
+
             removeLegacyTopUi();
+
           });
+
           topUiObserver.observe(root, { childList: true, subtree: true });
+
         }
+
         
+
         // Keep the sky up immediately, then let the blob reveal independently.
+
         window.addEventListener("load", () => {
+
           setTimeout(() => {
+
             const vantaContainer = document.getElementById("vanta-clouds");
+
             if (vantaContainer) {
+
               vantaContainer.style.opacity = "1";
+
               vantaContainer.style.visibility = "visible";
+
             }
+
             const navNode = document.getElementById("persevNav");
+
             if (navNode) {
+
               navNode.style.opacity = "1";
+
               navNode.style.visibility = "visible";
+
             }
+
             removeLegacyTopUi();
+
           }, 60);
+
         });
+
       })();
 
+
+
       (function () {
+
         const nav = document.getElementById("persevNav");
+
         const menuOverlay = document.getElementById("persevMenuOverlay");
+
         const openBtns = document.querySelectorAll(".toormix-menu-open-btn");
+
         const closeBtn = document.getElementById("persevMenuClose");
+
         const menuLinks = menuOverlay ? menuOverlay.querySelectorAll(".toormix-overlay__item") : [];
 
+
+
         if (!nav || !menuOverlay || !openBtns.length || !closeBtn) {
+
           return;
+
         }
+
+
 
         let switched = false;
+
         let menuOpen = false;
 
+
+
         const setSwitched = (next) => {
+
           if (next === switched) {
+
             return;
+
           }
+
           switched = next;
+
           nav.classList.toggle("is-switched", switched);
+
           openBtns.forEach(function (btn) {
+
             btn.setAttribute("aria-expanded", "false");
+
           });
+
         };
+
+
 
         const setMenuOpen = (next) => {
+
           if (next === menuOpen) {
+
             return;
+
           }
+
           menuOpen = next;
+
           menuOverlay.classList.toggle("is-open", menuOpen);
+
           menuOverlay.setAttribute("aria-hidden", menuOpen ? "false" : "true");
+
           openBtns.forEach(function (btn) {
+
             btn.setAttribute("aria-expanded", menuOpen ? "true" : "false");
+
           });
+
         };
+
+
 
         openBtns.forEach(function (btn) {
+
           btn.addEventListener("click", function () {
+
             setMenuOpen(true);
+
           });
+
         });
+
+
 
         closeBtn.addEventListener("click", function () {
+
           setMenuOpen(false);
+
         });
+
+
 
         menuLinks.forEach(function (link) {
+
           link.addEventListener("click", function () {
+
             setMenuOpen(false);
+
           });
+
         });
+
+
 
         document.addEventListener("keydown", function (e) {
+
           if (e.key === "Escape") {
+
             setMenuOpen(false);
+
           }
+
         });
 
+
+
         const syncFromScroll = function () {
+
           setSwitched(window.scrollY > 24);
+
         };
+
+
 
         window.addEventListener("scroll", syncFromScroll, { passive: true });
+
         syncFromScroll();
+
       })();
+
+
 
       (function () {
+
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+
           return;
+
         }
+
+
 
         if (!window.matchMedia("(pointer:fine)").matches) {
+
           return;
+
         }
 
+
+
         const root = document.documentElement;
+
         let targetX = 0;
+
         let targetY = 0;
+
         let currentX = 0;
+
         let currentY = 0;
+
         let frame = null;
 
+
+
         const clamp = function (v, min, max) {
+
           return Math.min(max, Math.max(min, v));
+
         };
+
+
 
         const tick = function () {
+
           currentX += (targetX - currentX) * 0.12;
+
           currentY += (targetY - currentY) * 0.12;
 
+
+
           root.style.setProperty("--txt-px", currentX.toFixed(4));
+
           root.style.setProperty("--txt-py", currentY.toFixed(4));
 
+
+
           if (Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001) {
+
             frame = window.requestAnimationFrame(tick);
+
           } else {
+
             frame = null;
+
           }
+
         };
+
+
 
         const updateTarget = function (x, y) {
+
           targetX = clamp(x, -1.45, 1.45);
+
           targetY = clamp(y, -1.45, 1.45);
 
+
+
           if (!frame) {
+
             frame = window.requestAnimationFrame(tick);
+
           }
+
         };
 
+
+
         window.addEventListener(
+
           "pointermove",
+
           function (e) {
+
             const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+
             const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+
             updateTarget(nx, ny);
+
           },
+
           { passive: true }
+
         );
 
+
+
         window.addEventListener(
+
           "pointerleave",
+
           function () {
+
             updateTarget(0, 0);
+
           },
+
           { passive: true }
+
         );
 
+
+
         window.addEventListener(
+
           "blur",
+
           function () {
+
             updateTarget(0, 0);
+
           },
+
           { passive: true }
+
         );
+
       })();
+
     </script>
+
   </body>
+
 </html>
+
+
 

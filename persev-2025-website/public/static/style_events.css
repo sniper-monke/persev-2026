@@ -67,13 +67,14 @@ body {
 
 html {
   background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 52%, var(--bg-3) 100%);
+  overflow-x: hidden;
 }
 
 body {
   position: relative;
   margin: 0;
   color: var(--ink);
-  overflow-x: clip;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 12% 18%, rgba(248, 180, 45, 0.16), transparent 22%),
     radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(67, 233, 255, 0.14), transparent 30%),
@@ -385,7 +386,7 @@ main {
 
 .film-strip-shell {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   width: min(1440px, 100%);
   padding: 0 0 0.4rem;
 }
@@ -933,8 +934,8 @@ main {
   }
 
   .film-strip .event-card {
-    flex-basis: 52vw;
-    height: clamp(10.4rem, 52vw, 12.35rem);
+    flex-basis: clamp(45vw, 48vw, 50vw);
+    height: clamp(10.4rem, 50vw, 12.35rem);
   }
 
   .film-strip .event-card-frame img {
@@ -1014,18 +1015,18 @@ main {
 }
 
 .events-react-root .film-stage-wrap {
-  margin-top: clamp(2.5rem, 4vw, 4rem);
+  margin-top: clamp(1.5rem, 3.5vw, 3rem);
 }
 
 .events-react-root .film-strip-shell,
-.events-react-root .cylinder-stage,
-.events-react-root .cylinder-viewport {
-  min-height: clamp(24rem, 46vw, 34rem);
+.events-react-root .cylinder-stage {
+  min-height: clamp(20rem, 46vw, 34rem);
 }
 
 .events-react-root .cylinder-viewport {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
+  min-height: clamp(18rem, 42vw, 32rem);
 }
 
 .events-react-root .react-carousel-host,

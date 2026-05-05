@@ -3,15 +3,19 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a0f2c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Persev OC" />
     <meta name="description" content="Meet the Organising Committee of Perseverantia, Bombay Scottish School, Mahim.">
-    <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#0a0f2c">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="canonical" href="https://bss-perseverantia.github.io/organizing-committee">
     <link rel="icon" type="image/png" href="/assets/landing.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/landing.png" />
     <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407c" />
     <script defer src="/static/cursor-fx.js?v=20260407c"></script>
+    <link rel="stylesheet" href="/static/mobile-optimized.css?v=20260505" />
     <meta property="og:site_name" content="Perseverantia">
     <meta property="og:title" content="Organising Committee - Perseverantia 2025">
     <meta property="og:description"
@@ -232,8 +236,9 @@ Naman Kalra
     <script src="/static/anime-animations.js?v=20260424a"></script>
 
     <script defer src="/static/cloud-transitions.js?v=20260430k"></script>
-    <link rel="stylesheet" href="/static/persev-navbar.css?v=20260423a">
-    <script defer src="/static/persev-navbar.js?v=20260423a"></script>
+    <link rel="stylesheet" href="/static/persev-navbar.css?v=20260505a">
+    <link rel="stylesheet" href="/static/persev-mobile-premium.css?v=20260505" />
+    <script defer src="/static/persev-navbar.js?v=20260505"></script>
 
     <title>Organising Committee - Perseverantia</title>
 
@@ -275,6 +280,13 @@ Naman Kalra
             background: #0a0f2c !important;
             -webkit-color-scheme: dark;
             color-scheme: dark;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        body {
+            overflow-x: hidden;
+            max-width: 100%;
         }
 
         /* Prevent iOS from changing colors */
@@ -485,14 +497,50 @@ Naman Kalra
         @media (max-width: 768px) {
             .member-card {
                 margin-bottom: 1rem;
+                width: 100% !important;
+                max-width: 280px;
             }
 
             .section-title {
-                font-size: 2rem !important;
+                font-size: 1.8rem !important;
             }
 
             .presidents-container {
                 padding: 1rem;
+            }
+
+            .presidents-container .flex {
+                flex-wrap: wrap;
+            }
+
+            .department-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .member-card {
+                padding: 12px !important;
+                width: 100% !important;
+                max-width: 100%;
+            }
+
+            .section-title {
+                font-size: 1.4rem !important;
+            }
+
+            .presidents-container {
+                padding: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .container {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
             }
         }
 
@@ -555,6 +603,7 @@ Naman Kalra
         .oc-stage {
             position: relative;
             isolation: isolate;
+            overflow-x: clip;
         }
 
         #webgl-bg {
@@ -604,6 +653,13 @@ Naman Kalra
             mix-blend-mode: screen;
         }
 
+        .container,
+        .department-grid,
+        .presidents-container {
+            max-width: 100%;
+            overflow-x: clip;
+        }
+
         .member-card::after {
             content: '';
             position: absolute;
@@ -646,6 +702,12 @@ Naman Kalra
             .aurora,
             .light-beam {
                 display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .light-beam {
+                display: none;
             }
         }
     </style>
@@ -741,14 +803,14 @@ Naman Kalra
 
 
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/hrishikesh.avif" alt="Hrishikesh"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/hrishikesh.jpg" alt="Hrishikesh"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Hrishikesh Vishwanathan</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Administration</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/devyani.avif" alt="Devyani"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/devyani.jpg" alt="Devyani"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Devyani Parekh</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Administration</div>
                         </div>
@@ -762,14 +824,14 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/Dhyan.avif" alt="Dhyan"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/Dhyan.jpg" alt="Dhyan"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Dhyan Jariwala</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of R&D</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/Kashika.avif" alt="Kashika"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/Kashika.jpg" alt="Kashika"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Kashika Birani</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of R&D</div>
                         </div>
@@ -784,14 +846,14 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/anuttara.avif" alt="Anuttara"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/anuttara.jpg" alt="Anuttara"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Anuttara Baroi</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Design</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/pia.jpg" alt="Pia"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Pia Punwani</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Design</div>
                         </div>
@@ -806,14 +868,14 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/jolene.JPG" alt="Jolene"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/jolene.jpg" alt="Jolene"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Jolene Kotian</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Social Media</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/jasleen.jpg" alt="Jasleen"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Jasleen Kaur</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Social Media</div>
                         </div>
@@ -828,13 +890,13 @@ Naman Kalra
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/maithili.jpg" alt="Maithili"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Maithili</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Marketing</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/rhea.jpg" alt="Rhea"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/rhea_d_costa.jpg" alt="Rhea"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Rhea d'Costa</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Marketing</div>
                         </div>
@@ -848,14 +910,14 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/tann.jpg" alt="Tann"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/taann.jpg" alt="Tann"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Tann Aranha-Shenoy</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Public Relations</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/anushtha.jpg" alt="Anushtha"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Anushtha Singh</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Public Relations</div>
                         </div>
@@ -870,13 +932,13 @@ Naman Kalra
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/vihaan.jpg" alt="Vihaan"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Vihaan Jain</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Finance</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/raj.jpg" alt="Raj"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Raj Lalwani</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Finance</div>
                         </div>
@@ -890,13 +952,13 @@ Naman Kalra
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/aarav.jpg" alt="Aarav"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Aarav Krishna</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Technical Operations</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/OC/shashank.jpg" alt="Shashank"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Shashank Rokde</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Technical Operations</div>
                         </div>
@@ -910,20 +972,20 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
 <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/samaya.JPG" alt="Samaya"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/samaya.jpg" alt="Samaya"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Samaya Satyani</div>
                             <div class="text-xs text-[#BE8E30] text-center"> Head of Hospitality </div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Nandini Gurav"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/yashvir.jpg" alt="Yashvir"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Yashvir Shah</div>
                             <div class="text-xs text-[#BE8E30] text-center">Co-Deputy Head of Hospitality</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Nandini Gurav"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/sian.jpg" alt="Sian"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Sian Mehta</div>
                             <div class="text-xs text-[#BE8E30] text-center">Co-Deputy Head of Hospitality</div>
                         </div>
@@ -939,14 +1001,14 @@ Naman Kalra
 
 
                         <div class="member-card w-56 p-4 fade-in-up">
-<img src="/assets/OC/arrmaan.JPG" alt="Arrmaan"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+<img src="/assets/OC/arrmaan.jpg" alt="Arrmaan"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Arrmaan Anand</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Security</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/OC/shaan.JPG" alt="Shaan"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/shaan.jpg" alt="Shaan"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Shaan Kanunga</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Security</div>
                         </div>
@@ -962,14 +1024,14 @@ Naman Kalra
 
 
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Aditi"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/veda.jpg" alt="Veda"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Veda Sriranjan</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Awards</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Aditi"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/anshi.jpg" alt="Anshi"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Anshi Shah</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Awards</div>
                         </div>
@@ -985,14 +1047,14 @@ Naman Kalra
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Suyash"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/jayden.jpg" alt="Jayden"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Jayden Pretto</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Photography</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/tom.jpeg" alt="Naman"
-                                class="aspect-[4/3] w-full object-cover object-center rounded-lg mb-4">
+                            <img src="/assets/OC/vikrant.jpg" alt="Vikrant"
+                                class="aspect-[4/4] w-full object-cover object-center rounded-lg mb-4 rotate-[270deg]">
                             <div class="text-lg member-name text-center">Vikrant Mathure</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Photography</div>
                         </div>
@@ -1024,6 +1086,7 @@ Naman Kalra
         // Enable lightweight animations for better performance
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const prefersFinePointer = window.matchMedia('(pointer: fine)').matches;
         const lowCpu = (navigator.hardwareConcurrency || 4) <= 4;
         const lowMemory = typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4;
         const saveData = !!(navigator.connection && navigator.connection.saveData);
@@ -1054,13 +1117,23 @@ Naman Kalra
             gsap.registerPlugin(ScrollTrigger);
         }
 
+        /* Lenis smoothWheel calls preventDefault on every wheel tick, which fights OS
+           trackpad physics (momentum, precision). Use native wheel scrolling on fine pointers. */
         const lenis = hasLenis && !isLowPowerDevice
             ? new Lenis({
-                duration: 1.3,
-                smoothWheel: true,
                 syncTouch: true,
                 touchMultiplier: 1.15,
-                lerp: 0.08
+                wheelMultiplier: 1,
+                ...(prefersFinePointer
+                    ? {
+                        smoothWheel: false,
+                        lerp: 0.12
+                    }
+                    : {
+                        duration: 1.3,
+                        smoothWheel: true,
+                        lerp: 0.08
+                    })
             })
             : {
                 on: () => { },
@@ -1412,7 +1485,7 @@ Naman Kalra
         }
 
         // ALWAYS: Add entrance animations for member cards using GSAP (works on all devices)
-        if (hasGsap) {
+        if (hasGsap && !enableHeavyFx) {
             gsap.utils.toArray('.member-card').forEach((card, idx) => {
                 // Set initial state
                 gsap.set(card, {
@@ -1430,7 +1503,8 @@ Naman Kalra
                     delay: idx * 0.08,
                     scrollTrigger: {
                         trigger: card,
-                        start: 'top 90%'
+                        start: 'top 90%',
+                        once: true
                     }
                 });
             });
@@ -1445,7 +1519,8 @@ Naman Kalra
                     ease: 'power2.out',
                     scrollTrigger: {
                         trigger: title,
-                        start: 'top 85%'
+                        start: 'top 85%',
+                        once: true
                     }
                 });
             });
@@ -1458,6 +1533,10 @@ Naman Kalra
                 repeat: -1,
                 yoyo: true
             });
+
+            window.addEventListener('load', () => {
+                ScrollTrigger.refresh();
+            }, { once: true });
         }
 
         if (window.matchMedia('(pointer: fine)').matches) {
@@ -1645,6 +1724,7 @@ Naman Kalra
         /* ─── Anime.js OC Page Enhancements ─── */
         (function () {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (window.matchMedia('(pointer: coarse)').matches) return;
             if (!window.anime || typeof window.anime !== 'function') return;
             const anime = window.anime;
 

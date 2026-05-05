@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5" />
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#08101f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Persev 2025" />
 <title>Perseverantia</title>
+<link rel="manifest" href="/manifest.json" />
+<link rel="apple-touch-icon" href="/assets/landing.png" />
 <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407c">
 <script defer src="/static/cursor-fx.js?v=20260407c"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/static/mobile-optimized.css?v=20260505" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/static/mobile-optimized.css?v=20260505"></noscript>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body {
@@ -181,8 +190,9 @@
     .slide-text .name { font-size: 28px; }
   }
 </style>
+<link rel="stylesheet" href="/static/persev-mobile-premium.css?v=20260505" />
 </head>
-<body>
+<body class="persev-landing">
 
 <canvas id="particles"></canvas>
 
@@ -410,6 +420,20 @@ function preloadIndexPage() {
 }
 
 document.addEventListener('DOMContentLoaded', preloadIndexPage);
+</script>
+
+<script defer src="/static/performance-optimize.js?v=20260504"></script>
+<script defer src="/static/font-optimize.js?v=20260504"></script>
+<script defer src="/static/lazy-load-images.js?v=20260504"></script>
+<script defer src="/static/web-vitals.js?v=20260504"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => console.log('Service Worker registered'))
+        .catch(err => console.warn('Service Worker registration failed:', err));
+    });
+  }
 </script>
 </body>
 </html>
