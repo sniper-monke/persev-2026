@@ -1408,7 +1408,27 @@
 
     </style>
 
-    <script type="module" crossorigin src="/assets/index-GnKc23iY.js?v=20260416e"></script>
+    <script>
+// WebGL context loss recovery for iOS
+window.addEventListener('webglcontextlost', function(e) {
+  e.preventDefault();
+  console.warn('WebGL context lost - attempting recovery');
+  setTimeout(function() {
+    window.location.reload();
+  }, 1000);
+}, false);
+</script>
+<script>
+// WebGL context loss recovery for iOS
+window.addEventListener('webglcontextlost', function(e) {
+  e.preventDefault();
+  console.warn('WebGL context lost - attempting recovery');
+  setTimeout(function() {
+    window.location.reload();
+  }, 1000);
+}, false);
+</script>
+<script type="module" crossorigin src="/assets/index-GnKc23iY.js?v=20260416e"></script>
 
     <link rel="stylesheet" crossorigin href="/assets/index-Bf_Y3SLh.css?v=20260416e">
 
@@ -1857,6 +1877,10 @@
         // Keep the sky up immediately, then let the blob reveal independently.
 
         window.addEventListener("load", () => {
+
+          // Hard body-unhide to prevent being stuck in hidden state
+          document.body.style.visibility = 'visible !important';
+          document.body.style.opacity = '1';
 
           setTimeout(() => {
 

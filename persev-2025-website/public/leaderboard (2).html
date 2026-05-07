@@ -743,6 +743,9 @@ document.getElementById('bf-s1-b').innerHTML = butterflySVG('#c8d0ff', '#ffffff'
 /* ============================================================
    PARTICLES CANVAS (star-field with depth-based parallax)
    ============================================================ */
+const isIOS =
+  /iP(hone|od|ad)/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -752,17 +755,19 @@ function sizeCanvas(){
 }
 function buildParticles(){
   particles = [];
-  const count = Math.min(260, Math.floor((window.innerWidth*window.innerHeight)/6000));
+  const count = isIOS
+    ? Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000))
+    : Math.min(260, Math.floor((window.innerWidth * window.innerHeight) / 6000));
   for (let i=0;i<count;i++){
     const depth = Math.random(); // 0 = far, 1 = close
     particles.push({
       x: Math.random()*canvas.width,
       y: Math.random()*canvas.height,
-      r: 0.3 + depth*1.6,
-      alpha: 0.2 + depth*0.8,
+      r: isIOS ? 0.35 + depth*0.9 : 0.3 + depth*1.6,
+      alpha: isIOS ? 0.18 + depth*0.35 : 0.2 + depth*0.8,
       depth,
-      vx: (Math.random()-0.5)*0.05,
-      vy: -0.02 - depth*0.05,
+      vx: isIOS ? (Math.random()-0.5)*0.015 : (Math.random()-0.5)*0.05,
+      vy: isIOS ? -0.008 - depth*0.018 : -0.02 - depth*0.05,
       shape: Math.random() > 0.85 ? 'sq' : 'dot'
     });
   }
@@ -773,7 +778,7 @@ window.addEventListener('resize', () => { sizeCanvas(); buildParticles(); });
 /* ============================================================
    VIRTUAL SCROLL + SMOOTH PROGRESS (lerp)
    ============================================================ */
-const STAGE_SCROLL = () => (window.innerWidth <= 700 ? window.innerHeight * 2.75 : window.innerHeight * 5.5); // shorten mobile stage so rankings starts sooner on phones
+const STAGE_SCROLL = () => (window.innerWidth <= 700 ? window.innerHeight * 5.2 : window.innerHeight * 5.5); // give mobile more scroll travel so scenes don't jump too fast
 const VIRTUAL_TAIL_VH = 0.8; // extra virtual scroll after rankings start
 let targetProgress = 0; // 0 to 1 (based on real scroll within stage range)
 let currentProgress = 0;
@@ -952,7 +957,7 @@ function drawParticles(p){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   for (const pt of particles){
     // Parallax: further particles move less, closer ones more
-    const offY = -p * window.innerHeight * 1.5 * pt.depth;
+    const offY = -p * window.innerHeight * (isIOS ? 0.65 : 1.5) * pt.depth;
     const x = pt.x + pt.vx;
     let y = (pt.y + pt.vy + offY) % canvas.height;
     if (y < 0) y += canvas.height;
@@ -978,7 +983,7 @@ function drawParticles(p){
    RAF LOOP WITH LERP SMOOTHING — creates silky scroll feel
    ============================================================ */
 function loop(){
-  currentProgress = lerp(currentProgress, targetProgress, 0.08);
+  currentProgress = lerp(currentProgress, targetProgress, isMobileLeaderboard() ? 0.045 : 0.08);
   applyScene(currentProgress);
   requestAnimationFrame(loop);
 }

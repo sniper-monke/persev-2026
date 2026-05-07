@@ -10,6 +10,34 @@
     return;
   }
 
+  const isMobileWebKit =
+    /iP(hone|od|ad)/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // iOS WebKit is unstable with the full-screen canvas transition system.
+  // Expose a lightweight no-op API there so pages can still navigate normally.
+  if (isMobileWebKit) {
+    try {
+      sessionStorage.removeItem('persev_transition_state');
+    } catch (e) { /* ignore */ }
+
+    window.PersevTransitions = {
+      init() {},
+      playExitTransition(href) {
+        window.location.href = href;
+      },
+      playEntryTransition() {}
+    };
+
+    document.documentElement.classList.remove('cloud-transition-active');
+    if (document.body) {
+      document.body.classList.remove('cloud-transition-active');
+      document.body.style.visibility = '';
+    }
+
+    return;
+  }
+
   // IMMEDIATE check: if we have a pending transition, hide body RIGHT NOW
   // before any content renders (prevents flash frame)
   const TRANSITION_STATE_KEY = 'persev_transition_state';
@@ -295,12 +323,18 @@
       ctx.fillStyle = warmWash;
       ctx.fillRect(0, 0, w, h);
 
+      const isLowEnd = navigator.hardwareConcurrency <= 2 ||
+        (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+        /Android.*Chrome\/[0-5]/.test(navigator.userAgent);
+
       // Soft bloom
-      ctx.filter = 'blur(18px)';
-      ctx.globalAlpha = 0.22;
-      ctx.drawImage(img, sx, sy, sw, sh);
-      ctx.globalAlpha = 1;
-      ctx.filter = 'none';
+      if (!isLowEnd && !isMobileWebKit) {
+        ctx.filter = 'blur(18px)';
+        ctx.globalAlpha = 0.22;
+        ctx.drawImage(img, sx, sy, sw, sh);
+        ctx.globalAlpha = 1;
+        ctx.filter = 'none';
+      }
 
       const cloudShadows = [
         [w * 0.44, h * 0.24, w * 0.36, h * 0.16, 'rgba(249, 246, 240, 0.5)'],
@@ -821,8 +855,8 @@
         } else {
           // Wait for all assets to load
           window.addEventListener('load', startOutTransition, { once: true });
-          // Fallback in case load event stalls (8 seconds max wait)
-          setTimeout(startOutTransition, 8000);
+          // Fallback in case load event stalls (4 seconds max wait)
+          setTimeout(startOutTransition, 4000);
         }
       });
     }

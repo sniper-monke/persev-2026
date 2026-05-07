@@ -1069,7 +1069,7 @@ Naman Kalra
     </section>
 
     <!-- Footer -->
-    <footer c/lass="bg-gradient-to-r from-[#081032] to-[#0c1542] text-white py-8 border-t border-[#BE8E30]/30">
+    <footer class="bg-gradient-to-r from-[#081032] to-[#0c1542] text-white py-8 border-t border-[#BE8E30]/30">
         <div class="container mx-auto text-center">
             <div class="mb-4">
                 <img src="/assets/landing.png" alt="Perseverantia Logo" class="w-12 h-12 mx-auto mb-2"
@@ -1178,7 +1178,7 @@ Naman Kalra
             }
 
             const webglCanvas = document.getElementById('webgl-bg');
-            const canUseWebglFx =
+            const canUseWebglFx = !isIOS && !isIOS &&
                 !!webglCanvas &&
                 window.matchMedia('(min-width: 1024px)').matches &&
                 (navigator.hardwareConcurrency || 4) >= 8 &&

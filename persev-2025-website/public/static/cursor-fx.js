@@ -2,6 +2,14 @@
   if (window.__persevFluidCursorExactLoaded) return;
   window.__persevFluidCursorExactLoaded = true;
 
+  const isMobileWebKit =
+    /iP(hone|od|ad)/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (isMobileWebKit || !window.matchMedia('(pointer:fine)').matches) {
+    return;
+  }
+
   if (typeof window.$ === 'undefined') {
     window.$ = function (selector) {
       const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
