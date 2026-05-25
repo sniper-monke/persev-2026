@@ -506,8 +506,8 @@ function App() {
                       <img
                         id="modalImage"
                         src=${getEventImage(modalEvent)}
-                        alt=${`${modalEvent.name} event head`}
-                        className="w-full h-full object-cover rounded-lg mb-4 sm:hidden lg:block"
+                        alt=${`${modalEvent.name} logo`}
+                        className="w-full h-full object-contain rounded-lg mb-4 sm:hidden lg:block"
                       />
                       <p id="eventHeadName" className="text-[#BE8E30] font-semibold text-lg text-center">
                         ${modalEvent.name}
@@ -573,14 +573,65 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       dragMomentum: 0
     };
 
+    function getViewportMode() {
+      const width = host.clientWidth || window.innerWidth || 1;
+      if (width <= 520) return 'phone';
+      if (width <= 920) return 'tablet';
+      return 'desktop';
+    }
+
+    function getCarouselLayout(width, height) {
+      const viewportMode = getViewportMode();
+      const safeHeight = Math.max(1, height || window.innerHeight || 1);
+
+      if (viewportMode === 'phone') {
+        return {
+          viewportMode,
+          fov: 35,
+          radius: clamp(width * 0.9, 330, 430),
+          cameraY: safeHeight * 0.006,
+          cameraZ: clamp(width * 2.05, 780, 1020),
+          cardHeight: clamp(Math.min(width * 0.6, safeHeight * 0.25), 218, 260),
+          baseScale: 0.34,
+          activeScale: 0.68
+        };
+      }
+
+      if (viewportMode === 'tablet') {
+        return {
+          viewportMode,
+          fov: 31,
+          radius: clamp(width * 0.54, 380, 560),
+          cameraY: safeHeight * 0.01,
+          cameraZ: clamp(width * 1.16, 860, 1160),
+          cardHeight: clamp(width * 0.29, 224, 282),
+          baseScale: 0.44,
+          activeScale: 0.52
+        };
+      }
+
+      return {
+        viewportMode,
+        fov: 27,
+        radius: clamp(width * 0.47, 620, 1050),
+        cameraY: safeHeight * 0.018,
+        cameraZ: clamp(width * 0.9, 1080, 1540),
+        cardHeight: clamp(width * 0.22, 310, 380),
+        baseScale: 0.58,
+        activeScale: 0.5
+      };
+    }
+
     function syncRadius() {
       const width = host.clientWidth || 1;
       const height = host.clientHeight || 1;
+      const layout = getCarouselLayout(width, height);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      camera.fov = layout.fov;
       camera.updateProjectionMatrix();
-      state.radius = clamp(width * 0.36, 360, 980);
-      camera.position.set(0, height * 0.02, clamp(width * 0.62, 680, 1340));
+      state.radius = layout.radius;
+      camera.position.set(0, layout.cameraY, layout.cameraZ);
       camera.lookAt(0, 0, 0);
 
       cardGroups.forEach((group, index) => {
@@ -644,19 +695,10 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
           metalness: 0.1
         });
 
-        const imageMaterialBack = new THREE.MeshStandardMaterial({
-          map: texture,
-          transparent: true,
-          side: THREE.DoubleSide,
-          opacity: 0.98,
-          emissive: new THREE.Color(0x404060),
-          emissiveIntensity: 0.28,
-          roughness: 0.72,
-          metalness: 0.09
-        });
-
-        const cardWidth = Math.max(130, Math.min(156, (hostWidth || 1440) * 0.11));
-        const cardHeight = Math.max(185, Math.min(220, (hostWidth || 1440) * 0.16));
+        const layout = getCarouselLayout(hostWidth || host.clientWidth || 1, host.clientHeight || window.innerHeight || 1);
+        const imageAspect = width > 0 && height > 0 ? width / height : 0.8;
+        const cardHeight = layout.cardHeight;
+        const cardWidth = cardHeight * clamp(imageAspect, 0.68, 0.92);
 
         const frontImage = new THREE.Mesh(
           new THREE.PlaneGeometry(cardWidth, cardHeight),
@@ -664,18 +706,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
         );
         frontImage.position.z = 3.2;
 
-        const backImage = new THREE.Mesh(
-          new THREE.PlaneGeometry(cardWidth, cardHeight),
-          imageMaterialBack
-        );
-        backImage.position.z = -3.2;
-        backImage.rotation.y = Math.PI;
-        backImage.scale.x = -1;
-
         const card = new THREE.Group();
         card.add(frontImage);
-        card.add(backImage);
-        card.rotation.y = index * stepAngle;
         cardGroups.push(card);
         carousel.add(card);
       } catch (error) {
@@ -769,7 +801,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
       if (event.pointerId !== state.pointerId) return;
       state.dragging = false;
       state.pointerId = null;
-      state.spinVelocity = clamp(state.spinVelocity, -0.35, 0.35);
+      state.spinVelocity = clamp(state.spinVelocity, -0.16, 0.16);
 
       // A click without drag toggles pause/resume.
       if (!pointerState.moved) {
@@ -778,7 +810,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
         if (state.isPaused) {
           state.spinVelocity = 0;
         } else {
-          state.spinVelocity += -0.06;
+          state.spinVelocity += -0.024;
         }
       }
 
@@ -794,7 +826,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
         state.isPaused = false;
         onPausedChange?.(false);
       }
-      state.spinVelocity += clamp(delta * 0.00008, -0.18, 0.18);
+      state.spinVelocity += clamp(delta * 0.00004, -0.09, 0.09);
     }
 
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
@@ -809,7 +841,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
           state.isPaused = false;
           onPausedChange?.(false);
         }
-        state.spinVelocity += direction * 0.14;
+        state.spinVelocity += direction * 0.065;
       },
       openActive() {
         onOpenEvent(events[state.activeIndex] || null);
@@ -835,8 +867,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
         }
 
         if (!state.dragging && !state.isPaused) {
-          state.rotation += (-0.18 + (state.spinVelocity || 0)) * 0.016;
-          state.spinVelocity = (state.spinVelocity || 0) * 0.94;
+          state.rotation += (-0.08 + (state.spinVelocity || 0)) * 0.016;
+          state.spinVelocity = (state.spinVelocity || 0) * 0.92;
         }
 
         if (carousel) {
@@ -859,16 +891,18 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
               const angle = (index * stepAngle) + state.rotation;
               const depth = Math.cos(normalizeAngle(angle));
               const positiveDepth = Math.max(0, depth);
-              const mirroredDepth = Math.max(0, -depth);
-              const selectionStrength = Math.pow(positiveDepth, 1.55);
+              const layout = getCarouselLayout(host.clientWidth || 1, host.clientHeight || 1);
+              const selectionStrength = Math.pow(positiveDepth, layout.viewportMode === 'phone' ? 2.4 : 1.8);
               const bob = Math.sin((time * 1.12) + (index * 0.72)) * (2.4 + selectionStrength * 5.4);
               const tilt = Math.sin((time * 1.02) + (index * 0.65)) * 0.035;
-              const scale = 0.88 + (selectionStrength * 0.32) + (mirroredDepth * 0.28);
-              const depthFade = depth < -0.12 ? Math.max(0.05, 0.75 + depth) : 1;
-              const opacity = clamp((0.38 + (positiveDepth * 0.72) + (mirroredDepth * 0.38)) * depthFade, 0.12, 1);
+              const scale = layout.baseScale + (selectionStrength * layout.activeScale);
+              const opacity = clamp(0.06 + (selectionStrength * 0.94), 0.06, 1);
 
               if (cardGroup.position) cardGroup.position.y = bob;
-              if (cardGroup.rotation) cardGroup.rotation.x = tilt;
+              if (cardGroup.lookAt) {
+                cardGroup.lookAt(camera.position);
+                cardGroup.rotation.x += tilt;
+              }
               if (cardGroup.scale && typeof cardGroup.scale.setScalar === 'function') {
                 cardGroup.scale.setScalar(scale);
               }

@@ -1006,6 +1006,8 @@ main {
 
 .events-react-root .bg-decoration {
   z-index: 0;
+  opacity: 0.22;
+  filter: saturate(0.72) blur(1px);
 }
 
 .events-react-root .selected-work {
@@ -1320,16 +1322,16 @@ main {
 }
 
 .film-strip.cylinder-ring .event-card-face-back::before {
-  opacity: 0.2;
+  content: none;
 }
 
 .film-strip.cylinder-ring .event-card-face-back .event-card-frame {
-  border-color: rgba(114, 238, 255, 0.2);
-  background: linear-gradient(180deg, rgba(114, 238, 255, 0.08), rgba(0, 0, 0, 0.28));
+  border-color: transparent;
+  background: transparent;
 }
 
 .film-strip.cylinder-ring .event-card-face-back .event-card-frame img {
-  filter: grayscale(0.02) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.24)) brightness(1.04) saturate(1.05);
+  filter: none;
 }
 
 .film-strip.cylinder-ring .event-card-face-back .event-card-name,
@@ -1343,23 +1345,16 @@ main {
 }
 
 .film-strip.cylinder-ring .event-card.is-back-facing .event-card-face-back {
-  border-color: rgba(114, 238, 255, 0.5);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.2), 0 0 24px rgba(67, 233, 255, 0.24);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .film-strip.cylinder-ring .event-card.is-back-facing {
-  filter: saturate(1.08) brightness(1.03);
+  filter: none;
 }
 
 .film-strip.cylinder-ring .event-card-inner::before {
-  content: '';
-  position: absolute;
-  inset: -18% -40%;
-  background: linear-gradient(120deg, rgba(67, 233, 255, 0), rgba(67, 233, 255, 0.18), rgba(248, 180, 45, 0.16), rgba(67, 233, 255, 0));
-  transform: translateX(-48%) rotate(6deg);
-  opacity: 0.32;
-  pointer-events: none;
-  z-index: 0;
+  content: none;
 }
 
 .film-strip.cylinder-ring .event-card-frame {
@@ -1368,28 +1363,27 @@ main {
   align-items: center;
   justify-content: center;
   flex: 1;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 216, 117, 0.14);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.16));
-  overflow: hidden;
-  padding: 0.72rem;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  padding: 0;
 }
 
 .film-strip.cylinder-ring .event-card-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 14%, rgba(67, 233, 255, 0.14), transparent 44%);
-  pointer-events: none;
-  z-index: 0;
+  content: none;
+}
+
+.film-strip.cylinder-ring .event-card-frame::after {
+  content: none;
 }
 
 .film-strip.cylinder-ring .event-card-frame img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.36)) saturate(1.08);
-  transition: transform 0.28s ease, filter 0.28s ease;
+  filter: none;
+  transition: transform 0.28s ease;
   position: relative;
   z-index: 1;
 }
@@ -1442,8 +1436,8 @@ main {
 }
 
 .film-strip.cylinder-ring .event-card.is-active-frame .event-card-frame img {
-  transform: scale(1.06);
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.4)) saturate(1.16);
+  transform: scale(1.02);
+  filter: none;
 }
 
 .film-nav-arrow {
@@ -1653,7 +1647,7 @@ main {
 
   .events-react-root .active-showcase {
     width: min(980px, 100%) !important;
-    margin: 0 auto clamp(1.1rem, 2.1vw, 1.8rem) !important;
+    margin: 0 auto clamp(0.7rem, 1.4vw, 1.15rem) !important;
     padding: clamp(0.95rem, 1.8vw, 1.4rem) clamp(1.1rem, 2.2vw, 1.8rem) !important;
     border-radius: 24px !important;
     border: 1px solid rgba(255, 225, 148, 0.26) !important;
@@ -1678,7 +1672,7 @@ main {
   }
 
   .events-react-root .film-stage-wrap {
-    margin-top: clamp(0.35rem, 0.9vw, 0.8rem) !important;
+    margin-top: 0 !important;
     width: 100vw !important;
     margin-left: calc(50% - 50vw) !important;
     margin-right: calc(50% - 50vw) !important;
@@ -1695,8 +1689,8 @@ main {
   }
 
   .events-react-root .cylinder-viewport {
-    min-height: clamp(32rem, 64vw, 50rem) !important;
-    height: clamp(32rem, 64vw, 50rem) !important;
+    min-height: clamp(26rem, 45vw, 37rem) !important;
+    height: clamp(26rem, 45vw, 37rem) !important;
     background: transparent !important;
     overflow: visible !important;
     clip-path: none !important;
@@ -1713,7 +1707,11 @@ main {
   }
 
   .events-react-root .react-carousel-canvas {
-    filter: saturate(1.1) contrast(1.08) !important;
+    filter: saturate(1.04) contrast(1.04) drop-shadow(0 26px 44px rgba(0, 0, 0, 0.26)) !important;
+  }
+
+  .events-react-root .cylinder-glow {
+    display: none !important;
   }
 
   .events-react-root .film-nav-arrow {
@@ -1732,8 +1730,77 @@ main {
   }
 
   .events-react-root .film-pagination {
-    margin-top: 0.9rem !important;
+    margin-top: 0.35rem !important;
     border-radius: 999px !important;
-    border: 1px solid rgba(255, 225, 148, 0.22) !important;
-    background: rgba(8, 16, 44, 0.68) !important;
+    border: 1px solid rgba(255, 225, 148, 0.18) !important;
+    background: rgba(6, 11, 31, 0.32) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(6px) !important;
+  }
+
+  @media (min-width: 1400px) {
+    .events-react-root .film-stage-wrap {
+      margin-top: 0 !important;
+    }
+
+    .events-react-root .cylinder-viewport {
+      min-height: clamp(24rem, 34vw, 31rem) !important;
+      height: clamp(24rem, 34vw, 31rem) !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .events-react-root .selected-work {
+      padding-top: 0.25rem !important;
+      padding-bottom: 1.1rem !important;
+      gap: 0.45rem !important;
+    }
+
+    .events-react-root .active-showcase {
+      margin-bottom: 0 !important;
+      padding: 0.85rem 0.9rem 1rem !important;
+      border-radius: 22px !important;
+    }
+
+    .events-react-root .active-showcase__title {
+      font-size: clamp(2rem, 9.5vw, 2.75rem) !important;
+    }
+
+    .events-react-root .active-showcase__meta {
+      gap: 0.65rem !important;
+    }
+
+    .events-react-root .active-showcase__cta {
+      min-height: 2.85rem !important;
+      padding: 0.68rem 1.2rem !important;
+    }
+
+    .events-react-root .film-stage-wrap {
+      width: 100vw !important;
+      margin-left: calc(50% - 50vw) !important;
+      margin-right: calc(50% - 50vw) !important;
+      padding-inline: 0 !important;
+      padding-bottom: 0.95rem !important;
+    }
+
+    .events-react-root .cylinder-viewport {
+      width: 100vw !important;
+      margin-left: 0 !important;
+      min-height: clamp(18.5rem, 76vw, 23.5rem) !important;
+      height: clamp(18.5rem, 76vw, 23.5rem) !important;
+      overflow: visible !important;
+    }
+
+    .events-react-root .film-nav-prev {
+      left: max(0.7rem, env(safe-area-inset-left)) !important;
+    }
+
+    .events-react-root .film-nav-next {
+      right: max(0.7rem, env(safe-area-inset-right)) !important;
+    }
+
+    .events-react-root .film-pagination {
+      margin-top: 0 !important;
+      padding: 0.58rem 0.82rem !important;
+    }
   }

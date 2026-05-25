@@ -1,0 +1,37 @@
+[0525/151839.758:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0525/151842.704:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0C02C00C4350000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0525/151842.809:ERROR:gl_utils.cc(431)] [.WebGL-0x2c040055ce00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[0525/151847.027:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151847.027:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151847.033:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151847.088:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151847.088:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151847.278:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0202D00C4350000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0525/151847.300:ERROR:gl_utils.cc(431)] [.WebGL-0x4a4c01755c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[0525/151850.834:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.834:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.835:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0525/151850.991:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0C02C00C4350000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0525/151851.045:ERROR:gl_utils.cc(431)] [.WebGL-0x2f340055f800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[0525/233138.685:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0525/233141.476:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0C0B4012C090000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0525/233141.518:ERROR:gl_utils.cc(431)] [.WebGL-0x5fcc00548000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[0525/233149.066:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0C0B4012C090000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0525/233149.157:ERROR:gl_utils.cc(431)] [.WebGL-0x7d94000ecd00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels

@@ -1418,16 +1418,6 @@ window.addEventListener('webglcontextlost', function(e) {
   }, 1000);
 }, false);
 </script>
-<script>
-// WebGL context loss recovery for iOS
-window.addEventListener('webglcontextlost', function(e) {
-  e.preventDefault();
-  console.warn('WebGL context lost - attempting recovery');
-  setTimeout(function() {
-    window.location.reload();
-  }, 1000);
-}, false);
-</script>
 <script type="module" crossorigin src="/assets/index-GnKc23iY.js?v=20260416e"></script>
 
     <link rel="stylesheet" crossorigin href="/assets/index-Bf_Y3SLh.css?v=20260416e">

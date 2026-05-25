@@ -1,0 +1,407 @@
+diff --git a/persev-2025-website/public/static/events-react.js b/persev-2025-website/public/static/events-react.js
+index d6d3382..ddacdb4 100644
+--- a/persev-2025-website/public/static/events-react.js
++++ b/persev-2025-website/public/static/events-react.js
+@@ -506,8 +506,8 @@ function App() {
+                       <img
+                         id="modalImage"
+                         src=${getEventImage(modalEvent)}
+-                        alt=${`${modalEvent.name} event head`}
+-                        className="w-full h-full object-cover rounded-lg mb-4 sm:hidden lg:block"
++                        alt=${`${modalEvent.name} logo`}
++                        className="w-full h-full object-contain rounded-lg mb-4 sm:hidden lg:block"
+                       />
+                       <p id="eventHeadName" className="text-[#BE8E30] font-semibold text-lg text-center">
+                         ${modalEvent.name}
+@@ -573,14 +573,35 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
+       dragMomentum: 0
+     };
+ 
++    function getViewportMode() {
++      const width = host.clientWidth || window.innerWidth || 1;
++      if (width <= 520) return 'phone';
++      if (width <= 920) return 'tablet';
++      return 'desktop';
++    }
++
+     function syncRadius() {
+       const width = host.clientWidth || 1;
+       const height = host.clientHeight || 1;
++      const viewportMode = getViewportMode();
+       renderer.setSize(width, height, false);
+       camera.aspect = width / height;
++      camera.fov = viewportMode === 'phone' ? 35 : viewportMode === 'tablet' ? 32 : 28;
+       camera.updateProjectionMatrix();
+-      state.radius = clamp(width * 0.36, 360, 980);
+-      camera.position.set(0, height * 0.02, clamp(width * 0.62, 680, 1340));
++      state.radius = viewportMode === 'phone'
++        ? clamp(width * 0.62, 230, 310)
++        : viewportMode === 'tablet'
++          ? clamp(width * 0.43, 320, 470)
++          : clamp(width * 0.42, 500, 900);
++      camera.position.set(
++        0,
++        viewportMode === 'phone' ? height * 0.008 : viewportMode === 'tablet' ? height * 0.012 : height * 0.018,
++        viewportMode === 'phone'
++          ? clamp(width * 1.72, 680, 860)
++          : viewportMode === 'tablet'
++            ? clamp(width * 1.08, 860, 1120)
++            : clamp(width * 0.82, 980, 1360)
++      );
+       camera.lookAt(0, 0, 0);
+ 
+       cardGroups.forEach((group, index) => {
+@@ -644,19 +665,14 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+           metalness: 0.1
+         });
+ 
+-        const imageMaterialBack = new THREE.MeshStandardMaterial({
+-          map: texture,
+-          transparent: true,
+-          side: THREE.DoubleSide,
+-          opacity: 0.98,
+-          emissive: new THREE.Color(0x404060),
+-          emissiveIntensity: 0.28,
+-          roughness: 0.72,
+-          metalness: 0.09
+-        });
+-
+-        const cardWidth = Math.max(130, Math.min(156, (hostWidth || 1440) * 0.11));
+-        const cardHeight = Math.max(185, Math.min(220, (hostWidth || 1440) * 0.16));
++        const viewportMode = getViewportMode();
++        const imageAspect = width > 0 && height > 0 ? width / height : 0.8;
++        const cardHeight = viewportMode === 'phone'
++          ? clamp((hostWidth || 390) * 0.43, 156, 188)
++          : viewportMode === 'tablet'
++            ? clamp((hostWidth || 820) * 0.27, 206, 250)
++            : clamp((hostWidth || 1440) * 0.18, 238, 292);
++        const cardWidth = cardHeight * clamp(imageAspect, 0.68, 0.92);
+ 
+         const frontImage = new THREE.Mesh(
+           new THREE.PlaneGeometry(cardWidth, cardHeight),
+@@ -664,18 +680,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+         );
+         frontImage.position.z = 3.2;
+ 
+-        const backImage = new THREE.Mesh(
+-          new THREE.PlaneGeometry(cardWidth, cardHeight),
+-          imageMaterialBack
+-        );
+-        backImage.position.z = -3.2;
+-        backImage.rotation.y = Math.PI;
+-        backImage.scale.x = -1;
+-
+         const card = new THREE.Group();
+         card.add(frontImage);
+-        card.add(backImage);
+-        card.rotation.y = index * stepAngle;
+         cardGroups.push(card);
+         carousel.add(card);
+       } catch (error) {
+@@ -769,7 +775,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+       if (event.pointerId !== state.pointerId) return;
+       state.dragging = false;
+       state.pointerId = null;
+-      state.spinVelocity = clamp(state.spinVelocity, -0.35, 0.35);
++      state.spinVelocity = clamp(state.spinVelocity, -0.16, 0.16);
+ 
+       // A click without drag toggles pause/resume.
+       if (!pointerState.moved) {
+@@ -778,7 +784,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+         if (state.isPaused) {
+           state.spinVelocity = 0;
+         } else {
+-          state.spinVelocity += -0.06;
++          state.spinVelocity += -0.024;
+         }
+       }
+ 
+@@ -794,7 +800,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+         state.isPaused = false;
+         onPausedChange?.(false);
+       }
+-      state.spinVelocity += clamp(delta * 0.00008, -0.18, 0.18);
++      state.spinVelocity += clamp(delta * 0.00004, -0.09, 0.09);
+     }
+ 
+     renderer.domElement.addEventListener('pointerdown', onPointerDown);
+@@ -809,7 +815,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+           state.isPaused = false;
+           onPausedChange?.(false);
+         }
+-        state.spinVelocity += direction * 0.14;
++        state.spinVelocity += direction * 0.065;
+       },
+       openActive() {
+         onOpenEvent(events[state.activeIndex] || null);
+@@ -835,8 +841,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+         }
+ 
+         if (!state.dragging && !state.isPaused) {
+-          state.rotation += (-0.18 + (state.spinVelocity || 0)) * 0.016;
+-          state.spinVelocity = (state.spinVelocity || 0) * 0.94;
++          state.rotation += (-0.08 + (state.spinVelocity || 0)) * 0.016;
++          state.spinVelocity = (state.spinVelocity || 0) * 0.92;
+         }
+ 
+         if (carousel) {
+@@ -859,16 +865,17 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
+               const angle = (index * stepAngle) + state.rotation;
+               const depth = Math.cos(normalizeAngle(angle));
+               const positiveDepth = Math.max(0, depth);
+-              const mirroredDepth = Math.max(0, -depth);
+               const selectionStrength = Math.pow(positiveDepth, 1.55);
+               const bob = Math.sin((time * 1.12) + (index * 0.72)) * (2.4 + selectionStrength * 5.4);
+               const tilt = Math.sin((time * 1.02) + (index * 0.65)) * 0.035;
+-              const scale = 0.88 + (selectionStrength * 0.32) + (mirroredDepth * 0.28);
+-              const depthFade = depth < -0.12 ? Math.max(0.05, 0.75 + depth) : 1;
+-              const opacity = clamp((0.38 + (positiveDepth * 0.72) + (mirroredDepth * 0.38)) * depthFade, 0.12, 1);
++              const scale = 0.62 + (selectionStrength * 0.34);
++              const opacity = clamp(0.08 + (selectionStrength * 0.92), 0.08, 1);
+ 
+               if (cardGroup.position) cardGroup.position.y = bob;
+-              if (cardGroup.rotation) cardGroup.rotation.x = tilt;
++              if (cardGroup.lookAt) {
++                cardGroup.lookAt(camera.position);
++                cardGroup.rotation.x += tilt;
++              }
+               if (cardGroup.scale && typeof cardGroup.scale.setScalar === 'function') {
+                 cardGroup.scale.setScalar(scale);
+               }
+diff --git a/persev-2025-website/public/static/style_events.css b/persev-2025-website/public/static/style_events.css
+index 5f05de6..ed2d1b3 100644
+--- a/persev-2025-website/public/static/style_events.css
++++ b/persev-2025-website/public/static/style_events.css
+@@ -1006,6 +1006,8 @@ main {
+ 
+ .events-react-root .bg-decoration {
+   z-index: 0;
++  opacity: 0.22;
++  filter: saturate(0.72) blur(1px);
+ }
+ 
+ .events-react-root .selected-work {
+@@ -1320,16 +1322,16 @@ main {
+ }
+ 
+ .film-strip.cylinder-ring .event-card-face-back::before {
+-  opacity: 0.2;
++  content: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-face-back .event-card-frame {
+-  border-color: rgba(114, 238, 255, 0.2);
+-  background: linear-gradient(180deg, rgba(114, 238, 255, 0.08), rgba(0, 0, 0, 0.28));
++  border-color: transparent;
++  background: transparent;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-face-back .event-card-frame img {
+-  filter: grayscale(0.02) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.24)) brightness(1.04) saturate(1.05);
++  filter: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-face-back .event-card-name,
+@@ -1343,23 +1345,16 @@ main {
+ }
+ 
+ .film-strip.cylinder-ring .event-card.is-back-facing .event-card-face-back {
+-  border-color: rgba(114, 238, 255, 0.5);
+-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.2), 0 0 24px rgba(67, 233, 255, 0.24);
++  border-color: transparent;
++  box-shadow: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card.is-back-facing {
+-  filter: saturate(1.08) brightness(1.03);
++  filter: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-inner::before {
+-  content: '';
+-  position: absolute;
+-  inset: -18% -40%;
+-  background: linear-gradient(120deg, rgba(67, 233, 255, 0), rgba(67, 233, 255, 0.18), rgba(248, 180, 45, 0.16), rgba(67, 233, 255, 0));
+-  transform: translateX(-48%) rotate(6deg);
+-  opacity: 0.32;
+-  pointer-events: none;
+-  z-index: 0;
++  content: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-frame {
+@@ -1368,28 +1363,27 @@ main {
+   align-items: center;
+   justify-content: center;
+   flex: 1;
+-  border-radius: 1rem;
+-  border: 1px solid rgba(255, 216, 117, 0.14);
+-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.16));
+-  overflow: hidden;
+-  padding: 0.72rem;
++  border-radius: 0;
++  border: 0;
++  background: transparent;
++  overflow: visible;
++  padding: 0;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-frame::before {
+-  content: '';
+-  position: absolute;
+-  inset: 0;
+-  background: radial-gradient(circle at 50% 14%, rgba(67, 233, 255, 0.14), transparent 44%);
+-  pointer-events: none;
+-  z-index: 0;
++  content: none;
++}
++
++.film-strip.cylinder-ring .event-card-frame::after {
++  content: none;
+ }
+ 
+ .film-strip.cylinder-ring .event-card-frame img {
+   width: 100%;
+   height: 100%;
+   object-fit: contain;
+-  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.36)) saturate(1.08);
+-  transition: transform 0.28s ease, filter 0.28s ease;
++  filter: none;
++  transition: transform 0.28s ease;
+   position: relative;
+   z-index: 1;
+ }
+@@ -1442,8 +1436,8 @@ main {
+ }
+ 
+ .film-strip.cylinder-ring .event-card.is-active-frame .event-card-frame img {
+-  transform: scale(1.06);
+-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.4)) saturate(1.16);
++  transform: scale(1.02);
++  filter: none;
+ }
+ 
+ .film-nav-arrow {
+@@ -1653,7 +1647,7 @@ main {
+ 
+   .events-react-root .active-showcase {
+     width: min(980px, 100%) !important;
+-    margin: 0 auto clamp(1.1rem, 2.1vw, 1.8rem) !important;
++    margin: 0 auto clamp(0.7rem, 1.4vw, 1.15rem) !important;
+     padding: clamp(0.95rem, 1.8vw, 1.4rem) clamp(1.1rem, 2.2vw, 1.8rem) !important;
+     border-radius: 24px !important;
+     border: 1px solid rgba(255, 225, 148, 0.26) !important;
+@@ -1678,7 +1672,7 @@ main {
+   }
+ 
+   .events-react-root .film-stage-wrap {
+-    margin-top: clamp(0.35rem, 0.9vw, 0.8rem) !important;
++    margin-top: 0 !important;
+     width: 100vw !important;
+     margin-left: calc(50% - 50vw) !important;
+     margin-right: calc(50% - 50vw) !important;
+@@ -1695,8 +1689,8 @@ main {
+   }
+ 
+   .events-react-root .cylinder-viewport {
+-    min-height: clamp(32rem, 64vw, 50rem) !important;
+-    height: clamp(32rem, 64vw, 50rem) !important;
++    min-height: clamp(26rem, 45vw, 37rem) !important;
++    height: clamp(26rem, 45vw, 37rem) !important;
+     background: transparent !important;
+     overflow: visible !important;
+     clip-path: none !important;
+@@ -1713,7 +1707,11 @@ main {
+   }
+ 
+   .events-react-root .react-carousel-canvas {
+-    filter: saturate(1.1) contrast(1.08) !important;
++    filter: saturate(1.04) contrast(1.04) drop-shadow(0 26px 44px rgba(0, 0, 0, 0.26)) !important;
++  }
++
++  .events-react-root .cylinder-glow {
++    display: none !important;
+   }
+ 
+   .events-react-root .film-nav-arrow {
+@@ -1732,8 +1730,77 @@ main {
+   }
+ 
+   .events-react-root .film-pagination {
+-    margin-top: 0.9rem !important;
++    margin-top: 0.35rem !important;
+     border-radius: 999px !important;
+-    border: 1px solid rgba(255, 225, 148, 0.22) !important;
+-    background: rgba(8, 16, 44, 0.68) !important;
++    border: 1px solid rgba(255, 225, 148, 0.18) !important;
++    background: rgba(6, 11, 31, 0.32) !important;
++    box-shadow: none !important;
++    backdrop-filter: blur(6px) !important;
++  }
++
++  @media (min-width: 1400px) {
++    .events-react-root .film-stage-wrap {
++      margin-top: 0 !important;
++    }
++
++    .events-react-root .cylinder-viewport {
++      min-height: clamp(24rem, 34vw, 31rem) !important;
++      height: clamp(24rem, 34vw, 31rem) !important;
++    }
++  }
++
++  @media (max-width: 767px) {
++    .events-react-root .selected-work {
++      padding-top: 0.25rem !important;
++      padding-bottom: 1.1rem !important;
++      gap: 0.45rem !important;
++    }
++
++    .events-react-root .active-showcase {
++      margin-bottom: 0 !important;
++      padding: 0.85rem 0.9rem 1rem !important;
++      border-radius: 22px !important;
++    }
++
++    .events-react-root .active-showcase__title {
++      font-size: clamp(2rem, 9.5vw, 2.75rem) !important;
++    }
++
++    .events-react-root .active-showcase__meta {
++      gap: 0.65rem !important;
++    }
++
++    .events-react-root .active-showcase__cta {
++      min-height: 2.85rem !important;
++      padding: 0.68rem 1.2rem !important;
++    }
++
++    .events-react-root .film-stage-wrap {
++      width: 100% !important;
++      margin-left: 0 !important;
++      margin-right: 0 !important;
++      padding-inline: 0.35rem !important;
++      padding-bottom: 0.95rem !important;
++    }
++
++    .events-react-root .cylinder-viewport {
++      width: 100% !important;
++      margin-left: 0 !important;
++      min-height: clamp(18.75rem, 80vw, 24.5rem) !important;
++      height: clamp(18.75rem, 80vw, 24.5rem) !important;
++      overflow: visible !important;
++    }
++
++    .events-react-root .film-nav-prev {
++      left: max(0.2rem, env(safe-area-inset-left)) !important;
++    }
++
++    .events-react-root .film-nav-next {
++      right: max(0.2rem, env(safe-area-inset-right)) !important;
++    }
++
++    .events-react-root .film-pagination {
++      margin-top: 0 !important;
++      padding: 0.58rem 0.82rem !important;
++    }
+   }

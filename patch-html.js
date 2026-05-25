@@ -30,29 +30,36 @@ bundle = replaceExact(
 
 bundle = replaceExact(
   bundle,
-  'const{gl:u}=Hs(),f=qg("/envmap.jpg"),[h,p]=Ie.useState(null),m=qg(kD);Ie.useEffect(()=>{if(f){const S=new M_(f.image.height);S.fromEquirectangularTexture(u,f),p(S.texture),Xs.getState().setLoaded(!0)}},[f,u]);',
   'const{gl:u}=Hs(),f=qg(isMobileWebKit?"/gradients/gradient-primary.png":"/envmap.jpg"),[h,p]=Ie.useState(null),m=qg(isMobileWebKit?["/gradients/gradient-primary.png"]:kD);Ie.useEffect(()=>{if(isMobileWebKit){Xs.getState().setLoaded(!0);return}if(f){const S=new M_(f.image.height);S.fromEquirectangularTexture(u,f),p(S.texture),Xs.getState().setLoaded(!0)}},[f,u]);',
+  'const{gl:u}=Hs(),f=qg("/envmap.jpg"),[h,p]=Ie.useState(null),m=qg(isMobileWebKit?[kD[((e==null?void 0:e.gradientIndex)??0)]??kD[0]]:kD);Ie.useEffect(()=>{if(isMobileWebKit){Xs.getState().setLoaded(!0);return}if(f){const S=new M_(f.image.height);S.fromEquirectangularTexture(u,f),p(S.texture),Xs.getState().setLoaded(!0)}},[f,u]);',
   'bundle: iOS asset loading'
 );
 
 bundle = replaceExact(
   bundle,
-  'map:(e==null?void 0:e.useGradient)!==!1?v:null,envMap:h,',
-  'map:isMobileWebKit?null:(e==null?void 0:e.useGradient)!==!1?v:null,envMap:isMobileWebKit?null:h,',
+  'const v=Ie.useMemo(()=>e?m[e.gradientIndex??0]:m[0],[e,m]),',
+  'const v=Ie.useMemo(()=>isMobileWebKit?m[0]:e?m[e.gradientIndex??0]:m[0],[e,m]),',
   'bundle: iOS material textures'
 );
 
 bundle = replaceExact(
   bundle,
-  'o.slice(0,isMobileWebKit?1:o.length)',
+  'map:isMobileWebKit?null:(e==null?void 0:e.useGradient)!==!1?v:null,envMap:isMobileWebKit?null:h,',
+  'map:(e==null?void 0:e.useGradient)!==!1?v:null,envMap:isMobileWebKit?null:h,',
+  'bundle: iOS env map only'
+);
+
+bundle = replaceExact(
+  bundle,
   'o.slice(0,isMobileWebKit?0:o.length)',
+  'o.slice(0,isMobileWebKit?1:o.length)',
   'bundle: iOS spotlights'
 );
 
 bundle = replaceExact(
   bundle,
-  'o=Ie.useMemo(()=>({...r,segments:isMobileWebKit?64:r.segments??256}),[r])',
   'o=Ie.useMemo(()=>({...r,segments:isMobileWebKit?48:r.segments??256,spotlights:isMobileWebKit?[]:r.spotlights}),[r])',
+  'o=Ie.useMemo(()=>({...r,segments:isMobileWebKit?48:r.segments??256,spotlights:isMobileWebKit?(r.spotlights??[]).slice(0,1):r.spotlights}),[r])',
   'bundle: iOS geometry preset'
 );
 

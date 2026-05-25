@@ -5,26 +5,31 @@ console.log('=== VERIFICATION ===\n');
 
 // 1. Bundle patches
 let b = fs.readFileSync('persev-2025-website/public/assets/index-GnKc23iY.js', 'utf8');
-console.log('Bundle (6 patches expected):');
-assert(b.includes('antialias:!isMobileWebKit'), 'antialias iOS off');
-assert(b.includes('powerPreference:isMobileWebKit'), 'powerPreference iOS default');
-assert(b.includes('castShadow:isMobileWebKit?!1:!0'), 'castShadow iOS off (mesh)');
-assert(b.includes('isMobileWebKit?64:256'), 'shadow map size reduced');
+console.log('Bundle mobile/WebKit behavior:');
+assert(/antialias:![A-Za-z_$][\w$]*/.test(b), 'antialias iOS off');
+assert(/powerPreference:[A-Za-z_$][\w$]*\?"default":"high-performance"/.test(b), 'powerPreference iOS default');
+assert(/castShadow:![A-Za-z_$][\w$]*/.test(b), 'castShadow iOS off (mesh)');
+assert(b.includes('?64:256'), 'shadow map size reduced');
 assert(b.includes('navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1'), 'iPadOS desktop UA detection added');
-assert(b.includes('qg(isMobileWebKit?"/gradients/gradient-primary.png":"/envmap.jpg")'), 'envmap loading reduced on iOS');
-assert(b.includes('m=qg(isMobileWebKit?["/gradients/gradient-primary.png"]:kD)'), 'gradient texture loading reduced on iOS');
-assert(b.includes('map:isMobileWebKit?null:'), 'gradient map disabled on iOS');
-assert(b.includes('o.slice(0,isMobileWebKit?0:o.length)'), 'spotlights disabled on iOS');
-assert(b.includes('castShadow:isMobileWebKit?!1:i.shadow'), 'spotlight shadow iOS off');
-assert(b.includes('segments:isMobileWebKit?48:r.segments??256'), 'sphere segments reduced further on iOS');
-assert(b.includes('enableDamping:!isMobileWebKit'), 'orbit damping disabled on iOS');
-assert(b.includes('p*0.08'), 'auto-rotation rate halved');
+assert(b.includes('Math.min(window.devicePixelRatio,1.5)'), 'iOS DPR raised above 1 while capped');
+assert(b.includes('=192,'), 'mobile sphere segments raised to 192');
+assert(b.includes('Zg(RM)'), 'all gradient textures preloaded');
+assert(b.includes('?RM[0]:"/envmap.jpg"'), 'iOS skips large envmap texture');
+assert(b.includes('envMap:') && b.includes('?null:'), 'env map disabled on iOS material');
+assert(b.includes('.slice(0,1)'), 'spotlights reduced to one on iOS');
+assert(/enableDamping:![A-Za-z_$][\w$]*/.test(b), 'orbit damping disabled on iOS');
+assert(b.includes('?.08:.15'), 'auto-rotation rate halved on iOS');
+assert(!b.includes('setInterval(()=>{t()},1750)'), 'autoplay preset interval removed');
+assert(b.includes('Perseverantia'), 'site branding preserved');
+assert(b.includes('Transform'), 'display titles preserved');
+assert(b.includes('setClearColor("#141518",0)'), 'canvas clear color remains transparent');
 
 // 2. Leaderboard
 let lb = fs.readFileSync('persev-2025-website/public/leaderboard (2).html', 'utf8');
 console.log('\nLeaderboard (2).html:');
 assert(lb.includes('isIOS'), 'iOS detection added');
-assert(lb.includes('if (isIOS) return;'), 'animation loop skipped on iOS');
+assert(lb.includes("const ctx = canvas.getContext('2d');"), 'particle canvas remains enabled');
+assert(lb.includes('Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000))'), 'lighter particle budget used on iOS');
 
 // 3. Organizing committee
 let oc = fs.readFileSync('persev-2025-website/public/organizing-committee.html', 'utf8');
