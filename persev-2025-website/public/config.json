@@ -3,6 +3,7 @@
     "events": [
       {
         "name": "ADMETA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -14,6 +15,7 @@
       },
       {
         "name": "ARTEM",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -25,6 +27,7 @@
       },
       {
         "name": "CARMEN",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -36,6 +39,7 @@
       },
       {
         "name": "FABULA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -47,6 +51,7 @@
       },
       {
         "name": "FORTUNA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -58,6 +63,7 @@
       },
       {
         "name": "CODEFERNO",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -69,6 +75,7 @@
       },
       {
         "name": "GUSTATIO",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -80,6 +87,7 @@
       },
       {
         "name": "MAHIM16",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -91,6 +99,7 @@
       },
       {
         "name": "‘Ad’venturium",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -102,6 +111,7 @@
       },
       {
         "name": "GRATIA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -113,6 +123,7 @@
       },
       {
         "name": "PANACHE",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -124,6 +135,7 @@
       },
       {
         "name": "SYMPHONIA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -135,6 +147,7 @@
       },
       {
         "name": "MR AND MS PERSEVERANTIA",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -146,6 +159,7 @@
       },
       {
         "name": "EXPLORARE",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -157,6 +171,7 @@
       },
       {
         "name": "FOOTBALL",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -168,6 +183,7 @@
       },
       {
         "name": "BASKETBALL",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -179,6 +195,7 @@
       },
       {
         "name": "GULLY CRICKET",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -190,6 +207,7 @@
       },
       {
         "name": "TABLE TENNIS",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -201,6 +219,7 @@
       },
       {
         "name": "TUG OF WAR",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -212,6 +231,7 @@
       },
       {
         "name": "E SPORTS",
+        "category": "Perseverantia 2026",
         "shortDesc": "",
         "subTheme": "",
         "oneLiner": "",
@@ -229,7 +249,7 @@
         "eventHeadPhoto": "/assets/tom.jpeg",
         "ropLink": "",
         "name": "CAPTURA",
-        "category": "Creative",
+        "category": "Perseverantia 2026",
         "logo": "/assets/elogos/captura.png",
         "longDesc": "Captura is a visual storytelling challenge where teams frame authentic moments into powerful narratives through photography and composition."
       },
@@ -241,7 +261,7 @@
         "eventHeadPhoto": "/assets/tom.jpeg",
         "ropLink": "",
         "name": "CHESS",
-        "category": "Strategy",
+        "category": "Perseverantia 2026",
         "logo": "/assets/elogos/chess.png",
         "longDesc": "Chess is a strategic face-off that rewards foresight, patience, and calculated execution over the board."
       },
@@ -253,7 +273,7 @@
         "eventHeadPhoto": "/assets/tom.jpeg",
         "ropLink": "",
         "name": "NEGOTIUM",
-        "category": "Business",
+        "category": "Perseverantia 2026",
         "logo": "/assets/elogos/negotium.png",
         "longDesc": "Negotium is a business simulation that tests negotiation, decision-making, and market instincts under pressure."
       },
@@ -265,7 +285,7 @@
         "eventHeadPhoto": "/assets/tom.jpeg",
         "ropLink": "",
         "name": "RESPUBLICA",
-        "category": "Civics",
+        "category": "Perseverantia 2026",
         "logo": "/assets/elogos/respublica.png",
         "longDesc": "Respublica is a policy and governance arena where participants debate, draft, and defend impactful civic solutions."
       }
@@ -296,7 +316,7 @@
     },
     "dateTime": "3rd October @ 7:00 a.m.",
     "about": {
-      "tb1": "Perseverantia 2025 celebrates the spirit of resilience, creativity, and meaningful collaboration. As Bombay Scottish School's annual interschool fest, it brings together young minds from across the city to engage in dialogue, performance, and competition across a wide range of disciplines. Rooted in the values of excellence and integrity, Perseverantia is a platform where talent meets purpose and innovation meets community.",
+      "tb1": "Perseverantia 2026 celebrates the spirit of resilience, creativity, and meaningful collaboration. As Bombay Scottish School's annual interschool fest, it brings together young minds from across the city to engage in dialogue, performance, and competition across a wide range of disciplines. Rooted in the values of excellence and integrity, Perseverantia is a platform where talent meets purpose and innovation meets community.",
       "tbg": "The theme for Perseverantia's 4th edition is OFFTHENTIC.",
       "tb2": "It calls upon participants to reflect on the importance of authenticity in an increasingly digital world. In a time shaped by social media filters, fast trends, and virtual personas, OFFTHENTIC is an invitation to go offline, to reconnect with one's roots, embrace originality, and express identity in its truest form. Each event has been carefully curated to inspire honest self-expression and thoughtful reflection, ensuring that this year's edition of Perseverantia is not just memorable, but deeply meaningful.",
       "button1": {

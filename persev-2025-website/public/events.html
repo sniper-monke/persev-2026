@@ -140,8 +140,8 @@ Ruuhan Malde
   <link rel="preload" href="/static/style2.css?v=20260406c" as="style" onload="this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/static/mobile-optimized.css?v=20260505"></noscript>
   <noscript><link rel="stylesheet" href="/static/style2.css?v=20260406c"></noscript>
-  <link rel="preload" href="/static/style_events.css?v=20260505b" as="style" onload="this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/static/style_events.css?v=20260505b"></noscript>
+  <link rel="preload" href="/static/style_events.css?v=20260526a" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/static/style_events.css?v=20260526a"></noscript>
   <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407a">
   <script defer src="/static/cursor-fx.js?v=20260407a"></script>
   <link rel="stylesheet" href="/static/persev-navbar.css?v=20260505a">
@@ -216,32 +216,13 @@ Ruuhan Malde
       <section class="selected-work fade-in-up" aria-labelledby="selected-events-title">
         <p class="section-eyebrow">Events</p>
 
-        <div class="events-preview-rail" aria-label="Event previews">
-          <button type="button" class="events-preview-card is-active" aria-label="ADMETA event preview">
-            <img src="/assets/landing.png" alt="ADMETA" />
-            <span>ADMETA</span>
-          </button>
-        </div>
-
         <div class="active-showcase" aria-live="polite">
-          <div class="active-showcase__count">01 / 01</div>
+          <div class="active-showcase__count">Loading</div>
           <h1 class="active-showcase__title" id="selected-events-title">
             <span>Events are loading</span>
           </h1>
           <div class="active-showcase__meta">
-            <span class="active-showcase__detail">If the animated carousel takes a moment, this fallback stays visible.</span>
-          </div>
-        </div>
-
-        <div class="film-stage-wrap">
-          <div class="film-strip-shell cylinder-shell">
-            <div class="cylinder-stage">
-              <div class="cylinder-glow cylinder-glow-left"></div>
-              <div class="cylinder-glow cylinder-glow-right"></div>
-<div class="cylinder-viewport" style="display:flex; align-items:center; justify-content:center; min-height: 20rem; overflow: hidden;">
-                <img src="/assets/landing.png" alt="Perseverantia" style="width:min(58vw, 320px); height:auto; filter: drop-shadow(0 24px 40px rgba(0,0,0,0.35));" />
-              </div>
-            </div>
+            <span class="active-showcase__detail">The animated carousel will appear here in a moment.</span>
           </div>
         </div>
       </section>
@@ -376,7 +357,7 @@ Ruuhan Malde
   })();
 </script>
 
-<script type="module" src="/static/events-react.js?v=20260505b"></script>
+<script type="module" src="/static/events-react.js?v=20260526a"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {

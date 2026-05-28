@@ -32,7 +32,7 @@ function getEventMeta(event) {
   if (event.category && event.category.trim()) {
     return event.category.trim();
   }
-  return 'Perseverantia 2025';
+  return 'Perseverantia 2026';
 }
 
 function updateActiveEventUI(events, index) {

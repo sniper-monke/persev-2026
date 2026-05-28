@@ -32,7 +32,7 @@ const FALLBACK_EVENTS = [
 const DEFAULT_SITE = {
   title: 'Perseverantia',
   tagline: 'Events',
-  description: 'Perseverantia 2025',
+  description: 'Perseverantia 2026',
   links: DEFAULT_LINKS,
   events: FALLBACK_EVENTS
 };
@@ -80,8 +80,8 @@ function getEventImage(event) {
 }
 
 function getEventMeta(event) {
-  if (!event) return 'Perseverantia 2025';
-  return event.category || event.type || event.shortDesc || 'Perseverantia 2025';
+  if (!event) return 'Perseverantia 2026';
+  return event.category || event.type || event.shortDesc || 'Perseverantia 2026';
 }
 
 function getEventDescription(event) {
@@ -410,18 +410,6 @@ function App() {
         </div>
 
         <div className="film-stage-wrap">
-          <button
-            className="film-nav-arrow film-nav-prev"
-            id="filmNavPrev"
-            type="button"
-            aria-label="Previous event"
-            onClick=${() => sceneApiRef.current?.step(-1)}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
           <div className="film-strip-shell cylinder-shell">
             <div className="cylinder-stage">
               <div className="cylinder-glow cylinder-glow-left"></div>
@@ -442,18 +430,6 @@ function App() {
                 ></div>
 
               </div>
-            </div>
-          </div>
-
-          <button
-            className="film-nav-arrow film-nav-next"
-            id="filmNavNext"
-            type="button"
-            aria-label="Next event"
-            onClick=${() => sceneApiRef.current?.step(1)}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
 
@@ -1035,18 +1011,6 @@ function Root() {
           </div>
 
           <div className="film-stage-wrap">
-            <button
-              className="film-nav-arrow film-nav-prev"
-              id="filmNavPrev"
-              type="button"
-              aria-label="Previous event"
-              onClick=${() => sceneApiRef.current?.step(-1)}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-
             <div className="film-strip-shell cylinder-shell">
               <div className="cylinder-stage">
                 <div className="cylinder-glow cylinder-glow-left"></div>
@@ -1070,18 +1034,6 @@ function Root() {
                 </div>
               </div>
             </div>
-
-            <button
-              className="film-nav-arrow film-nav-next"
-              id="filmNavNext"
-              type="button"
-              aria-label="Next event"
-              onClick=${() => sceneApiRef.current?.step(1)}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
 
             <div className="film-pagination" aria-label="Event hint">
               <span className="carousel-hint">Drag, scroll, or let it spin</span>
