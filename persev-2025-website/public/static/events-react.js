@@ -410,6 +410,10 @@ function App() {
         </div>
 
         <div className="film-stage-wrap">
+          <div className="film-pagination" aria-label="Event hint">
+            <span className="carousel-hint">${isCarouselPaused ? 'Paused - click carousel to resume' : 'Drag to spin, click to pause'}</span>
+          </div>
+
           <div className="film-strip-shell cylinder-shell">
             <div className="cylinder-stage">
               <div className="cylinder-glow cylinder-glow-left"></div>
@@ -432,10 +436,6 @@ function App() {
               </div>
             </svg>
           </button>
-
-          <div className="film-pagination" aria-label="Event hint">
-            <span className="carousel-hint">${isCarouselPaused ? 'Paused - click carousel to resume' : 'Drag to spin, click to pause'}</span>
-          </div>
         </div>
       </section>
 
@@ -481,12 +481,12 @@ function App() {
                     <div className="modal-event-head-wrapper">
                       <img
                         id="modalImage"
-                        src=${getEventImage(modalEvent)}
+                        src=${modalEvent.eventHeadPhoto || getEventImage(modalEvent)}
                         alt=${`${modalEvent.name} logo`}
                         className="w-full h-full object-contain rounded-lg mb-4 sm:hidden lg:block"
                       />
                       <p id="eventHeadName" className="text-[#BE8E30] font-semibold text-lg text-center">
-                        ${modalEvent.name}
+                        ${modalEvent.eventHeadName}
                       </p>
                     </div>
                   </div>
@@ -1010,6 +1010,10 @@ function Root() {
             </div>
           </div>
 
+          <div className="film-pagination" aria-label="Event hint">
+            <span className="carousel-hint">Drag, scroll, or let it spin</span>
+          </div>
+
           <div className="film-stage-wrap">
             <div className="film-strip-shell cylinder-shell">
               <div className="cylinder-stage">
@@ -1033,10 +1037,6 @@ function Root() {
                   ></div>
                 </div>
               </div>
-            </div>
-
-            <div className="film-pagination" aria-label="Event hint">
-              <span className="carousel-hint">Drag, scroll, or let it spin</span>
             </div>
           </div>
         </section>

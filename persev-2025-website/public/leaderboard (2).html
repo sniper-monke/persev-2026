@@ -259,6 +259,7 @@
     bottom: 30px; left: 50%;
     transform: translateX(-50%);
     z-index: 60;
+    pointer-events: none;
     font-size: 10px;
     letter-spacing: 0.5em;
     color: rgba(255,255,255,0.6);
@@ -330,6 +331,51 @@
     color: rgba(255,255,255,0.45);
     text-transform:uppercase;
   }
+  .rk-view-toggle {
+    position: absolute;
+    top: 245px;
+    right: 44px;
+    z-index: 120;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 8px;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,0.22), transparent 24px),
+      linear-gradient(135deg, rgba(255,255,255,0.12), rgba(120,150,255,0.06));
+    color: rgba(255,255,255,0.74);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(14px) saturate(1.18);
+    -webkit-backdrop-filter: blur(14px) saturate(1.18);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22), inset 0 0 18px rgba(255,255,255,0.035);
+    transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .rk-view-toggle::before,
+  .rk-view-toggle::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    box-shadow: 0 0 10px rgba(180,205,255,0.8);
+  }
+  .rk-view-toggle::after {
+    opacity: 0.42;
+  }
+  .rk-view-toggle:hover,
+  .rk-view-toggle:focus-visible {
+    color: rgba(255,255,255,0.92);
+    border-color: rgba(255,255,255,0.32);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.28), 0 0 28px rgba(150,180,255,0.11), inset 0 0 20px rgba(255,255,255,0.05);
+    outline: none;
+  }
   #rankings .rk-field {
     position: relative;
     width: 100%;
@@ -340,6 +386,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.32s ease, transform 0.32s ease, max-height 0.32s ease, min-height 0.32s ease, margin 0.32s ease;
   }
   .rk-circle-container {
     position: relative;
@@ -438,6 +485,214 @@
   .rk-tooltip .tt-rank { color: rgba(255,255,255,0.6); font-size: 10px; margin-bottom: 8px; }
   .rk-tooltip .tt-points { color:#9ac4ff; font-size: 12px; }
 
+  .rk-table-wrap {
+    position: relative;
+    z-index: 15;
+    width: min(940px, 100%);
+    margin: 34px auto 0;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    background:
+      radial-gradient(circle at var(--mx, 70%) var(--my, 18%), rgba(154,196,255,0.24), transparent 28%),
+      radial-gradient(circle at 8% 12%, rgba(255,255,255,0.28) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 92% 18%, rgba(255,215,106,0.24) 0 1px, transparent 1.6px),
+      linear-gradient(135deg, rgba(255,255,255,0.15), rgba(96,121,205,0.07) 42%, rgba(255,255,255,0.075));
+    box-shadow: 0 34px 90px rgba(0,0,0,0.42), 0 0 60px rgba(117,154,255,0.08), inset 0 1px 0 rgba(255,255,255,0.16);
+    backdrop-filter: blur(22px) saturate(1.22);
+    -webkit-backdrop-filter: blur(22px) saturate(1.22);
+    opacity: 0;
+    transform: perspective(1200px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateY(18px);
+    transform-style: preserve-3d;
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, margin-top 0.4s ease, box-shadow 0.25s ease;
+  }
+  .rk-table-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 22% 0%, rgba(205,220,255,0.14), transparent 28%),
+      radial-gradient(circle at 84% 100%, rgba(255,215,106,0.08), transparent 26%);
+    pointer-events: none;
+  }
+  .rk-table-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -40% -18%;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.16) 48%, transparent 62%);
+    opacity: 0;
+    transform: translateX(-38%);
+    pointer-events: none;
+  }
+  #rankings.is-table-view .rk-table-wrap::after {
+    animation: tableSheen 1.15s ease 0.1s both;
+  }
+  @keyframes tableSheen {
+    0% { opacity: 0; transform: translateX(-42%); }
+    18% { opacity: 0.55; }
+    100% { opacity: 0; transform: translateX(42%); }
+  }
+  .rk-table-meta {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: end;
+    padding: 14px 14px 18px;
+  }
+  .rk-table-kicker {
+    font-size: 10px;
+    letter-spacing: 0.42em;
+    color: rgba(255,255,255,0.42);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .rk-table-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0 0 28px rgba(154,196,255,0.18);
+  }
+  .rk-table-summary {
+    display: flex;
+    gap: 10px;
+  }
+  .rk-table-stat {
+    min-width: 104px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.055);
+  }
+  .rk-table-stat strong,
+  .rk-table-stat span {
+    display: block;
+  }
+  .rk-table-stat strong {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.08em;
+  }
+  .rk-table-stat span {
+    margin-top: 4px;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.42);
+    text-transform: uppercase;
+  }
+  .rk-table-scroll {
+    position: relative;
+    max-height: 64vh;
+    overflow: auto;
+    border-radius: 7px;
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(2,7,16,0.38);
+  }
+  .rk-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: rgba(255,255,255,0.84);
+    font-family: 'Rajdhani', sans-serif;
+    min-width: 460px;
+  }
+  .rk-table th,
+  .rk-table td {
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.075);
+  }
+  .rk-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(5,10,23,0.82);
+    color: rgba(255,255,255,0.58);
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .rk-table td {
+    font-size: 15px;
+    letter-spacing: 0.12em;
+  }
+  .rk-table tbody tr {
+    position: relative;
+    background:
+      linear-gradient(90deg, rgba(154,196,255,0.08), transparent calc(var(--score, 0) * 1%), transparent),
+      rgba(255,255,255,0);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: background-color 0.22s ease, transform 0.22s ease, opacity 0.35s ease;
+  }
+  #rankings.is-table-view .rk-table tbody tr {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i, 0) * 18ms);
+  }
+  .rk-table tbody tr:hover {
+    background-color: rgba(255,255,255,0.055);
+    transform: translateX(4px);
+  }
+  .rk-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .rk-table-mark {
+    width: 54px;
+  }
+  .rk-table-mark span {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    clip-path: polygon(50% 8%, 66% 38%, 96% 20%, 78% 58%, 94% 90%, 52% 68%, 8% 90%, 24% 58%, 4% 20%, 36% 38%);
+    background: var(--row-color, #9ac4ff);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--row-color, #9ac4ff), transparent 38%);
+    opacity: 0.86;
+  }
+  .rk-table-rank {
+    width: 96px;
+    color: rgba(255,255,255,0.58);
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+  }
+  .rk-table-name {
+    color: #fff;
+    font-weight: 500;
+  }
+  .rk-table-points {
+    width: 150px;
+    color: #9ac4ff;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+  }
+  #rankings.is-table-view .rk-field {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    pointer-events: none;
+    max-height: 0;
+    min-height: 0;
+    margin: 0 auto;
+    overflow: hidden;
+    transition: opacity 0.32s ease, transform 0.32s ease, max-height 0.32s ease, min-height 0.32s ease, margin 0.32s ease;
+  }
+  #rankings.is-table-view .rk-table-wrap {
+    opacity: 1;
+    transform: perspective(1200px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateY(0);
+    pointer-events: auto;
+    max-height: 78vh;
+  }
+
   /* Intro veil */
   #pageVeil {
     position: fixed;
@@ -482,6 +737,31 @@
       letter-spacing: 0.28em;
     }
 
+    .rk-view-toggle {
+      position: static;
+      width: min(86vw, 310px);
+      justify-content: center;
+      margin: 28px auto 0;
+      padding: 12px 14px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      transform: none;
+      border-radius: 8px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #rankings.rk-toggle-ready .rk-view-toggle {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+
+    .rk-view-toggle:hover,
+    .rk-view-toggle:focus-visible {
+      transform: translateY(-2px);
+    }
+
     .slide-text {
       left: 50%;
       width: min(88vw, 320px);
@@ -518,7 +798,7 @@
       letter-spacing: 0.18em;
     }
 
-    #text-1 { top: 13%; transform: translateX(-50%); }
+    #text-1 { left: 50% !important; top: 16%; transform: translateX(-50%); }
     #text-2 { top: 41%; transform: translateX(-50%); }
     #text-3 { top: 69%; transform: translateX(-50%); }
 
@@ -583,6 +863,86 @@
     .rk-butterfly {
       width: 46px;
       height: 46px;
+    }
+
+    .rk-table-wrap {
+      margin-top: 22px;
+      padding: 8px;
+      border-radius: 8px;
+      transform: translateY(16px);
+    }
+
+    .rk-table-scroll {
+      max-height: 66vh;
+    }
+
+    .rk-table-meta {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 12px 10px 14px;
+    }
+
+    .rk-table-title {
+      font-size: 20px;
+      letter-spacing: 0.13em;
+    }
+
+    .rk-table-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .rk-table-stat {
+      min-width: 0;
+      padding: 9px 8px;
+    }
+
+    .rk-table-stat strong {
+      font-size: 11px;
+    }
+
+    .rk-table-stat span {
+      font-size: 8px;
+      letter-spacing: 0.12em;
+    }
+
+    .rk-table {
+      min-width: 0;
+    }
+
+    .rk-table th,
+    .rk-table td {
+      padding: 12px 9px;
+    }
+
+    .rk-table th {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+    }
+
+    .rk-table td {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    .rk-table-rank {
+      width: 54px;
+      font-size: 10px;
+    }
+
+    .rk-table-points {
+      width: 86px;
+      font-size: 10px;
+    }
+
+    .rk-table-mark {
+      width: 34px;
+    }
+
+    .rk-table-mark span {
+      width: 14px;
+      height: 14px;
     }
   }
 </style>
@@ -688,6 +1048,29 @@
       <div class="rk-search-hint">Type butterfly code</div>
     </div>
   </div>
+  <div class="rk-table-wrap" id="rkTableWrap" aria-hidden="true">
+    <div class="rk-table-meta">
+      <div>
+        <div class="rk-table-kicker">Rankings Array</div>
+        <div class="rk-table-title">Tabular Flight Log</div>
+      </div>
+      <div class="rk-table-summary" id="rkTableSummary"></div>
+    </div>
+    <div class="rk-table-scroll">
+      <table class="rk-table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Rank</th>
+            <th scope="col">Name</th>
+            <th scope="col">Points</th>
+          </tr>
+        </thead>
+        <tbody id="rkTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <button class="rk-view-toggle" id="rkViewToggle" type="button" aria-expanded="false" aria-controls="rkTableWrap">View tabular</button>
 </section>
 
 <!-- Tooltip -->
@@ -840,6 +1223,17 @@ function applyScene(p){
   // Use targetProgress (raw scroll) for immediate response, not the lerp'd value.
   if (window.scrollY >= stageScrollLimit() - 1) stageEl.classList.add('done');
   else stageEl.classList.remove('done');
+
+  if (isMobileLeaderboard()) {
+    text1.style.left = '50%';
+    text1.style.right = 'auto';
+    text1.style.width = 'min(88vw, 320px)';
+  } else {
+    text1.style.left = '8%';
+    text1.style.right = 'auto';
+    text1.style.width = '';
+  }
+
   // ============ SCENE 1 (0.00 - 0.28) ============
   // Hero butterfly descends on its line from above.
   const s1Enter = seg(p, 0.00, 0.18);        // butterfly falls into place
@@ -994,7 +1388,11 @@ requestAnimationFrame(loop);
    RANKINGS: USER-DEFINED BUTTERFLIES
    ============================================================ */
 const rkCircle = document.getElementById('rkCircle');
-  const rkSearchInput = document.getElementById('rkSearchInput');
+const rkSearchInput = document.getElementById('rkSearchInput');
+const rkViewToggle = document.getElementById('rkViewToggle');
+const rkTableWrap = document.getElementById('rkTableWrap');
+const rkTableBody = document.getElementById('rkTableBody');
+const rkTableSummary = document.getElementById('rkTableSummary');
 const tooltip = document.getElementById('rkTooltip');
 const ttName = tooltip.querySelector('.tt-name');
 const ttRank = tooltip.querySelector('.tt-rank');
@@ -1060,6 +1458,75 @@ const rankedData = sortedData.map((butterfly, idx) => ({
   ...butterfly,
   rank: idx + 4
 }));
+
+function renderRankingsTable(){
+  const topScore = Math.max(...rankedData.map((data) => data.points));
+  const totalScore = rankedData.reduce((sum, data) => sum + data.points, 0);
+  const averageScore = Math.round(totalScore / rankedData.length);
+  const leader = rankedData[0];
+
+  if (rkTableSummary) {
+    rkTableSummary.innerHTML = `
+      <div class="rk-table-stat"><strong>${rankedData.length}</strong><span>Entries</span></div>
+      <div class="rk-table-stat"><strong>${leader.points}</strong><span>Top Pts</span></div>
+      <div class="rk-table-stat"><strong>${averageScore}</strong><span>Average</span></div>
+    `;
+  }
+
+  if (!rkTableBody) return;
+  rkTableBody.innerHTML = rankedData.map((data, idx) => {
+    const score = Math.max(8, Math.round((data.points / topScore) * 100));
+    const [color] = palette[idx % palette.length];
+    return `
+    <tr style="--i:${idx}; --score:${score}; --row-color:${color};">
+      <td class="rk-table-mark"><span aria-hidden="true"></span></td>
+      <td class="rk-table-rank">#${data.rank}</td>
+      <td class="rk-table-name">${data.name}</td>
+      <td class="rk-table-points">${data.points} PTS</td>
+    </tr>`;
+  }).join('');
+}
+
+renderRankingsTable();
+
+if (rkViewToggle && rkTableWrap && rankingsEl) {
+  rkViewToggle.addEventListener('click', () => {
+    const isTableView = rankingsEl.classList.toggle('is-table-view');
+    rkViewToggle.textContent = isTableView ? 'View butterflies' : 'View tabular';
+    rkViewToggle.setAttribute('aria-expanded', String(isTableView));
+    rkTableWrap.setAttribute('aria-hidden', String(!isTableView));
+    hideTooltip();
+  });
+}
+
+if (rkTableWrap) {
+  rkTableWrap.addEventListener('mousemove', (e) => {
+    if (isMobileLeaderboard()) return;
+    const rect = rkTableWrap.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    rkTableWrap.style.setProperty('--mx', `${Math.round(x * 100)}%`);
+    rkTableWrap.style.setProperty('--my', `${Math.round(y * 100)}%`);
+    rkTableWrap.style.setProperty('--tilt-x', `${((x - 0.5) * 3).toFixed(2)}deg`);
+    rkTableWrap.style.setProperty('--tilt-y', `${((0.5 - y) * 2).toFixed(2)}deg`);
+  });
+
+  rkTableWrap.addEventListener('mouseleave', () => {
+    rkTableWrap.style.setProperty('--tilt-x', '0deg');
+    rkTableWrap.style.setProperty('--tilt-y', '0deg');
+  });
+}
+
+function updateRankingsToggleReady(){
+  if (!rankingsEl) return;
+  const revealAt = rankingsEl.offsetTop - window.innerHeight * 0.45;
+  rankingsEl.classList.toggle('rk-toggle-ready', window.scrollY >= revealAt);
+}
+
+window.addEventListener('scroll', updateRankingsToggleReady, { passive: true });
+window.addEventListener('resize', updateRankingsToggleReady);
+window.addEventListener('load', updateRankingsToggleReady);
+updateRankingsToggleReady();
 
 // Create butterflies from user-defined data
 rankedData.forEach((data) => {

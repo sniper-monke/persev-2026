@@ -292,14 +292,15 @@ main {
 
 .active-showcase__title {
   margin: 0;
-  max-width: min(100%, 14ch);
-  font-size: clamp(3rem, 6.2vw, 5.8rem);
-  line-height: 0.88;
-  letter-spacing: -0.045em;
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(1.8rem, 4.35vw, 4.15rem);
+  line-height: 0.96;
+  letter-spacing: 0;
   font-weight: 400;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: visible;
+  text-align: center;
   background: linear-gradient(88deg, #ffe090 0%, #f8b42d 34%, #43e9ff 68%, #fff1bb 100%);
   background-size: 220% 220%;
   -webkit-text-fill-color: transparent;
@@ -1489,14 +1490,17 @@ main {
 }
 
 .film-pagination {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
+  position: relative;
+  left: auto;
+  top: auto;
+  bottom: auto;
+  transform: none;
   z-index: 20;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: fit-content;
+  margin: 0 auto clamp(0.65rem, 1.4vw, 1rem);
   padding: 0.78rem 1.1rem;
   border: 1px solid rgba(255, 216, 117, 0.2);
   border-radius: 999px;
@@ -1657,9 +1661,14 @@ main {
   }
 
   .events-react-root .active-showcase__title {
-    font-size: clamp(2rem, 5.8vw, 4.8rem) !important;
-    letter-spacing: 0.03em !important;
-    line-height: 0.96 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.55rem, 3.85vw, 3.65rem) !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-align: center !important;
   }
 
   .events-react-root .active-showcase__cta {
@@ -1672,7 +1681,7 @@ main {
   }
 
   .events-react-root .film-stage-wrap {
-    margin-top: 0 !important;
+    margin-top: clamp(0.7rem, 1.4vw, 1.1rem) !important;
     width: 100vw !important;
     margin-left: calc(50% - 50vw) !important;
     margin-right: calc(50% - 50vw) !important;
@@ -1730,7 +1739,7 @@ main {
   }
 
   .events-react-root .film-pagination {
-    margin-top: 0.35rem !important;
+    margin: 0 auto clamp(0.6rem, 1.2vw, 0.9rem) !important;
     border-radius: 999px !important;
     border: 1px solid rgba(255, 225, 148, 0.18) !important;
     background: rgba(6, 11, 31, 0.32) !important;
@@ -1740,7 +1749,7 @@ main {
 
   @media (min-width: 1400px) {
     .events-react-root .film-stage-wrap {
-      margin-top: 0 !important;
+      margin-top: clamp(0.65rem, 1vw, 0.9rem) !important;
     }
 
     .events-react-root .cylinder-viewport {
@@ -1763,7 +1772,9 @@ main {
     }
 
     .events-react-root .active-showcase__title {
-      font-size: clamp(2rem, 9.5vw, 2.75rem) !important;
+      font-size: clamp(1rem, 4.9vw, 1.55rem) !important;
+      max-width: 100% !important;
+      line-height: 1.08 !important;
     }
 
     .events-react-root .active-showcase__meta {
@@ -1800,7 +1811,7 @@ main {
     }
 
     .events-react-root .film-pagination {
-      margin-top: 0 !important;
+      margin: 0 auto 0.55rem !important;
       padding: 0.58rem 0.82rem !important;
     }
   }
