@@ -7,6 +7,10 @@
     "start": "npm --prefix ./persev-2025-website run start",
     "dev": "npm --prefix ./persev-2025-website run dev",
     "start:legacy": "npm --prefix ./persev-2025-website run start",
-    "dev:legacy": "npm --prefix ./persev-2025-website run dev"
+    "dev:legacy": "npm --prefix ./persev-2025-website run dev",
+    "optimize-images": "node ./tools/optimize-images.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }

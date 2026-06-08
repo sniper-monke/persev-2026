@@ -1,7 +1,7 @@
 const PLACEHOLDER_MEDIA = "/public/placeholder.svg"; // Placeholder media from user request.
 
 const site = {
-  title: "Perseverantia 2025",
+  title: "Perseverantia 2026",
   subtitle: "Simplified hardcoded backend",
   description: "A minimal backend rebuild with readable and maintainable structure.",
   heroImage: PLACEHOLDER_MEDIA,

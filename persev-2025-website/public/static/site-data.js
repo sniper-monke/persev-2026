@@ -1,7 +1,7 @@
 const PLACEHOLDER_IMAGE = "assets/placeholder.svg"; // Placeholder image per user request.
 
 const SITE_DATA = {
-  title: "Perseverantia 2025",
+  title: "Perseverantia 2026",
   theme: "OFFTHENTIC",
   description:
     "A clean and hardcoded rebuild of the Perseverantia website with simplified architecture.",

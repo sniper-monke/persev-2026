@@ -79,6 +79,50 @@ function getEventImage(event) {
   return event?.logo || event?.eventHeadPhoto || '/assets/persevlogo.avif';
 }
 
+// Cache HEAD-checks for AVIF availability to avoid repeated network requests
+const _avifExistsCache = new Map();
+async function preferAvif(url) {
+  if (!url || typeof url !== 'string') return url;
+  try {
+    const extMatch = url.match(/\.(png|jpe?g|webp)(\?|$)/i);
+    if (!extMatch) return url;
+    const avifUrl = url.replace(/\.(png|jpe?g|webp)(\?|$)/i, '.avif$2');
+    if (_avifExistsCache.has(avifUrl)) return _avifExistsCache.get(avifUrl) ? avifUrl : url;
+    // Use HEAD to check if the avif file is present
+    const resp = await fetch(avifUrl, { method: 'HEAD' });
+    const ok = resp && resp.ok;
+    _avifExistsCache.set(avifUrl, ok);
+    return ok ? avifUrl : url;
+  } catch (e) {
+    return url;
+  }
+}
+
+function encodePath(p) {
+  try { return encodeURI(p); } catch (e) { return p; }
+}
+
+function generateSrcset(baseUrl) {
+  if (!baseUrl || typeof baseUrl !== 'string') return '';
+  // widths must match optimizer widths
+  const widths = [360, 720, 1280, 1920];
+  const parts = [];
+  const parsed = baseUrl.split('?')[0];
+  const extMatch = parsed.match(/\.(png|jpe?g|webp|avif)$/i);
+  const root = extMatch ? baseUrl.replace(/\.(png|jpe?g|webp|avif)(\?|$)/i, '') : baseUrl;
+
+  // prefer avif then webp then original
+  for (const w of widths) {
+    parts.push(`${encodePath(root + '@' + w + '.avif')} ${w}w`);
+  }
+  for (const w of widths) {
+    parts.push(`${encodePath(root + '@' + w + '.webp')} ${w}w`);
+  }
+  // finally provide the original as fallback
+  parts.push(`${encodePath(baseUrl)} 1920w`);
+  return parts.join(', ');
+}
+
 function getEventMeta(event) {
   if (!event) return 'Perseverantia 2026';
   return event.category || event.type || event.shortDesc || 'Perseverantia 2026';
@@ -483,7 +527,11 @@ function App() {
                         id="modalImage"
                         src=${modalEvent.eventHeadPhoto || getEventImage(modalEvent)}
                         alt=${`${modalEvent.name} logo`}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-contain rounded-lg mb-4 sm:hidden lg:block"
+                        // Provide a srcset that prefers AVIF if available; browsers will pick best format
+                        srcSet=${generateSrcset(modalEvent.eventHeadPhoto || getEventImage(modalEvent))}
                       />
                       <p id="eventHeadName" className="text-[#BE8E30] font-semibold text-lg text-center">
                         ${modalEvent.eventHeadName}
@@ -510,7 +558,8 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
     let resizeObserver = null;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // Use a conservative pixel ratio to reduce GPU memory and improve performance
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     renderer.setClearColor(0x000000, 0);
     if ('outputColorSpace' in renderer && THREE.SRGBColorSpace) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -636,7 +685,10 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       try {
         let texture;
         try {
-          texture = await textureLoader.loadAsync(getEventImage(event));
+          const imgUrl = getEventImage(event);
+          // prefer AVIF variant when available
+          const preferred = await preferAvif(imgUrl);
+          texture = await textureLoader.loadAsync(preferred);
         } catch (error) {
           console.error('Failed to load texture for event:', event?.name || 'unknown', error);
           texture = createFallbackTexture('Error');
@@ -651,13 +703,56 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
         }
 
         try {
-          texture.colorSpace = THREE.SRGBColorSpace || texture.colorSpace;
-          texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-          texture.generateMipmaps = true;
-          texture.minFilter = THREE.LinearMipmapLinearFilter;
-          texture.magFilter = THREE.LinearFilter;
+          // Reduce texture resolution to the displayed card size to save memory and bandwidth
+          const layout = getCarouselLayout(hostWidth || host.clientWidth || 1, host.clientHeight || window.innerHeight || 1);
+          const image = texture.image;
+          const imageAspect = width > 0 && height > 0 ? width / height : 0.8;
+          const cardHeight = layout.cardHeight;
+          const cardWidth = Math.max(64, Math.round(cardHeight * clamp(imageAspect, 0.68, 0.92)));
+
+          if (image && (image.naturalWidth || image.width)) {
+            try {
+              // Create a downsized canvas and draw the source image into it at target resolution
+              const deviceScale = Math.min(window.devicePixelRatio || 1, 1.5);
+              const canvasW = Math.max(64, Math.round(cardWidth * deviceScale));
+              const canvasH = Math.max(64, Math.round(cardHeight * deviceScale));
+              const scaleCanvas = document.createElement('canvas');
+              scaleCanvas.width = canvasW;
+              scaleCanvas.height = canvasH;
+              const sctx = scaleCanvas.getContext('2d');
+              if (sctx) {
+                // Draw with high quality scaling when available
+                sctx.imageSmoothingEnabled = true;
+                sctx.imageSmoothingQuality = 'high';
+                sctx.drawImage(image, 0, 0, canvasW, canvasH);
+
+                // Create a new texture from the downsized canvas and dispose the original
+                const smallTex = new THREE.CanvasTexture(scaleCanvas);
+                smallTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                smallTex.generateMipmaps = true;
+                smallTex.minFilter = THREE.LinearMipmapLinearFilter;
+                smallTex.magFilter = THREE.LinearFilter;
+
+                try {
+                  if (texture && typeof texture.dispose === 'function') texture.dispose();
+                } catch (dErr) {
+                  console.warn('Failed to dispose original texture', dErr);
+                }
+                texture = smallTex;
+              }
+          } catch (texErr) {
+            console.error('Error creating downsized texture:', texErr);
+          }
+          }
+          // Ensure texture color space / filtering fallback
+          try {
+            texture.colorSpace = THREE.SRGBColorSpace || texture.colorSpace;
+            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          } catch (texErr) {
+            console.error('Error setting texture properties:', texErr);
+          }
         } catch (texErr) {
-          console.error('Error setting texture properties:', texErr);
+          console.error('Texture processing error:', texErr);
         }
 
 const imageMaterialFront = new THREE.MeshStandardMaterial({
