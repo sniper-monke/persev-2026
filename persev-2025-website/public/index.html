@@ -432,7 +432,7 @@
 
         text-transform: uppercase;
 
-        font-size: 11px;
+        font-size: 13px;
 
         font-weight: 600;
 
@@ -1446,7 +1446,7 @@ window.addEventListener('webglcontextlost', function(e) {
 
       .toormix-menu-btn {
 
-        font-family: 'Mestizo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family: 'Rajdhani', 'Mestizo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 
       }
 
@@ -1663,13 +1663,8 @@ window.addEventListener('webglcontextlost', function(e) {
 
     
 
-    <!-- GSAP for page transitions -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-    <script defer src="/static/gsap-transitions.js?v=20260430a"></script>
+    <!-- Cloud transitions for page transitions -->
+    <script defer src="/static/cloud-transitions.js?v=20260430k"></script>
 
 
     <script>
@@ -2173,6 +2168,62 @@ window.addEventListener('webglcontextlost', function(e) {
           { passive: true }
 
         );
+
+      })();
+
+      // Blob shape autocycle functionality
+      (function () {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          return;
+        }
+
+        let idleTimer = null;
+        let autocycleTimer = null;
+        const IDLE_TIMEOUT = 1700;
+        const AUTOCYCLE_INTERVAL = 750;
+
+        function resetIdleTimer() {
+          if (idleTimer) {
+            clearTimeout(idleTimer);
+          }
+          if (autocycleTimer) {
+            clearInterval(autocycleTimer);
+            autocycleTimer = null;
+          }
+          
+          idleTimer = setTimeout(() => {
+            startAutocycle();
+          }, IDLE_TIMEOUT);
+        }
+
+        function startAutocycle() {
+          if (autocycleTimer) return;
+          
+          autocycleTimer = setInterval(() => {
+            // Simulate ArrowRight key press to cycle to next blob shape
+            const arrowRightEvent = new KeyboardEvent('keydown', {
+              key: 'ArrowRight',
+              code: 'ArrowRight',
+              keyCode: 39,
+              bubbles: true,
+              cancelable: true
+            });
+            document.dispatchEvent(arrowRightEvent);
+          }, AUTOCYCLE_INTERVAL);
+        }
+
+        function handleKeyPress(e) {
+          // Detect arrow keys that control blob shapes
+          if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+            resetIdleTimer();
+          }
+        }
+
+        // Start idle timer immediately on page load
+        resetIdleTimer();
+
+        // Listen for arrow key presses to reset idle timer
+        document.addEventListener('keydown', handleKeyPress);
 
       })();
 
