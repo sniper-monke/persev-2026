@@ -1,8 +1,4 @@
-@font-face {
-  font-family: Mestizo;
-  src: url('/assets/MestizoFont.ttf');
-  font-display: swap;
-}
+
 
 :root {
   --bg-1: #050914;
@@ -124,7 +120,7 @@ body::after {
 h1,
 h2,
 h3 {
-  font-family: Mestizo, Georgia, serif;
+  font-family: Georgia, serif;
 }
 
 nav {
@@ -1104,7 +1100,7 @@ main {
   bottom: 0;
   padding: 0.85rem 0.9rem;
   background: linear-gradient(180deg, transparent, rgba(3, 8, 24, 0.9));
-  font-family: Mestizo, Georgia, serif;
+  font-family: Georgia, serif;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -1815,3 +1811,189 @@ main {
       padding: 0.58rem 0.82rem !important;
     }
   }
+
+/* Event category filter panel — leaderboard table aesthetic */
+.events-react-root .ev-cat-panel {
+  position: relative;
+  z-index: 4;
+  width: min(940px, 100%);
+  margin: 0 auto clamp(0.85rem, 1.6vw, 1.25rem);
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 70% 18%, rgba(154, 196, 255, 0.2), transparent 28%),
+    radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.22) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 92% 18%, rgba(255, 215, 106, 0.18) 0 1px, transparent 1.6px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(96, 121, 205, 0.07) 42%, rgba(255, 255, 255, 0.06));
+  box-shadow:
+    0 28px 72px rgba(0, 0, 0, 0.36),
+    0 0 48px rgba(117, 154, 255, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(22px) saturate(1.22);
+  -webkit-backdrop-filter: blur(22px) saturate(1.22);
+  overflow: hidden;
+}
+
+.events-react-root .ev-cat-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 22% 0%, rgba(205, 220, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 84% 100%, rgba(255, 215, 106, 0.07), transparent 26%);
+  pointer-events: none;
+}
+
+.events-react-root .ev-cat-panel__meta {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: end;
+  padding: 14px 14px 16px;
+}
+
+.events-react-root .ev-cat-panel__kicker {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  color: rgba(255, 255, 255, 0.42);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.events-react-root .ev-cat-panel__title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(18px, 2.6vw, 30px);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(154, 196, 255, 0.16);
+  text-align: left;
+}
+
+.events-react-root .ev-cat-panel__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.events-react-root .ev-cat-btn {
+  position: relative;
+  min-width: 132px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.74);
+  font-family: 'Rajdhani', sans-serif;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.events-react-root .ev-cat-btn strong,
+.events-react-root .ev-cat-btn span {
+  display: block;
+}
+
+.events-react-root .ev-cat-btn strong {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.08em;
+}
+
+.events-react-root .ev-cat-btn span {
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.42);
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+.events-react-root .ev-cat-btn:hover,
+.events-react-root .ev-cat-btn:focus-visible {
+  color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.28),
+    0 0 24px rgba(150, 180, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+
+.events-react-root .ev-cat-btn.is-active {
+  border-color: rgba(255, 255, 255, 0.32);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.18), transparent 24px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(120, 150, 255, 0.08));
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.28),
+    0 0 28px rgba(150, 180, 255, 0.14),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.events-react-root .ev-cat-btn.is-active strong {
+  color: #fff;
+}
+
+.events-react-root .ev-cat-btn.is-active span {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 767px) {
+  .events-react-root .ev-cat-panel {
+    padding: 10px;
+    margin-bottom: 0.7rem;
+  }
+
+  .events-react-root .ev-cat-panel__meta {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px 10px 14px;
+  }
+
+  .events-react-root .ev-cat-panel__title {
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-align: center;
+  }
+
+  .events-react-root .ev-cat-panel__kicker {
+    text-align: center;
+  }
+
+  .events-react-root .ev-cat-panel__summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    justify-content: stretch;
+  }
+
+  .events-react-root .ev-cat-btn {
+    min-width: 0;
+    padding: 9px 8px;
+  }
+
+  .events-react-root .ev-cat-btn strong {
+    font-size: 11px;
+  }
+
+  .events-react-root .ev-cat-btn span {
+    font-size: 7px;
+    letter-spacing: 0.1em;
+  }
+}

@@ -135,13 +135,17 @@ Ruuhan Malde
 </script>
   <title>Perseverantia Events</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
   <!-- Preload stylesheets for critical rendering, then apply with onload -->
   <link rel="preload" href="/static/mobile-optimized.css?v=20260505" as="style" onload="this.rel='stylesheet'">
   <link rel="preload" href="/static/style2.css?v=20260406c" as="style" onload="this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/static/mobile-optimized.css?v=20260505"></noscript>
   <noscript><link rel="stylesheet" href="/static/style2.css?v=20260406c"></noscript>
-  <link rel="preload" href="/static/style_events.css?v=20260526a" as="style" onload="this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/static/style_events.css?v=20260526a"></noscript>
+  <link rel="preload" href="/static/style_events.css?v=20260615a" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/static/style_events.css?v=20260615a"></noscript>
   <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407a">
   <script defer src="/static/cursor-fx.js?v=20260407a"></script>
   <link rel="stylesheet" href="/static/persev-navbar.css?v=20260505a">
@@ -150,15 +154,7 @@ Ruuhan Malde
 
   <!-- Inline font-face with swap to reduce render-blocking and font load delay -->
   <style>
-    @font-face {
-      font-family: 'Mestizo';
-      src: url('/assets/MestizoFont.woff2') format('woff2'),
-           url('/assets/MestizoFont.woff') format('woff'),
-           url('/assets/MestizoFont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+    
   </style>
   <!-- Flash prevention: hide body and show placeholder immediately if coming from transition -->
   <script>(function(){try{if(sessionStorage.getItem('persev_transition_state')){document.documentElement.style.background='#050914';document.write('<style>body{visibility:hidden;background:#050914}</style><div id="cloud-placeholder" style="position:fixed;inset:0;z-index:2147483647;background:linear-gradient(135deg,#1a3a6b 0%,#3a7abf 50%,#89b9e0 100%);opacity:0.9;transition:opacity 0.3s"><div style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(-10%) rotate(-2deg);filter:blur(20px)"></div><div style="position:absolute;right:0;top:0;bottom:0;width:60%;background:linear-gradient(270deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(10%) rotate(2deg);filter:blur(20px)"></div></div>');}}catch(e){}})();</script>
@@ -233,7 +229,7 @@ Ruuhan Malde
   <footer class="bg-gradient-to-r from-[#081032] to-[#0c1542] text-white py-8 border-t border-[#BE8E30]/30">
     <div class="container mx-auto text-center">
       <div class="mb-4">
-        <h3 class="text-xl" style="font-family: Mestizo; color: #BE8E30;">Perseverantia 2026</h3>
+        <h3 class="text-xl" style="font-family: Georgia, serif; color: #BE8E30;">Perseverantia 2026</h3>
       </div>
       <p class="text-gray-300 mb-2">&copy; 2026 Bombay Scottish School, Mahim. All rights reserved.</p>
     </div>
@@ -357,7 +353,7 @@ Ruuhan Malde
   })();
 </script>
 
-<script type="module" src="/static/events-react.js?v=20260526a"></script>
+<script type="module" src="/static/events-react.js?v=20260615a"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {

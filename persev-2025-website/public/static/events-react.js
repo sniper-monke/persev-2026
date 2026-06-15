@@ -123,9 +123,89 @@ function generateSrcset(baseUrl) {
   return parts.join(', ');
 }
 
+const EVENT_CATEGORIES = {
+  classroom: {
+    id: 'classroom',
+    label: 'Classroom',
+    title: 'View Classroom Events',
+    kicker: 'Indoor Arena'
+  },
+  stage: {
+    id: 'stage',
+    label: 'Stage',
+    title: 'View Stage Events',
+    kicker: 'Live Performance'
+  },
+  sports: {
+    id: 'sports',
+    label: 'Sports',
+    title: 'View Sports Events',
+    kicker: 'Field & Court'
+  }
+};
+
+const EVENT_TYPE_BY_NAME = {
+  ADMETA: 'classroom',
+  ARTEM: 'classroom',
+  FABULA: 'classroom',
+  FORTUNA: 'classroom',
+  CODEFERNO: 'classroom',
+  GUSTATIO: 'classroom',
+  MAHIM16: 'classroom',
+  "'AD'VENTURIUM": 'classroom',
+  EXPLORARE: 'classroom',
+  CAPTURA: 'classroom',
+  CHESS: 'classroom',
+  NEGOTIUM: 'classroom',
+  RESPUBLICA: 'classroom',
+  CARMEN: 'stage',
+  GRATIA: 'stage',
+  PANACHE: 'stage',
+  SYMPHONIA: 'stage',
+  'MR AND MS PERSEVERANTIA': 'stage',
+  FOOTBALL: 'sports',
+  BASKETBALL: 'sports',
+  'GULLY CRICKET': 'sports',
+  'TABLE TENNIS': 'sports',
+  'TUG OF WAR': 'sports',
+  'E-SPORTS': 'sports'
+};
+
+function normalizeEventName(name) {
+  return String(name || '')
+    .replace(/[\u2018\u2019`']/g, "'")
+    .trim()
+    .toUpperCase();
+}
+
+function getEventType(event) {
+  if (!event) return 'classroom';
+  if (event.eventType) return event.eventType;
+  return EVENT_TYPE_BY_NAME[normalizeEventName(event.name)] || 'classroom';
+}
+
+function getEventTypeLabel(eventType) {
+  return EVENT_CATEGORIES[eventType]?.label || 'Event';
+}
+
+function filterEventsByCategory(events, category) {
+  if (!category) return events;
+  return events.filter((event) => getEventType(event) === category);
+}
+
+function countEventsByCategory(events) {
+  const counts = { classroom: 0, stage: 0, sports: 0 };
+  events.forEach((event) => {
+    const type = getEventType(event);
+    if (counts[type] !== undefined) counts[type] += 1;
+  });
+  return counts;
+}
+
 function getEventMeta(event) {
   if (!event) return 'Perseverantia 2026';
-  return event.category || event.type || event.shortDesc || 'Perseverantia 2026';
+  const typeLabel = getEventTypeLabel(getEventType(event));
+  return event.category || event.type || event.shortDesc || `${typeLabel} · Perseverantia 2026`;
 }
 
 function getEventDescription(event) {
@@ -379,10 +459,40 @@ function useAuroraBackground(canvasRef) {
   }, [canvasRef]);
 }
 
+function EventCategoryPanel({ events, activeCategory, onCategoryChange }) {
+  const counts = countEventsByCategory(events);
+
+  return html`
+    <div className="ev-cat-panel" aria-label="Event categories">
+      <div className="ev-cat-panel__meta">
+        <div>
+          <div className="ev-cat-panel__kicker">Event Catalog</div>
+          <div className="ev-cat-panel__title">Category Filter</div>
+        </div>
+        <div className="ev-cat-panel__summary">
+          ${Object.values(EVENT_CATEGORIES).map((category) => html`
+            <button
+              key=${category.id}
+              type="button"
+              className=${`ev-cat-btn${activeCategory === category.id ? ' is-active' : ''}`}
+              aria-pressed=${activeCategory === category.id}
+              onClick=${() => onCategoryChange(activeCategory === category.id ? null : category.id)}
+            >
+              <strong>${String(counts[category.id] || 0).padStart(2, '0')}</strong>
+              <span>${category.title}</span>
+            </button>
+          `)}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function App() {
   const [siteData, setSiteData] = useState(DEFAULT_SITE);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [modalEvent, setModalEvent] = useState(null);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const backgroundCanvasRef = useRef(null);
@@ -406,8 +516,14 @@ function App() {
     };
   }, []);
 
-  const events = siteData.events || [];
+  const allEvents = siteData.events || [];
+  const events = filterEventsByCategory(allEvents, activeCategory);
   const activeEvent = events[activeIndex] || events[0] || null;
+
+  useEffect(() => {
+    setActiveIndex(0);
+    sceneApiRef.current?.jumpTo?.(0);
+  }, [activeCategory]);
 
   useEffect(() => {
     if (activeIndex >= events.length) {
@@ -437,6 +553,12 @@ function App() {
 
       <section className="selected-work fade-in-up" aria-labelledby="selected-events-title">
         <p className="section-eyebrow">${siteData.tagline || 'Events'}</p>
+
+        <${EventCategoryPanel}
+          events=${allEvents}
+          activeCategory=${activeCategory}
+          onCategoryChange=${setActiveCategory}
+        />
 
         <div className="active-showcase" aria-live="polite">
           <div className="active-showcase__count">
@@ -476,10 +598,9 @@ function App() {
                     cursor: 'grab'
                   }}
                 ></div>
-
               </div>
-            </svg>
-          </button>
+            </div>
+          </div>
         </div>
       </section>
 
