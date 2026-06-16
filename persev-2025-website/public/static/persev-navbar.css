@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "Mestizo";
-  src: url('/assets/MestizoFont.woff2') format('woff2'),
-       url('/assets/MestizoFont.woff') format('woff'),
-       url('/assets/MestizoFont.ttf') format('truetype');
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
 :root {
   --persev-nav-bg: linear-gradient(140deg, rgba(8, 21, 58, 0.9), rgba(11, 19, 46, 0.82));
   --persev-nav-border: rgba(248, 180, 45, 0.34);
@@ -25,12 +15,12 @@
   left: 50%;
   bottom: 24px;
   transform: translateX(-50%);
-  z-index: 200;
+  z-index: 9999;
   width: calc(100% - 20px);
   display: flex;
   justify-content: center;
   pointer-events: none;
-  font-family: "Rajdhani", "Mestizo", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Rajdhani", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .toormix-nav__inner {
@@ -268,11 +258,11 @@
 .toormix-overlay {
   position: fixed;
   inset: 0;
-  z-index: 220;
+  z-index: 10000;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  font-family: "Rajdhani", "Mestizo", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Rajdhani", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .toormix-overlay.is-open {

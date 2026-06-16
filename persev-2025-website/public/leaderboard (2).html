@@ -4,8 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Interschool Events — Leaderboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -1134,21 +1132,15 @@ const isIOS =
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
-// When true, heavy visual work (particles, canvas drawing) is paused to speed up tabular view
-// Start paused so the page prioritizes the tabular leaderboard (faster LCP)
-let heavyPaused = true;
 function sizeCanvas(){
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 function buildParticles(){
   particles = [];
-  // If heavy visuals are paused (e.g., table view), create a much smaller particle set
-  const count = heavyPaused
-    ? Math.min(28, Math.floor((window.innerWidth * window.innerHeight) / 90000))
-    : (isIOS
-      ? Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000))
-      : Math.min(260, Math.floor((window.innerWidth * window.innerHeight) / 6000)));
+  const count = isIOS
+    ? Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000))
+    : Math.min(260, Math.floor((window.innerWidth * window.innerHeight) / 6000));
   for (let i=0;i<count;i++){
     const depth = Math.random(); // 0 = far, 1 = close
     particles.push({
@@ -1356,7 +1348,6 @@ function applyScene(p){
 }
 
 function drawParticles(p){
-  if (heavyPaused) return; // skip drawing when table view is prioritized
   ctx.clearRect(0,0,canvas.width,canvas.height);
   for (const pt of particles){
     // Parallax: further particles move less, closer ones more
@@ -1498,40 +1489,12 @@ function renderRankingsTable(){
 
 renderRankingsTable();
 
-// Default to table view for faster loading and reduced CPU/GPU on initial load
-try {
-  if (rankingsEl) rankingsEl.classList.add('is-table-view');
-  heavyPaused = true;
-  if (canvas) canvas.style.display = 'none';
-  if (stageEl) stageEl.style.display = 'none';
-  if (rkTableWrap) rkTableWrap.setAttribute('aria-hidden', 'false');
-  if (rkViewToggle) {
-    rkViewToggle.textContent = 'View butterflies';
-    rkViewToggle.setAttribute('aria-expanded', 'true');
-  }
-} catch (e) {
-  // ignore
-}
-
 if (rkViewToggle && rkTableWrap && rankingsEl) {
   rkViewToggle.addEventListener('click', () => {
     const isTableView = rankingsEl.classList.toggle('is-table-view');
     rkViewToggle.textContent = isTableView ? 'View butterflies' : 'View tabular';
     rkViewToggle.setAttribute('aria-expanded', String(isTableView));
     rkTableWrap.setAttribute('aria-hidden', String(!isTableView));
-    // Pause heavy visuals when showing the table to speed up rendering and reduce CPU/GPU
-    heavyPaused = isTableView;
-    try {
-      if (heavyPaused) {
-        canvas.style.display = 'none';
-        if (stageEl) stageEl.style.display = 'none';
-      } else {
-        canvas.style.display = '';
-        if (stageEl) stageEl.style.display = '';
-      }
-    } catch (e) {
-      // ignore DOM errors
-    }
     hideTooltip();
   });
 }

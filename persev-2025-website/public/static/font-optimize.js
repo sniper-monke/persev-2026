@@ -7,7 +7,7 @@
     // Preload critical fonts
     preloadCritical() {
       if (!('fonts' in document)) {
-        document.documentElement.classList.add('mestizo-loaded', 'fonts-loaded');
+        document.documentElement.classList.add('fonts-loaded');
         return;
       }
 
@@ -21,13 +21,9 @@
         return new FontFaceObserver(name).load().catch(function () {});
       };
 
-      loadFont('Mestizo').then(function () {
-        document.documentElement.classList.add('mestizo-loaded');
-      });
-
-      /* Rajdhani/Orbitron are not on every page; never block on them */
+      /* Rajdhani/Orbitron/Mestizo are not on every page; never block on them for initial render */
       Promise.race([
-        Promise.all([loadFont('Rajdhani'), loadFont('Orbitron')]),
+        Promise.all([loadFont('Rajdhani'), loadFont('Orbitron'), loadFont('Mestizo')]),
         timeout(2800)
       ]).finally(function () {
         document.documentElement.classList.add('fonts-loaded');
@@ -40,6 +36,7 @@
       style.textContent = `
         @font-face {
           font-family: 'Mestizo';
+          src: url('/assets/Mestizo.woff') format('woff');
           font-display: swap;
         }
         @font-face {
@@ -49,6 +46,19 @@
         @font-face {
           font-family: 'Orbitron';
           font-display: swap;
+        }
+
+        /* Apply Mestizo font to event names */
+        .event-card-name, 
+        #activeEventTitle, 
+        .active-showcase__title, 
+        .active-showcase__title span,
+        #modalTitle,
+        #selected-events-title,
+        .card h3,
+        [data-events] h3,
+        .event-card-face .event-card-name {
+          font-family: 'Mestizo', sans-serif !important;
         }
       `;
       document.head.appendChild(style);

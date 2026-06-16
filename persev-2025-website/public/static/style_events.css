@@ -1,4 +1,8 @@
-
+@font-face {
+  font-family: 'Mestizo';
+  src: url('/assets/Mestizo.woff') format('woff');
+  font-display: swap;
+}
 
 :root {
   --bg-1: #050914;
@@ -120,7 +124,20 @@ body::after {
 h1,
 h2,
 h3 {
-  font-family: Georgia, serif;
+  font-family: 'Mestizo', Georgia, serif;
+}
+
+/* Apply Mestizo font to event names specifically */
+.event-card-name, 
+#activeEventTitle, 
+.active-showcase__title, 
+.active-showcase__title span,
+#modalTitle,
+#selected-events-title,
+.card h3,
+[data-events] h3,
+.events-react-root .events-preview-card span {
+  font-family: 'Mestizo', sans-serif !important;
 }
 
 nav {
@@ -1019,13 +1036,14 @@ main {
 
 .events-react-root .film-strip-shell,
 .events-react-root .cylinder-stage {
-  min-height: clamp(20rem, 46vw, 34rem);
+  min-height: clamp(20rem, 38vh, 30rem);
 }
 
 .events-react-root .cylinder-viewport {
   position: relative;
   overflow: hidden;
-  min-height: clamp(18rem, 42vw, 32rem);
+  min-height: clamp(18rem, 36vh, 30rem);
+  max-height: 30rem;
 }
 
 .events-react-root .react-carousel-host,
@@ -1677,11 +1695,14 @@ main {
   }
 
   .events-react-root .film-stage-wrap {
+    --carousel-stage-height: clamp(20rem, 38vh, 30rem);
     margin-top: clamp(0.7rem, 1.4vw, 1.1rem) !important;
-    width: 100vw !important;
-    margin-left: calc(50% - 50vw) !important;
-    margin-right: calc(50% - 50vw) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     padding-bottom: clamp(1.2rem, 2.2vw, 1.8rem) !important;
+    overflow: hidden;
   }
 
   .events-react-root .film-strip-shell,
@@ -1690,19 +1711,21 @@ main {
     border: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
   .events-react-root .cylinder-viewport {
-    min-height: clamp(26rem, 45vw, 37rem) !important;
-    height: clamp(26rem, 45vw, 37rem) !important;
+    min-height: var(--carousel-stage-height) !important;
+    height: var(--carousel-stage-height) !important;
+    max-height: 30rem !important;
     background: transparent !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     clip-path: none !important;
     padding-inline: 0 !important;
     box-sizing: border-box !important;
-    width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
   }
 
   .events-react-root .react-carousel-host,
@@ -1746,11 +1769,7 @@ main {
   @media (min-width: 1400px) {
     .events-react-root .film-stage-wrap {
       margin-top: clamp(0.65rem, 1vw, 0.9rem) !important;
-    }
-
-    .events-react-root .cylinder-viewport {
-      min-height: clamp(24rem, 34vw, 31rem) !important;
-      height: clamp(24rem, 34vw, 31rem) !important;
+      --carousel-stage-height: clamp(21rem, 36vh, 30rem);
     }
   }
 
@@ -1783,19 +1802,23 @@ main {
     }
 
     .events-react-root .film-stage-wrap {
-      width: 100vw !important;
-      margin-left: calc(50% - 50vw) !important;
-      margin-right: calc(50% - 50vw) !important;
+      --carousel-stage-height: clamp(17rem, 42vh, 22rem);
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       padding-inline: 0 !important;
       padding-bottom: 0.95rem !important;
     }
 
     .events-react-root .cylinder-viewport {
-      width: 100vw !important;
+      width: 100% !important;
+      max-width: 100% !important;
       margin-left: 0 !important;
-      min-height: clamp(18.5rem, 76vw, 23.5rem) !important;
-      height: clamp(18.5rem, 76vw, 23.5rem) !important;
-      overflow: visible !important;
+      min-height: var(--carousel-stage-height) !important;
+      height: var(--carousel-stage-height) !important;
+      max-height: 22rem !important;
+      overflow: hidden !important;
     }
 
     .events-react-root .film-nav-prev {
@@ -1882,6 +1905,13 @@ main {
   justify-content: flex-end;
 }
 
+.events-react-root .ev-cat-btn--all.is-active {
+  border-color: rgba(255, 225, 148, 0.42);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 225, 148, 0.2), transparent 24px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(248, 180, 45, 0.1));
+}
+
 .events-react-root .ev-cat-btn {
   position: relative;
   min-width: 132px;
@@ -1954,6 +1984,129 @@ main {
   color: rgba(255, 255, 255, 0.62);
 }
 
+.events-filter-stage {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: inherit;
+}
+
+.events-filter-stage.is-filter-enter .active-showcase {
+  animation: eventsFilterReveal 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.events-filter-stage.is-filter-enter .film-stage-wrap {
+  animation: eventsFilterReveal 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.07s both;
+}
+
+.events-filter-stage.is-filter-enter .active-showcase__title span {
+  animation: eventsTitleSwap 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.04s both;
+}
+
+.events-filter-stage.is-filter-enter .active-showcase__count {
+  animation: eventsCountPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.events-react-root .ev-cat-panel.is-filter-sheen::after {
+  content: '';
+  position: absolute;
+  inset: -40% -18%;
+  background: linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, 0.2) 48%, transparent 64%);
+  opacity: 0;
+  transform: translateX(-42%);
+  pointer-events: none;
+  animation: evCatSheen 0.82s ease both;
+}
+
+.events-react-root .ev-cat-panel.is-filter-sheen .ev-cat-btn.is-active {
+  animation: evCatBtnPulse 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes eventsFilterReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+    filter: blur(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes eventsTitleSwap {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    letter-spacing: 0.04em;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    letter-spacing: 0;
+  }
+}
+
+@keyframes eventsCountPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  70% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes evCatSheen {
+  0% {
+    opacity: 0;
+    transform: translateX(-42%);
+  }
+
+  18% {
+    opacity: 0.65;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(42%);
+  }
+}
+
+@keyframes evCatBtnPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events-filter-stage.is-filter-enter .active-showcase,
+  .events-filter-stage.is-filter-enter .film-stage-wrap,
+  .events-filter-stage.is-filter-enter .active-showcase__title span,
+  .events-filter-stage.is-filter-enter .active-showcase__count,
+  .events-react-root .ev-cat-panel.is-filter-sheen::after,
+  .events-react-root .ev-cat-panel.is-filter-sheen .ev-cat-btn.is-active {
+    animation: none !important;
+  }
+}
+
 @media (max-width: 767px) {
   .events-react-root .ev-cat-panel {
     padding: 10px;
@@ -1978,7 +2131,7 @@ main {
 
   .events-react-root .ev-cat-panel__summary {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
     justify-content: stretch;
   }

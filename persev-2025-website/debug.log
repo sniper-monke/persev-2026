@@ -59,3 +59,25 @@
 [0603/025723.250:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
 [0603/025743.784:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
 [0603/025744.208:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115430.344:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0612/115510.947:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0612/115514.323:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.323:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.323:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.324:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.325:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.329:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[0612/115514.330:ERROR:shared_image_manager.cc(358)] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.

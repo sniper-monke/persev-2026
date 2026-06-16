@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'https://esm.sh/react@18.3.1';
+import React, { useEffect, useMemo, useRef, useState } from 'https://esm.sh/react@18.3.1';
 import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 import { createPortal } from 'https://esm.sh/react-dom@18.3.1';
 import htm from 'https://esm.sh/htm@3.1.1?deps=react@18.3.1';
@@ -38,6 +38,7 @@ const DEFAULT_SITE = {
 };
 
 const THREE_EVENT_LINK = 'https://esm.sh/three@0.167.1?bundle';
+const CAROUSEL_MAX_LAYOUT_WIDTH = 1200;
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -158,7 +159,7 @@ const EVENT_TYPE_BY_NAME = {
   CHESS: 'classroom',
   NEGOTIUM: 'classroom',
   RESPUBLICA: 'classroom',
-  CARMEN: 'stage',
+  CARMEN: 'classroom',
   GRATIA: 'stage',
   PANACHE: 'stage',
   SYMPHONIA: 'stage',
@@ -168,7 +169,7 @@ const EVENT_TYPE_BY_NAME = {
   'GULLY CRICKET': 'sports',
   'TABLE TENNIS': 'sports',
   'TUG OF WAR': 'sports',
-  'E-SPORTS': 'sports'
+  'E-SPORTS': 'classroom'
 };
 
 function normalizeEventName(name) {
@@ -459,24 +460,65 @@ function useAuroraBackground(canvasRef) {
   }, [canvasRef]);
 }
 
-function EventCategoryPanel({ events, activeCategory, onCategoryChange }) {
+function useFilterTransition(activeCategory) {
+  const stageRef = useRef(null);
+  const panelRef = useRef(null);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+
+    const stage = stageRef.current;
+    const panel = panelRef.current;
+    if (!stage) return undefined;
+
+    stage.classList.remove('is-filter-enter');
+    panel?.classList.remove('is-filter-sheen');
+    void stage.offsetWidth;
+    stage.classList.add('is-filter-enter');
+    panel?.classList.add('is-filter-sheen');
+
+    const timer = window.setTimeout(() => {
+      stage.classList.remove('is-filter-enter');
+      panel?.classList.remove('is-filter-sheen');
+    }, 780);
+
+    return () => window.clearTimeout(timer);
+  }, [activeCategory]);
+
+  return { stageRef, panelRef };
+}
+
+function EventCategoryPanel({ events, activeCategory, onCategoryChange, panelRef }) {
   const counts = countEventsByCategory(events);
 
   return html`
-    <div className="ev-cat-panel" aria-label="Event categories">
+    <div className="ev-cat-panel" ref=${panelRef} aria-label="Event categories">
       <div className="ev-cat-panel__meta">
         <div>
           <div className="ev-cat-panel__kicker">Event Catalog</div>
           <div className="ev-cat-panel__title">Category Filter</div>
         </div>
         <div className="ev-cat-panel__summary">
+          <button
+            type="button"
+            className=${`ev-cat-btn ev-cat-btn--all${activeCategory === null ? ' is-active' : ''}`}
+            aria-pressed=${activeCategory === null}
+            onClick=${() => onCategoryChange(null)}
+          >
+            <strong>${String(events.length).padStart(2, '0')}</strong>
+            <span>View All Events</span>
+          </button>
           ${Object.values(EVENT_CATEGORIES).map((category) => html`
             <button
               key=${category.id}
               type="button"
               className=${`ev-cat-btn${activeCategory === category.id ? ' is-active' : ''}`}
               aria-pressed=${activeCategory === category.id}
-              onClick=${() => onCategoryChange(activeCategory === category.id ? null : category.id)}
+              onClick=${() => onCategoryChange(category.id)}
             >
               <strong>${String(counts[category.id] || 0).padStart(2, '0')}</strong>
               <span>${category.title}</span>
@@ -517,8 +559,12 @@ function App() {
   }, []);
 
   const allEvents = siteData.events || [];
-  const events = filterEventsByCategory(allEvents, activeCategory);
+  const events = useMemo(
+    () => filterEventsByCategory(allEvents, activeCategory),
+    [allEvents, activeCategory]
+  );
   const activeEvent = events[activeIndex] || events[0] || null;
+  const { stageRef, panelRef } = useFilterTransition(activeCategory);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -542,6 +588,7 @@ function App() {
       <canvas className="bg-decoration" ref=${backgroundCanvasRef} aria-hidden="true"></canvas>
       <${CarouselScene}
         events=${events}
+        ringSlotCount=${allEvents.length}
         hostRef=${sceneHostRef}
         onActiveIndexChange=${setActiveIndex}
         onOpenEvent=${setModalEvent}
@@ -558,14 +605,16 @@ function App() {
           events=${allEvents}
           activeCategory=${activeCategory}
           onCategoryChange=${setActiveCategory}
+          panelRef=${panelRef}
         />
 
+        <div className="events-filter-stage" ref=${stageRef}>
         <div className="active-showcase" aria-live="polite">
-          <div className="active-showcase__count">
+          <div className="active-showcase__count" key=${`count-${activeCategory || 'all'}-${events.length}`}>
             ${String(activeIndex + 1).padStart(2, '0')} / ${String(Math.max(events.length, 1)).padStart(2, '0')}
           </div>
           <h1 className="active-showcase__title" id="selected-events-title">
-            <span>${activeEvent ? activeEvent.name : 'Loading'}</span>
+            <span key=${activeEvent?.name || 'loading'}>${activeEvent ? activeEvent.name : 'Loading'}</span>
           </h1>
           <div className="active-showcase__meta">
             <span className="active-showcase__detail">${getEventMeta(activeEvent)}</span>
@@ -601,6 +650,7 @@ function App() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
@@ -670,7 +720,7 @@ function App() {
   `;
 }
 
-function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPausedChange, sceneApiRef }) {
+function CarouselScene({ events, ringSlotCount, hostRef, onActiveIndexChange, onOpenEvent, onPausedChange, sceneApiRef }) {
   useEffect(() => {
     const host = hostRef.current;
     if (!host || !events.length) return undefined;
@@ -679,7 +729,6 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
     let resizeObserver = null;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    // Use a conservative pixel ratio to reduce GPU memory and improve performance
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     renderer.setClearColor(0x000000, 0);
     if ('outputColorSpace' in renderer && THREE.SRGBColorSpace) {
@@ -705,7 +754,8 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
 
     const textureLoader = new THREE.TextureLoader();
     const cardGroups = [];
-    const stepAngle = (Math.PI * 2) / events.length;
+    const slotCount = Math.max(ringSlotCount || events.length, events.length);
+    const stepAngle = (Math.PI * 2) / slotCount;
     const state = {
       rotation: 0,
       spinVelocity: 0,
@@ -719,25 +769,33 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       dragMomentum: 0
     };
 
-    function getViewportMode() {
-      const width = host.clientWidth || window.innerWidth || 1;
-      if (width <= 520) return 'phone';
-      if (width <= 920) return 'tablet';
+    function getHostMetrics() {
+      const rect = host.getBoundingClientRect();
+      const width = Math.max(1, Math.round(rect.width) || host.clientWidth || 1);
+      const height = Math.max(1, Math.round(rect.height) || host.clientHeight || 1);
+      const visualWidth = window.visualViewport?.width || width;
+      const layoutWidth = Math.min(width, visualWidth, CAROUSEL_MAX_LAYOUT_WIDTH);
+      return { width, height, layoutWidth };
+    }
+
+    function getViewportMode(layoutWidth) {
+      if (layoutWidth <= 520) return 'phone';
+      if (layoutWidth <= 920) return 'tablet';
       return 'desktop';
     }
 
-    function getCarouselLayout(width, height) {
-      const viewportMode = getViewportMode();
+    function getCarouselLayout(layoutWidth, height) {
+      const viewportMode = getViewportMode(layoutWidth);
       const safeHeight = Math.max(1, height || window.innerHeight || 1);
 
       if (viewportMode === 'phone') {
         return {
           viewportMode,
           fov: 35,
-          radius: clamp(width * 0.9, 330, 430),
+          radius: clamp(layoutWidth * 0.9, 330, 430),
           cameraY: safeHeight * 0.006,
-          cameraZ: clamp(width * 2.05, 780, 1020),
-          cardHeight: clamp(Math.min(width * 0.6, safeHeight * 0.25), 218, 260),
+          cameraZ: clamp(layoutWidth * 2.05, 780, 1020),
+          cardHeight: clamp(Math.min(layoutWidth * 0.6, safeHeight * 0.25), 218, 260),
           baseScale: 0.34,
           activeScale: 0.68
         };
@@ -747,10 +805,10 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
         return {
           viewportMode,
           fov: 31,
-          radius: clamp(width * 0.54, 380, 560),
+          radius: clamp(layoutWidth * 0.54, 380, 560),
           cameraY: safeHeight * 0.01,
-          cameraZ: clamp(width * 1.16, 860, 1160),
-          cardHeight: clamp(width * 0.29, 224, 282),
+          cameraZ: clamp(layoutWidth * 1.16, 860, 1160),
+          cardHeight: clamp(layoutWidth * 0.29, 224, 282),
           baseScale: 0.44,
           activeScale: 0.52
         };
@@ -759,19 +817,18 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       return {
         viewportMode,
         fov: 27,
-        radius: clamp(width * 0.47, 620, 1050),
+        radius: clamp(layoutWidth * 0.47, 620, 1050),
         cameraY: safeHeight * 0.018,
-        cameraZ: clamp(width * 0.9, 1080, 1540),
-        cardHeight: clamp(width * 0.22, 310, 380),
+        cameraZ: clamp(layoutWidth * 0.9, 1080, 1540),
+        cardHeight: clamp(layoutWidth * 0.22, 310, 380),
         baseScale: 0.58,
         activeScale: 0.5
       };
     }
 
     function syncRadius() {
-      const width = host.clientWidth || 1;
-      const height = host.clientHeight || 1;
-      const layout = getCarouselLayout(width, height);
+      const { width, height, layoutWidth } = getHostMetrics();
+      const layout = getCarouselLayout(layoutWidth, height);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.fov = layout.fov;
@@ -802,7 +859,18 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
       return new THREE.CanvasTexture(canvas);
     }
 
-    async function buildCard(event, index, hostWidth) {
+    async function waitForHostLayout() {
+      for (let attempt = 0; attempt < 90; attempt += 1) {
+        const metrics = getHostMetrics();
+        if (metrics.width > 48 && metrics.height > 48) {
+          return metrics;
+        }
+        await new Promise((resolve) => window.requestAnimationFrame(resolve));
+      }
+      return getHostMetrics();
+    }
+
+    async function buildCard(event, index, layoutWidth, hostHeight) {
       try {
         let texture;
         try {
@@ -825,7 +893,7 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
 
         try {
           // Reduce texture resolution to the displayed card size to save memory and bandwidth
-          const layout = getCarouselLayout(hostWidth || host.clientWidth || 1, host.clientHeight || window.innerHeight || 1);
+          const layout = getCarouselLayout(layoutWidth, hostHeight);
           const image = texture.image;
           const imageAspect = width > 0 && height > 0 ? width / height : 0.8;
           const cardHeight = layout.cardHeight;
@@ -876,18 +944,18 @@ function CarouselScene({ events, hostRef, onActiveIndexChange, onOpenEvent, onPa
           console.error('Texture processing error:', texErr);
         }
 
-const imageMaterialFront = new THREE.MeshStandardMaterial({
-  map: texture,
-  transparent: true,
-  side: THREE.DoubleSide,
-  opacity: 0.98,
-  emissive: new THREE.Color(0x404060),
+        const imageMaterialFront = new THREE.MeshStandardMaterial({
+          map: texture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          opacity: 0.98,
+          emissive: new THREE.Color(0x404060),
           emissiveIntensity: 0.28,
           roughness: 0.7,
           metalness: 0.1
         });
 
-        const layout = getCarouselLayout(hostWidth || host.clientWidth || 1, host.clientHeight || window.innerHeight || 1);
+        const layout = getCarouselLayout(layoutWidth, hostHeight);
         const imageAspect = width > 0 && height > 0 ? width / height : 0.8;
         const cardHeight = layout.cardHeight;
         const cardWidth = cardHeight * clamp(imageAspect, 0.68, 0.92);
@@ -916,14 +984,14 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
           return;
         }
 
-        const hostWidth = host.clientWidth || 1440;
+        const { layoutWidth, height: hostHeight } = await waitForHostLayout();
+        syncRadius();
         for (let index = 0; index < events.length; index += 1) {
           if (disposed) return;
           try {
-            await buildCard(events[index], index, hostWidth);
+            await buildCard(events[index], index, layoutWidth, hostHeight);
           } catch (cardBuildErr) {
             console.error(`Failed to build card ${index}:`, cardBuildErr);
-            // Continue with next card
           }
         }
 
@@ -934,7 +1002,6 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
         animate();
       } catch (error) {
         console.error('Error initializing carousel:', error);
-        // If init fails, try to at least start animating with empty scene
         try {
           syncRadius();
           animate();
@@ -948,6 +1015,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
     resizeObserver = new ResizeObserver(resizeHandler);
     resizeObserver.observe(host);
     window.addEventListener('resize', resizeHandler);
+    window.visualViewport?.addEventListener('resize', resizeHandler);
+    window.visualViewport?.addEventListener('scroll', resizeHandler);
 
     const pointerState = {
       startX: 0,
@@ -1073,17 +1142,18 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
       let bestIndex = 0;
       let bestDepth = -Infinity;
       const time = (typeof performance !== 'undefined' && performance.now) ? performance.now() * 0.001 : 0;
+      const { layoutWidth, height } = getHostMetrics();
+      const layout = getCarouselLayout(layoutWidth, height);
 
       try {
         if (cardGroups && Array.isArray(cardGroups)) {
           cardGroups.forEach((cardGroup, index) => {
             try {
               if (!cardGroup || typeof cardGroup !== 'object') return;
-              
+
               const angle = (index * stepAngle) + state.rotation;
               const depth = Math.cos(normalizeAngle(angle));
               const positiveDepth = Math.max(0, depth);
-              const layout = getCarouselLayout(host.clientWidth || 1, host.clientHeight || 1);
               const selectionStrength = Math.pow(positiveDepth, layout.viewportMode === 'phone' ? 2.4 : 1.8);
               const bob = Math.sin((time * 1.12) + (index * 0.72)) * (2.4 + selectionStrength * 5.4);
               const tilt = Math.sin((time * 1.02) + (index * 0.65)) * 0.035;
@@ -1098,7 +1168,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
               if (cardGroup.scale && typeof cardGroup.scale.setScalar === 'function') {
                 cardGroup.scale.setScalar(scale);
               }
-              
+
               if (cardGroup.children && Array.isArray(cardGroup.children)) {
                 cardGroup.children.forEach((mesh) => {
                   if (mesh && mesh.material && typeof opacity === 'number') {
@@ -1134,7 +1204,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
       } catch (renderError) {
         console.error('Error rendering scene:', renderError);
       }
-      
+
       requestAnimationFrame(animate);
     }
 
@@ -1145,6 +1215,8 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
     return () => {
       disposed = true;
       window.removeEventListener('resize', resizeHandler);
+      window.visualViewport?.removeEventListener('resize', resizeHandler);
+      window.visualViewport?.removeEventListener('scroll', resizeHandler);
       if (resizeObserver) resizeObserver.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
@@ -1166,7 +1238,7 @@ const imageMaterialFront = new THREE.MeshStandardMaterial({
       });
       sceneApiRef.current = null;
     };
-  }, [events, hostRef, onActiveIndexChange, onOpenEvent, onPausedChange, sceneApiRef]);
+  }, [events, ringSlotCount, hostRef, onActiveIndexChange, onOpenEvent, onPausedChange, sceneApiRef]);
 
   return null;
 }

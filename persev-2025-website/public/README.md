@@ -22,7 +22,7 @@ This is a full static rebuild optimized for readability and maintainability.
 - `assets/placeholder.svg`
 
 ## Theme assets
-Primary font: Mestizo 
+Primary font: serif display 
 
 Secondary font: Noto Serif Ethiopic Condensed
 

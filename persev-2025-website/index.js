@@ -92,6 +92,7 @@ app.get("/api/blob-data", (_req, res) => {
 app.get("/api/registrations", (_req, res) => {
   res.json(registrations);
 });
+*/
 
 /*
   Starts the HTTP server and gracefully handles a busy port by retrying
