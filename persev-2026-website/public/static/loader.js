@@ -555,9 +555,9 @@ async function initLoader() {
     try {
       if (!sessionStorage.getItem('persev_loader_seen')) {
         sessionStorage.setItem('persev_loader_seen', '1');
-        return false;
+        return true;
       }
-      return true;
+      return false;
     } catch { return false; }
   })();
 
@@ -608,10 +608,6 @@ async function initLoader() {
   await Promise.all([preloadAssets(), loadPromise]);
 
   if (skipVisual) {
-    window.dispatchEvent(new CustomEvent('persev-loader-complete'));
-    document.documentElement.classList.remove('loader-pending');
-    document.body.classList.remove('loader-active');
-    document.body.style.visibility = '';
     return;
   }
 
