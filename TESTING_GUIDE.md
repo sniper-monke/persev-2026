@@ -4,7 +4,7 @@
 
 ### 1. Start Development Server
 ```bash
-cd persev-2025-website
+cd persev-2026-website
 npm start
 # Server running on http://localhost:3000
 ```
@@ -98,7 +98,7 @@ Test these viewport sizes:
 #### Lighthouse Audit
 ```bash
 # Run Lighthouse
-cd persev-2025-website
+cd persev-2026-website
 bash run-lighthouse.sh
 
 # Or manual:
@@ -237,7 +237,7 @@ console.table(sessionStorage.getItem('persev_vitals'))
 
 ### Run All Tests
 ```bash
-cd persev-2025-website
+cd persev-2026-website
 bash test-mobile-optimization.sh
 ```
 

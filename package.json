@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "description": "Workspace-level convenience scripts",
   "scripts": {
-    "start": "npm --prefix ./persev-2025-website run start",
-    "dev": "npm --prefix ./persev-2025-website run dev",
-    "start:legacy": "npm --prefix ./persev-2025-website run start",
-    "dev:legacy": "npm --prefix ./persev-2025-website run dev",
+    "start": "npm --prefix ./persev-2026-website run start",
+    "dev": "npm --prefix ./persev-2026-website run dev",
+    "start:legacy": "npm --prefix ./persev-2026-website run start",
+    "dev:legacy": "npm --prefix ./persev-2026-website run dev",
     "optimize-images": "node ./tools/optimize-images.js"
   },
   "devDependencies": {

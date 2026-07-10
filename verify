@@ -4,7 +4,7 @@ const assert = (cond, msg) => console.log(cond ? '  PASS: ' + msg : '  FAIL: ' +
 console.log('=== VERIFICATION ===\n');
 
 // 1. Bundle patches
-let b = fs.readFileSync('persev-2025-website/public/assets/index-GnKc23iY.js', 'utf8');
+let b = fs.readFileSync('persev-2026-website/public/assets/index-GnKc23iY.js', 'utf8');
 console.log('Bundle mobile/WebKit behavior:');
 assert(/antialias:![A-Za-z_$][\w$]*/.test(b), 'antialias iOS off');
 assert(/powerPreference:[A-Za-z_$][\w$]*\?"default":"high-performance"/.test(b), 'powerPreference iOS default');
@@ -25,33 +25,33 @@ assert(b.includes('Transform'), 'display titles preserved');
 assert(b.includes('setClearColor("#141518",0)'), 'canvas clear color remains transparent');
 
 // 2. Leaderboard
-let lb = fs.readFileSync('persev-2025-website/public/leaderboard (2).html', 'utf8');
+let lb = fs.readFileSync('persev-2026-website/public/leaderboard (2).html', 'utf8');
 console.log('\nLeaderboard (2).html:');
 assert(lb.includes('isIOS'), 'iOS detection added');
 assert(lb.includes("const ctx = canvas.getContext('2d');"), 'particle canvas remains enabled');
 assert(lb.includes('Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000))'), 'lighter particle budget used on iOS');
 
 // 3. Organizing committee
-let oc = fs.readFileSync('persev-2025-website/public/organizing-committee.html', 'utf8');
+let oc = fs.readFileSync('persev-2026-website/public/organizing-committee.html', 'utf8');
 console.log('\norganizing-committee.html:');
 assert(oc.includes('isIOS'), 'iOS detection added');
 assert(oc.includes('!isIOS &&'), 'WebGL skipped on iOS');
 
 // 4. Index.html
-let idx = fs.readFileSync('persev-2025-website/public/index.html', 'utf8');
+let idx = fs.readFileSync('persev-2026-website/public/index.html', 'utf8');
 console.log('\nindex.html:');
 assert(idx.includes('webglcontextlost'), 'WebGL context loss handler added');
 
 // 5. Landing.html - already had iOS guards, verify they are still intact
-let land = fs.readFileSync('persev-2025-website/public/landing.html', 'utf8');
+let land = fs.readFileSync('persev-2026-website/public/landing.html', 'utf8');
 console.log('\nlanding.html (existing guards):');
 assert(land.includes('const isMobileWebKit'), 'iOS detection present');
 assert(land.includes('if (!isMobileWebKit)'), 'particles skipped on iOS');
 assert(land.includes("!(/iP(hone|od|ad)/.test(navigator.userAgent))"), 'deferred scripts skipped on iOS');
 
 // 6. Global shared scripts
-let transitions = fs.readFileSync('persev-2025-website/public/static/cloud-transitions.js', 'utf8');
-let cursor = fs.readFileSync('persev-2025-website/public/static/cursor-fx.js', 'utf8');
+let transitions = fs.readFileSync('persev-2026-website/public/static/cloud-transitions.js', 'utf8');
+let cursor = fs.readFileSync('persev-2026-website/public/static/cursor-fx.js', 'utf8');
 console.log('\nshared scripts:');
 assert(transitions.includes("navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1"), 'transition script catches iPadOS desktop UA');
 assert(transitions.includes('window.PersevTransitions = {'), 'transition fallback API present');

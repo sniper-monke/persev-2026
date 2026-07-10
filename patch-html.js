@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const projectDir = path.join(__dirname, 'persev-2025-website', 'public');
+const projectDir = path.join(__dirname, 'persev-2026-website', 'public');
 const bundlePath = path.join(projectDir, 'assets', 'index-GnKc23iY.js');
 
 function replaceExact(source, find, replace, label) {

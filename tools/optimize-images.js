@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const assetsDir = path.join(__dirname, '..', 'persev-2025-website', 'public', 'assets');
+const assetsDir = path.join(__dirname, '..', 'persev-2026-website', 'public', 'assets');
 const exts = ['.jpg', '.jpeg', '.png', '.webp'];
 const widths = [360, 720, 1280, 1920];
 const formats = ['avif', 'webp'];

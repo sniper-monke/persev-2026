@@ -27,7 +27,7 @@
 
 ### 1. Run Server
 ```bash
-cd persev-2025-website
+cd persev-2026-website
 npm start
 # Visit http://localhost:3000
 ```

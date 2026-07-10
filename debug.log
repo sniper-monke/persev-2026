@@ -35,3 +35,9 @@
 [0525/233141.518:ERROR:gl_utils.cc(431)] [.WebGL-0x5fcc00548000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
 [0525/233149.066:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A0C0B4012C090000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
 [0525/233149.157:ERROR:gl_utils.cc(431)] [.WebGL-0x7d94000ecd00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[0707/165214.767:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0707/165247.661:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0708/085550.732:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0708/085554.250:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A020B0009C450000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[0708/085720.274:WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[0708/085720.597:ERROR:gles2_cmd_decoder_passthrough.cc(1082)] [GroupMarkerNotSet(crbug.com/242999)!:A060A300CC370000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.

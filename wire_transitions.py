@@ -1,6 +1,6 @@
 import os
 
-base = r'C:\Users\Aarav K\Desktop\persev-rebuild\persev-2025-website\public'
+base = r'C:\Users\Aarav K\Desktop\persev-rebuild\persev-2026-website\public'
 tag = '<script src="/static/page-transitions.js?v=20260426a"></script>'
 
 files = [
