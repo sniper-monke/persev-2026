@@ -551,31 +551,19 @@ async function initLoader() {
     return;
   }
 
-  const skipVisual = (() => {
-    try {
-      if (!sessionStorage.getItem('persev_loader_seen')) {
-        sessionStorage.setItem('persev_loader_seen', '1');
-        return true;
-      }
-      return false;
-    } catch { return false; }
-  })();
-
   state.mounted = true;
 
   ensureStyles();
 
-  if (!skipVisual) {
-    document.documentElement.classList.add('loader-pending');
-    document.body.classList.add('loader-active');
-  }
+  document.documentElement.classList.add('loader-pending');
+  document.body.classList.add('loader-active');
 
-  const view = skipVisual ? null : createLoaderDom();
-  if (view) document.body.appendChild(view.root);
+  const view = createLoaderDom();
+  document.body.appendChild(view.root);
   const mountedAt = performance.now();
 
   let particleController, butterflyController;
-  if (!skipVisual && view) {
+  if (view) {
     particleController = initParticles(view.particles, 160, {
       hueMin: 190,
       hueMax: 240,
@@ -607,16 +595,33 @@ async function initLoader() {
 
   await Promise.all([preloadAssets(), loadPromise]);
 
-  if (skipVisual) {
-    return;
-  }
+  const isEventsPage = /events\.html$/.test(location.pathname) || location.pathname === '/events.html';
+
+  const dismissLoader = () => {
+    cleanupLoader(view, particleController, butterflyController);
+  };
 
   const minVisibleMs = Math.max(3000, Number(window.__PERSEV_LOADER_MIN_MS || 0));
   const remainingVisibleMs = Math.max(0, minVisibleMs - (performance.now() - mountedAt));
 
-  state.settleTimer = window.setTimeout(() => {
-    cleanupLoader(view, particleController, butterflyController);
-  }, 300 + remainingVisibleMs);
+  if (isEventsPage && !window.__PERSEV_CAROUSEL_READY) {
+    const carouselTimeout = window.setTimeout(() => {
+      state.settleTimer = window.setTimeout(dismissLoader, 300);
+    }, 15000);
+
+    const onReady = () => {
+      window.clearTimeout(carouselTimeout);
+      window.removeEventListener('persev-carousel-ready', onReady);
+      const extraWait = Math.max(0, remainingVisibleMs - (performance.now() - mountedAt));
+      state.settleTimer = window.setTimeout(dismissLoader, 300 + extraWait);
+    };
+
+    window.addEventListener('persev-carousel-ready', onReady, { once: true });
+
+    state.timers.push(carouselTimeout);
+  } else {
+    state.settleTimer = window.setTimeout(dismissLoader, 300 + remainingVisibleMs);
+  }
 }
 
 if (typeof window !== 'undefined') {

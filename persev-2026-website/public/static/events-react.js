@@ -952,6 +952,8 @@ function CarouselScene({ events, ringSlotCount, hostRef, onActiveIndexChange, on
           console.warn('No events data available');
           syncRadius();
           animate();
+          window.__PERSEV_CAROUSEL_READY = true;
+          window.dispatchEvent(new Event('persev-carousel-ready'));
           return;
         }
 
@@ -971,11 +973,15 @@ function CarouselScene({ events, ringSlotCount, hostRef, onActiveIndexChange, on
           onActiveIndexChange(0);
         }
         animate();
+        window.__PERSEV_CAROUSEL_READY = true;
+        window.dispatchEvent(new Event('persev-carousel-ready'));
       } catch (error) {
         console.error('Error initializing carousel:', error);
         try {
           syncRadius();
           animate();
+          window.__PERSEV_CAROUSEL_READY = true;
+          window.dispatchEvent(new Event('persev-carousel-ready'));
         } catch (fallbackErr) {
           console.error('Even fallback animate failed:', fallbackErr);
         }

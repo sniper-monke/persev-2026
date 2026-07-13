@@ -1,6 +1,6 @@
 // Service Worker for Perseverantia - Performance & Offline Support
-const CACHE_NAME = 'perseverantia-v8';
-const RUNTIME_CACHE = 'perseverantia-runtime-v8';
+const CACHE_NAME = 'perseverantia-v10';
+const RUNTIME_CACHE = 'perseverantia-runtime-v10';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

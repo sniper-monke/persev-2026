@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Interschool Events ΓÇö Leaderboard</title>
+<title>Interschool Events G�� Leaderboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/persev-navbar.css?v=20260505a">
+<link rel="stylesheet" href="/static/persev-navbar.css?v=20260617a">
 <style>
+  @font-face { font-family: Mestizo; src: url('/assets/MestizoFont.woff2') format('woff2'), url('/assets/MestizoFont.woff') format('woff'), url('/assets/MestizoFont.ttf') format('truetype'); }
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body {
     background: radial-gradient(ellipse at top, #08101f 0%, #030712 45%, #000814 100%);
@@ -24,7 +25,7 @@
   }
 
   /* ======================================================================
-     FIXED STAGE ΓÇö all scene 1-4 content lives here. It stays pinned while
+     FIXED STAGE G�� all scene 1-4 content lives here. It stays pinned while
      the user scrolls; all movement is computed from scroll progress.
      ====================================================================== */
   #stage {
@@ -46,7 +47,7 @@
     z-index: 1;
   }
 
-  /* Parallax layers ΓÇö each scene container moves independently based on progress */
+  /* Parallax layers G�� each scene container moves independently based on progress */
   .scene {
     position:absolute;
     inset:0;
@@ -284,7 +285,7 @@
   }
 
   /* ======================================================================
-     RANKINGS SECTION ΓÇö appears AFTER virtual scroll finishes.
+     RANKINGS SECTION G�� appears AFTER virtual scroll finishes.
      It exists as normal flow starting at 600vh (the end of the stage).
      ====================================================================== */
   #rankings {
@@ -1053,6 +1054,8 @@
     </div>
   </div>
   <button class="rk-view-toggle" id="rkViewToggle" type="button" aria-expanded="false" aria-controls="rkTableWrap">View tabular</button>
+
+<footer style="background: linear-gradient(to right, #081032, #0c1542); color: white; padding: 2rem 0; border-top: 1px solid rgba(190, 142, 48, 0.3);"><div style="max-width: 1200px; margin: 0 auto; text-align: center;"><div style="margin-bottom: 1rem;"><img src="/assets/landing.png" alt="Perseverantia Logo" style="width: 3rem; height: 3rem; margin: 0 auto 0.5rem; display: block; filter: drop-shadow(0 0 10px rgba(190, 142, 48, 0.5));"><h3 style="font-size: 1.25rem; font-family: Mestizo, Georgia, serif; color: #BE8E30;">Perseverantia 2026</h3></div><p style="color: #d1d5db; margin-bottom: 0.5rem;">&copy; 2026 Bombay Scottish School, Mahim. All rights reserved.</p></div></footer>
 </section>
 
 <!-- Tooltip -->
@@ -1314,7 +1317,7 @@ function drawParticles(p){
 }
 
 /* ============================================================
-   RAF LOOP WITH LERP SMOOTHING ΓÇö creates silky scroll feel
+   RAF LOOP WITH LERP SMOOTHING G�� creates silky scroll feel
    ============================================================ */
 function loop(){
   currentProgress = lerp(currentProgress, targetProgress, isMobileLeaderboard() ? 0.045 : 0.08);
@@ -1709,7 +1712,8 @@ window.addEventListener('keydown', (e) => {
 });
 </script>
 
-<script defer src="/static/persev-navbar.js?v=20260505"></script>
-<script type="module" src="/static/loader.js?v=20260707a"></script>
+
+<script defer src="/static/persev-navbar.js?v=20260617a"></script>
+<script type="module" src="/static/loader.js?v=20260713a"></script>
 </body>
 </html>
