@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Interschool Events G�� Leaderboard</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<title>Leaderboard - Perseverantia 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -929,7 +930,15 @@
       height: 14px;
     }
   }
+  html.loader-pending body {
+    background: #04040e;
+    overflow: hidden;
+  }
+  html.loader-pending body> :not(.persev-loader-root) {
+    visibility: hidden !important;
+  }
 </style>
+<script>document.documentElement.classList.add('loader-pending');</script>
 </head>
 <body>
 
@@ -1055,7 +1064,7 @@
   </div>
   <button class="rk-view-toggle" id="rkViewToggle" type="button" aria-expanded="false" aria-controls="rkTableWrap">View tabular</button>
 
-<footer style="background: linear-gradient(to right, #081032, #0c1542); color: white; padding: 2rem 0; border-top: 1px solid rgba(190, 142, 48, 0.3);"><div style="max-width: 1200px; margin: 0 auto; text-align: center;"><div style="margin-bottom: 1rem;"><img src="/assets/landing.png" alt="Perseverantia Logo" style="width: 3rem; height: 3rem; margin: 0 auto 0.5rem; display: block; filter: drop-shadow(0 0 10px rgba(190, 142, 48, 0.5));"><h3 style="font-size: 1.25rem; font-family: Mestizo, Georgia, serif; color: #BE8E30;">Perseverantia 2026</h3></div><p style="color: #d1d5db; margin-bottom: 0.5rem;">&copy; 2026 Bombay Scottish School, Mahim. All rights reserved.</p></div></footer>
+<footer style="padding: 3rem 0 1.5rem; text-align: center;"><img src="/assets/landing.png" alt="" style="width: 2.5rem; height: 2.5rem; margin: 0 auto 0.6rem; display: block; opacity: 0.12; filter: grayscale(1) brightness(0.4);"><p style="font-family: Mestizo, Georgia, serif; font-size: 0.95rem; color: rgba(255,255,255,0.15); margin-bottom: 0.35rem;">Perseverantia 2026</p><p style="font-size: 0.75rem; color: rgba(255,255,255,0.1); letter-spacing: 0.04em;">&copy; 2026 Bombay Scottish School, Mahim</p></footer>
 </section>
 
 <!-- Tooltip -->

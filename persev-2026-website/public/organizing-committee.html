@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Persev OC 26" />
     <meta name="description" content="Meet the Organising Committee of Perseverantia, Bombay Scottish School, Mahim.">
-    <link rel="icon" type="image/png" href="/assets/landing.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/assets/landing.png" />
     <link rel="stylesheet" href="/static/cursor-fx.css?v=20260407c" />
@@ -51,6 +51,15 @@
         #loading-screen.fade-out {
             opacity: 0;
             pointer-events: none;
+        }
+
+        html.loader-pending body {
+            background: #04040e;
+            overflow: hidden;
+        }
+
+        html.loader-pending body> :not(.persev-loader-root) {
+            visibility: hidden !important;
         }
 
         /* Enhanced Background and Animations */
@@ -539,7 +548,9 @@
             margin-bottom: 0.3rem !important;
             border-radius: 8px !important;
         }
-    </style> <!-- Flash prevention: hide body and show placeholder immediately if coming from transition -->
+    </style>
+    <script>document.documentElement.classList.add('loader-pending');</script>
+    <!-- Flash prevention: hide body and show placeholder immediately if coming from transition -->
     <script>(function () { try { if (sessionStorage.getItem('persev_transition_state')) { document.documentElement.style.background = '#050914'; document.write('<style>body{visibility:hidden;background:#050914}</style><div id="cloud-placeholder" style="position:fixed;inset:0;z-index:2147483647;background:linear-gradient(135deg,#1a3a6b 0%,#3a7abf 50%,#89b9e0 100%);opacity:0.9;transition:opacity 0.3s"><div style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(-10%) rotate(-2deg);filter:blur(20px)"></div><div style="position:absolute;right:0;top:0;bottom:0;width:60%;background:linear-gradient(270deg,#4a6fa5 0%,#6b8cae 100%);transform:translateX(10%) rotate(2deg);filter:blur(20px)"></div></div>'); } } catch (e) { } })();</script>
 </head>
 

@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Interschool Events ΓÇö Leaderboard</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<title>Leaderboard - Perseverantia 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -928,7 +929,15 @@
       height: 14px;
     }
   }
+  html.loader-pending body {
+    background: #04040e;
+    overflow: hidden;
+  }
+  html.loader-pending body> :not(.persev-loader-root) {
+    visibility: hidden !important;
+  }
 </style>
+<script>document.documentElement.classList.add('loader-pending');</script>
 </head>
 <body>
 
