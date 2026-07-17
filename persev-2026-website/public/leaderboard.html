@@ -26,7 +26,7 @@
   }
 
   /* ======================================================================
-     FIXED STAGE G�� all scene 1-4 content lives here. It stays pinned while
+     FIXED STAGE — all scene 1-4 content lives here. It stays pinned while
      the user scrolls; all movement is computed from scroll progress.
      ====================================================================== */
   #stage {
@@ -48,7 +48,7 @@
     z-index: 1;
   }
 
-  /* Parallax layers G�� each scene container moves independently based on progress */
+  /* Parallax layers — each scene container moves independently based on progress */
   .scene {
     position:absolute;
     inset:0;
@@ -286,7 +286,7 @@
   }
 
   /* ======================================================================
-     RANKINGS SECTION G�� appears AFTER virtual scroll finishes.
+     RANKINGS SECTION — appears AFTER virtual scroll finishes.
      It exists as normal flow starting at 600vh (the end of the stage).
      ====================================================================== */
   #rankings {
@@ -1326,7 +1326,7 @@ function drawParticles(p){
 }
 
 /* ============================================================
-   RAF LOOP WITH LERP SMOOTHING G�� creates silky scroll feel
+   RAF LOOP WITH LERP SMOOTHING — creates silky scroll feel
    ============================================================ */
 function loop(){
   currentProgress = lerp(currentProgress, targetProgress, isMobileLeaderboard() ? 0.045 : 0.08);
