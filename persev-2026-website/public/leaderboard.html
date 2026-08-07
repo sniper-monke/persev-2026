@@ -975,9 +975,9 @@
     <!-- Text -->
     <div class="slide-text" id="text-1">
       <div class="rank-label">1ST PLACE</div>
-      <div class="name" data-placeholder>[PARTICIPANT NAME]</div>
+      <div class="name" data-placeholder>Bombay Scottish School</div>
       <div class="divider"></div>
-      <div class="points">[0000] PTS</div>
+      <div class="points">10000 PTS</div>
     </div>
   </div>
 
@@ -1043,8 +1043,8 @@
   <div class="rk-table-wrap" id="rkTableWrap" aria-hidden="true">
     <div class="rk-table-meta">
       <div>
-        <div class="rk-table-kicker">Rankings Array</div>
-        <div class="rk-table-title">Tabular Flight Log</div>
+        <div class="rk-table-kicker">Live Rankings</div>
+        <div class="rk-table-title">Perseverantia 2026 Leaderboard</div>
       </div>
       <div class="rk-table-summary" id="rkTableSummary"></div>
     </div>
@@ -1358,8 +1358,9 @@ const palette = [
   ['#d7dce6','#ffffff']
 ];
 
-// USER-DEFINED BUTTERFLY DATA
-const butterflyData = [
+// USER-DEFINED BUTTERFLY DATA (seed + offline fallback; replaced by the
+// Google Sheet when LEADERBOARD_SHEET_CSV is set below)
+let butterflyData = [
   { name: "P1", points: 8500 },
   { name: "P2", points: 9200 },
   { name: "P3", points: 7800 },
@@ -1402,12 +1403,174 @@ const butterflyData = [
   { name: "P40", points: 8050 }
 ];
 
-// Sort by points (highest first) and assign ranks
-const sortedData = [...butterflyData].sort((a, b) => b.points - a.points);
-const rankedData = sortedData.map((butterfly, idx) => ({
-  ...butterfly,
-  rank: idx + 4
-}));
+// Sort by points (highest first) and assign ranks. Re-run on sheet refresh.
+let rankedData = [];
+
+function recomputeRanks(){
+  rankedData = [...butterflyData]
+    .sort((a, b) => b.points - a.points)
+    .map((butterfly, idx) => ({
+      ...butterfly,
+      rank: idx + 1
+    }));
+}
+
+/* ============================================================
+   GOOGLE SHEETS LIVE DATA
+   The leaderboard refreshes itself from a Google Sheet published
+   as CSV. Paste the published link into LEADERBOARD_SHEET_CSV
+   below (step-by-step guide: LEADERBOARD-SHEET-GUIDE.md at the
+   repo root). If the link is empty or the fetch fails, the seed
+   data above is used and the page never breaks.
+   ============================================================ */
+// Live scores are pulled from this exported CSV. The sheet stores one
+// school per COLUMN: school codes on row 1 (C1:AO1) and the final scores
+// on row 40 (C40:AO40) — hence LEADERBOARD_TRANSPOSED below. Changes the
+// boss makes to those cells are picked up automatically (every refresh).
+// gid=85932739 selects the "SCORES" tab (not the default first tab).
+const LEADERBOARD_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1RDQ6q49hRc9aELG398Ub5YTfSp4SPOv2_6zRQmawrAY/export?format=csv&gid=85932739";
+const LEADERBOARD_REFRESH_MS = 30000;
+// When true, the loader reads names from a header row and scores from a
+// totals row (one school per column). When false it uses the usual
+// one-school-per-row layout with header-keyword detection.
+const LEADERBOARD_TRANSPOSED = true;
+
+// Header keywords used to auto-detect which columns hold the school
+// code/name and which hold the scores. Row 1 of the sheet is treated
+// as a header row when it matches both keyword sets.
+const SCHOOL_COLUMN_KEYWORDS = ["school", "team", "name", "institution", "code"];
+const POINTS_COLUMN_KEYWORDS = ["point", "score", "total", "marks", "pts"];
+
+// Minimal quote-aware CSV row parser (handles school names with commas).
+function parseCSVRows(text){
+  const rows = [];
+  let row = [], cell = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const ch = text[i];
+    if (inQuotes){
+      if (ch === '"'){
+        if (text[i + 1] === '"'){ cell += '"'; i++; }
+        else inQuotes = false;
+      } else cell += ch;
+    } else if (ch === '"'){
+      inQuotes = true;
+    } else if (ch === ','){
+      row.push(cell); cell = '';
+    } else if (ch === '\n' || ch === '\r'){
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    } else {
+      cell += ch;
+    }
+  }
+  if (cell.length || row.length){ row.push(cell); rows.push(row); }
+  return rows;
+}
+
+// Detect which columns hold school name and points. Uses header-row
+// keywords first, then falls back to column order (1st = name, 2nd = points).
+function detectColumns(rows){
+  let nameIdx = 0, pointsIdx = 1, start = 0;
+  if (rows.length > 0){
+    const header = (rows[0] || []).map(h => String(h).trim().toLowerCase());
+    const nameHit = header.findIndex(h => SCHOOL_COLUMN_KEYWORDS.some(k => h.includes(k)));
+    const pointsHit = header.findIndex(h => POINTS_COLUMN_KEYWORDS.some(k => h.includes(k)));
+    if (nameHit !== -1 && pointsHit !== -1 && nameHit !== pointsHit){
+      nameIdx = nameHit;
+      pointsIdx = pointsHit;
+      start = 1;
+    }
+  }
+  return { nameIdx, pointsIdx, start };
+}
+
+// One-school-per-row layout: each row is one entry, columns are detected
+// from the header keywords (or fall back to 1st = name, 2nd = points).
+function parseStandardLayout(rows){
+  const { nameIdx, pointsIdx, start } = detectColumns(rows);
+  const data = [];
+  for (let i = start; i < rows.length; i++){
+    const name = String(rows[i][nameIdx] || '').trim();
+    const pts = parseInt(rows[i][pointsIdx], 10);
+    if (name && Number.isFinite(pts)) data.push({ name, points: pts });
+  }
+  return data;
+}
+
+// Transposed layout: schools live across columns instead of rows. The
+// names row is the first row with several non-boolean, non-numeric cells
+// (the C1:AO1 school codes); the scores row is the last row that is mostly
+// numeric (the C40:AO40 FINAL totals). Each column zips a name to a score.
+function parseTransposedLayout(rows){
+  let nameRow = -1, scoreRow = -1;
+  rows.forEach((row, idx) => {
+    const cells = row.slice(1);
+    const nonEmpty = cells.filter(c => String(c).trim() !== '');
+    const numeric = nonEmpty.filter(c => /^\d+$/.test(String(c).trim()));
+    if (nameRow === -1 && nonEmpty.length >= 3 && numeric.length / nonEmpty.length < 0.5) nameRow = idx;
+    if (numeric.length >= 3) scoreRow = idx;
+  });
+  if (nameRow === -1 || scoreRow === -1) return [];
+  const names = rows[nameRow], scores = rows[scoreRow];
+  const data = [];
+  for (let c = 1; c < Math.max(names.length, scores.length); c++){
+    const name = String(names[c] || '').trim();
+    const pts = parseInt(scores[c], 10);
+    if (name && Number.isFinite(pts)) data.push({ name, points: pts });
+  }
+  return data;
+}
+
+let _sheetLoading = false;
+let lastDataKey = '';
+async function loadLeaderboardFromSheet(){
+  if (!LEADERBOARD_SHEET_CSV || _sheetLoading) return;
+  _sheetLoading = true;
+  try {
+    const res = await fetch(LEADERBOARD_SHEET_CSV, { cache: 'no-store' });
+    if (!res.ok) return;
+    const text = await res.text();
+    const rows = parseCSVRows(text).filter(r => r.some(c => String(c).trim() !== ''));
+    if (rows.length === 0) return;
+    const data = LEADERBOARD_TRANSPOSED
+      ? parseTransposedLayout(rows)
+      : parseStandardLayout(rows);
+    if (data.length === 0) return;
+    const key = JSON.stringify(data);
+    if (key === lastDataKey) return; // sheet unchanged since last poll
+    lastDataKey = key;
+    butterflyData = data;
+    recomputeRanks();
+    renderRankingsTable();
+    renderPodium();
+    buildButterflyCircle();
+    layoutCircular();
+  } catch (e){
+    // Sheet unreachable (offline / not published / blocked): keep last-good data.
+  } finally {
+    _sheetLoading = false;
+  }
+}
+
+// Fill the top-3 podium slides from the ranked data.
+function renderPodium(){
+  const slides = [
+    { id: 'text-1', label: '1ST PLACE' },
+    { id: 'text-2', label: '2ND PLACE' },
+    { id: 'text-3', label: '3RD PLACE' }
+  ];
+  slides.forEach((slide, i) => {
+    if (!rankedData[i]) return;
+    const el = document.getElementById(slide.id);
+    if (!el) return;
+    const nameEl = el.querySelector('.name');
+    const ptsEl = el.querySelector('.points');
+    if (nameEl) nameEl.textContent = rankedData[i].name;
+    if (ptsEl) ptsEl.textContent = rankedData[i].points + ' PTS';
+  });
+}
+
+recomputeRanks();
 
 function renderRankingsTable(){
   const topScore = Math.max(...rankedData.map((data) => data.points));
@@ -1498,34 +1661,38 @@ window.addEventListener('resize', updateRankingsToggleReady);
 window.addEventListener('load', updateRankingsToggleReady);
 updateRankingsToggleReady();
 
-// Create butterflies from user-defined data
-rankedData.forEach((data) => {
-  const rank = data.rank;
-  const pts = data.points;
-  const code = data.name;
-  const size = lerp(75, 65, (rank-1)/39);
-  const [color, accent] = palette[Math.floor(Math.random()*palette.length)];
-  const b = document.createElement('div');
-  b.className = 'rk-butterfly';
-  b.style.width = size + 'px';
-  b.style.height = size + 'px';
-  b.style.animationDelay = (Math.random()*4).toFixed(2) + 's';
-  b.style.animationDuration = (5 + Math.random()*3).toFixed(2) + 's';
-  b.innerHTML = butterflySVG(color, accent);
-  b.dataset.name = code;
-  b.dataset.rank = rank;
-  b.dataset.pts  = pts;
-  b.dataset.color = color;
-  b.dataset.jitterX = (Math.random() - 0.5) * 2;
-  b.dataset.jitterY = (Math.random() - 0.5) * 2;
-  b.addEventListener('mouseenter', (e) => showTooltip(e, b));
-  b.addEventListener('mousemove',  (e) => moveTooltip(e));
-  b.addEventListener('mouseleave', hideTooltip);
-  b.addEventListener('click',      (e) => { showTooltip(e, b); setTimeout(hideTooltip, 2400); });
-  if (rkCircle) {
+// Create butterflies from the ranked data. Rebuilt whenever the Google
+// Sheet delivers changed scores (see loadLeaderboardFromSheet).
+function buildButterflyCircle(){
+  if (!rkCircle) return;
+  rkCircle.innerHTML = '';
+  rankedData.forEach((data) => {
+    const rank = data.rank;
+    const pts = data.points;
+    const code = data.name;
+    const size = lerp(75, 65, (rank - 1) / Math.max(1, rankedData.length - 1));
+    const [color, accent] = palette[Math.floor(Math.random()*palette.length)];
+    const b = document.createElement('div');
+    b.className = 'rk-butterfly';
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.animationDelay = (Math.random()*4).toFixed(2) + 's';
+    b.style.animationDuration = (5 + Math.random()*3).toFixed(2) + 's';
+    b.innerHTML = butterflySVG(color, accent);
+    b.dataset.name = code;
+    b.dataset.rank = rank;
+    b.dataset.pts  = pts;
+    b.dataset.color = color;
+    b.dataset.jitterX = (Math.random() - 0.5) * 2;
+    b.dataset.jitterY = (Math.random() - 0.5) * 2;
+    b.addEventListener('mouseenter', (e) => showTooltip(e, b));
+    b.addEventListener('mousemove',  (e) => moveTooltip(e));
+    b.addEventListener('mouseleave', hideTooltip);
+    b.addEventListener('click',      (e) => { showTooltip(e, b); setTimeout(hideTooltip, 2400); });
     rkCircle.appendChild(b);
-  }
-});
+  });
+}
+buildButterflyCircle();
 
 // Trigger layout after all butterflies are created
 setTimeout(layoutCircular, 50);
@@ -1719,6 +1886,14 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
   }
 });
+
+// Initial podium render + periodic refresh from the Google Sheet so
+// score changes appear automatically without a page reload.
+renderPodium();
+if (LEADERBOARD_SHEET_CSV) {
+  loadLeaderboardFromSheet();
+  setInterval(loadLeaderboardFromSheet, LEADERBOARD_REFRESH_MS);
+}
 </script>
 
 
